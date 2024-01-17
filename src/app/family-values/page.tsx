@@ -7,6 +7,7 @@ import { useState } from "react";
 export default function FamilyValuesPage() {
   const [value, setValue] = useState<string>("");
   const [values, setValues] = useState<Set<string>>(new Set([]));
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (value.trim().length <= 2) return;
@@ -22,7 +23,7 @@ export default function FamilyValuesPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto mt-5">
+    <main className="max-w-4xl mx-auto mt-10 px-2">
       <form onSubmit={handleSubmit} className="space-y-5">
         <h1 className="text-3xl font-bold">What are your family values?</h1>
         <Input
@@ -39,9 +40,9 @@ export default function FamilyValuesPage() {
         {Array.from(values).map((value) => (
           <li
             key={value}
-            className="flex items-center justify-between border p-5"
+            className="flex items-center justify-between border rounded-lg p-5"
           >
-            <p>{value}</p>
+            <p className="text-xl">{value}</p>
             <Button variant="destructive" onClick={() => handleDelete(value)}>
               Delete
             </Button>
