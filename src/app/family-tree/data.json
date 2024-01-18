@@ -1,0 +1,31 @@
+[
+  {
+    "id": "9ad270aa-a486-41ef-a123-ace2b407dd4e",
+    "data": {
+      "gender": "M",
+      "firstName": "Ben",
+      "lastName": "Simmon",
+      "birthday": "11/11/1111",
+      "avatar": "",
+      "placeOfBirth": "Vancouver"
+    },
+    "rels": {
+      "father": "71ad1ed8-ef8b-4558-a1a1-7681b1e026d2"
+    }
+  },
+  {
+    "id": "71ad1ed8-ef8b-4558-a1a1-7681b1e026d2",
+    "data": {
+      "gender": "M",
+      "firstName": "Jeff",
+      "lastName": "Simmon",
+      "birthday": "22/22/2222",
+      "avatar": "",
+      "placeOfBirth": "Toronto"
+    },
+    "rels": {
+      "children": ["9ad270aa-a486-41ef-a123-ace2b407dd4e"],
+      "spouses": []
+    }
+  }
+]
