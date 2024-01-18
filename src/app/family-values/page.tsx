@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
 export default function FamilyValuesPage() {
@@ -23,9 +24,9 @@ export default function FamilyValuesPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto mt-10 px-2">
+    <main className="max-w-xl mx-auto mt-20 px-2">
       <form onSubmit={handleSubmit} className="space-y-5">
-        <h1 className="text-3xl font-bold">What are your family values?</h1>
+        <h1 className="text-2xl font-bold">What are your family values?</h1>
         <Input
           type="text"
           placeholder="Value"
@@ -44,7 +45,7 @@ export default function FamilyValuesPage() {
           >
             <p className="text-xl">{value}</p>
             <Button variant="destructive" onClick={() => handleDelete(value)}>
-              Delete
+              <Trash2Icon size={24} />
             </Button>
           </li>
         ))}
