@@ -1,11 +1,11 @@
 "use client";
 
-import FormSubmitButton from "./form-submit-button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
 
+import FormSubmitButton from "./form-submit-button";
 import {
   Form,
   FormControl,
@@ -16,31 +16,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { generateCrest } from "./actions";
 
 const formSchema = z.object({
   name: z.string(),
   symbol: z.string(),
-  animal: z.string(),
-  motto: z.string(),
-  details: z.string(),
+  color: z.string(),
+  animal: z.string().optional(),
+  motto: z.string().optional(),
+  details: z.string().optional(),
 });
+
+export type FormSchema = z.infer<typeof formSchema>;
 
 export default function FamilyCrestForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "The Stark Family",
+      name: "Stark",
       symbol: "Sword",
+      color: "Blue, Red",
       animal: "Eagle, Lion",
       motto: "Unity in Love, Strength in Respect",
       details: "Flames coming off both sides of the sword",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormSchema) {
     setIsSubmitting(true);
-    console.log(values);
+    await generateCrest(values);
     setIsSubmitting(false);
   }
   return (
@@ -53,7 +58,7 @@ export default function FamilyCrestForm() {
             <FormItem>
               <FormLabel>Family Name</FormLabel>
               <FormControl>
-                <Input placeholder="The Stark Family" {...field} />
+                <Input placeholder="Stark" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -67,6 +72,19 @@ export default function FamilyCrestForm() {
               <FormLabel>Symbol</FormLabel>
               <FormControl>
                 <Input placeholder="Sword" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="color"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Colors</FormLabel>
+              <FormControl>
+                <Input placeholder="Red, Blue" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
