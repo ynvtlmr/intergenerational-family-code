@@ -1,0 +1,60 @@
+{
+  "questions": [
+    {
+      "id": "1",
+      "text": "Does this align with our family’s values?"
+    },
+    {
+      "id": "2",
+      "text": "Is this our greatest priority, or in the top 3 at the moment?"
+    },
+    {
+      "id": "3",
+      "text": "Can this decision be delayed? Or should this decision be made urgently?"
+    },
+    {
+      "id": "4",
+      "text": "Am I the best person to be managing this decision?"
+    },
+    {
+      "id": "5",
+      "text": "Is this something impactful for our family or the world?"
+    },
+    {
+      "id": "6",
+      "text": "Is this the best use of my family’s time, energy, and capital?"
+    },
+    {
+      "id": "7",
+      "text": "Why is this something that I, or another family member is passionate about or feels is important?"
+    },
+    {
+      "id": "8",
+      "text": "Why do I trust this person/investment/charity? Have I known them for a year?"
+    },
+    {
+      "id": "9",
+      "text": "Do others trust them?"
+    },
+    {
+      "id": "10",
+      "text": "If this project/investment/endeavour fails, can we/I withstand the loss? And if not, is it more important than the risk? Success or failure, what have I learned?"
+    },
+    {
+      "id": "11",
+      "text": "How have I verified this information being presented to me?"
+    },
+    {
+      "id": "12",
+      "text": "Is there a way I can trial or test this investment/person/opportunity before we fully commit?"
+    },
+    {
+      "id": "13",
+      "text": "Have I consulted at least one other family member and one of our family’s trusted advisors on this decision?"
+    },
+    {
+      "id": "14",
+      "text": "In 4 generations will this be important to my family and the world?"
+    }
+  ]
+}
