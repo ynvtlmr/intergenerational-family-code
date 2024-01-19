@@ -2,22 +2,22 @@
 
 import React, { useState } from 'react';
 
-const FamilyGarden: React.FC = () => {
+const FamilyGarden = () => {
   const [growthRate] = useState(0.05); // Assumed growth rate
   const [firstPerson, setFirstPerson] = useState({
-    name: 'First Person',
-    beginAmount: '',
-    ages: [36, 40, 50, 60, 70, 80, 90]
+    name: 'First Person Name',
+    beginAmount: 0,
+    beginAge: 36
   });
   const [secondPerson, setSecondPerson] = useState({
-    name: 'Second Person',
-    beginAmount: '',
-    ages: [60, 70, 80, 90]
+    name: 'Second Person Name',
+    beginAmount: 0,
+    beginAge: 60
   });
 
   // Function to calculate compound interest
-  const calculateGrowth = (initialAmount: string, years: number) => {
-    const amount = parseFloat(initialAmount) || 0;
+  const calculateGrowth = (initialAmount: string | number, years: number) => {
+    const amount = parseFloat(String(initialAmount)) || 0;
     return (amount * Math.pow(1 + growthRate, years)).toFixed(2);
   };
 
@@ -27,21 +27,42 @@ const FamilyGarden: React.FC = () => {
     return (numberAmount * 0.25).toFixed(2); // 25% of the amount
   };
 
-  // Handlers for name and amount changes
+  // Handlers for name, beginAmount, and beginAge changes
   const handleNameChange = (isSecondPerson: boolean, newName: string) => {
     if (isSecondPerson) {
-      setSecondPerson((prev) => ({ ...prev, name: newName }));
+      setSecondPerson(prev => ({ ...prev, name: newName }));
     } else {
-      setFirstPerson((prev) => ({ ...prev, name: newName }));
+      setFirstPerson(prev => ({ ...prev, name: newName }));
     }
   };
 
   const handleBeginAmountChange = (isSecondPerson: boolean, newAmount: string) => {
+    const updatedAmount = parseFloat(newAmount) || 0;
     if (isSecondPerson) {
-      setSecondPerson((prev) => ({ ...prev, beginAmount: newAmount }));
+      setSecondPerson(prev => ({ ...prev, beginAmount: updatedAmount }));
     } else {
-      setFirstPerson((prev) => ({ ...prev, beginAmount: newAmount }));
+      setFirstPerson(prev => ({ ...prev, beginAmount: updatedAmount }));
     }
+  };
+
+  const handleBeginAgeChange = (isSecondPerson: boolean, newAge: string) => {
+    const updatedAge = parseInt(newAge, 10);
+    if (!isNaN(updatedAge)) {
+      if (isSecondPerson) {
+        setSecondPerson(prev => ({ ...prev, beginAge: updatedAge }));
+      } else {
+        setFirstPerson(prev => ({ ...prev, beginAge: updatedAge }));
+      }
+    }
+  };
+
+  // Function to generate ages array
+  const generateAges = (beginAge: number) => {
+    const ages = [];
+    for (let age = beginAge; age <= 120; age += 10) {
+      ages.push(age);
+    }
+    return ages;
   };
 
   // Helper to calculate the number of years since the beginning age
@@ -57,7 +78,6 @@ const FamilyGarden: React.FC = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row justify-between mt-8">
-        {/* Net Worth Growth Section */}
         <div className="lg:w-1/2">
           {/* First Person Section */}
           <input
@@ -67,21 +87,27 @@ const FamilyGarden: React.FC = () => {
             value={firstPerson.name}
             onChange={(e) => handleNameChange(false, e.target.value)}
           />
-          <div className="flex justify-between mb-2">
-            <span>Starting Amount(begin age):</span>
-            <input
-              type="text" // Changed to text to allow for decimal input
-              className="border-2 border-gray-200 rounded p-1"
-              value={firstPerson.beginAmount}
-              onChange={(e) => handleBeginAmountChange(false, e.target.value)}
-            />
-          </div>
-          {/* Display Ages and Growth for First Person */}
-          {firstPerson.ages.slice(1).map((age) => ( // Start from the second element
+          <input
+            type="number"
+            placeholder="Enter First Person's Begin Age"
+            className="border-2 border-gray-200 rounded p-1 my-2"
+            value={firstPerson.beginAge}
+            onChange={(e) => handleBeginAgeChange(false, e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Enter First Person's Begin Amount"
+            className="border-2 border-gray-200 rounded p-1 my-2"
+            value={firstPerson.beginAmount}
+            onChange={(e) => handleBeginAmountChange(false, e.target.value)}
+          />
+          {generateAges(firstPerson.beginAge).map((age, index) => (
             <div key={`first-${age}`} className="flex justify-between mb-2">
               <span>Age: {age}</span>
               <span>
-                {`$${calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.ages[0]))}MM`}
+                {index === 0
+                  ? `${firstPerson.beginAmount}MM`
+                  : `$${calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.beginAge))}MM`}
               </span>
             </div>
           ))}
@@ -94,43 +120,48 @@ const FamilyGarden: React.FC = () => {
             value={secondPerson.name}
             onChange={(e) => handleNameChange(true, e.target.value)}
           />
-          <div className="flex justify-between mb-2">
-            <span>Starting Amount(begin age):</span>
-            <input
-              type="text" // Changed to text to allow for decimal input
-              className="border-2 border-gray-200 rounded p-1"
-              value={secondPerson.beginAmount}
-              onChange={(e) => handleBeginAmountChange(true, e.target.value)}
-            />
-          </div>
-          {/* Display Ages and Growth for Second Person */}
-          {secondPerson.ages.slice(1).map((age) => ( // Start from the second element
-            <div key={`second-${age}`} className="flex justify-between mb-2">
+          <input
+            type="number"
+            placeholder="Enter Second Person's Begin Age"
+            className="border-2 border-gray-200 rounded p-1 my-2"
+            value={secondPerson.beginAge}
+            onChange={(e) => handleBeginAgeChange(true, e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Enter Second Person's Begin Amount"
+            className="border-2 border-gray-200 rounded p-1 my-2"
+            value={secondPerson.beginAmount}
+            onChange={(e) => handleBeginAmountChange(true, e.target.value)}
+          />
+          {generateAges(secondPerson.beginAge).map((age, index) => (
+            <div key={`second-${age}`} className="flex justify-between mb-3">
               <span>Age: {age}</span>
               <span>
-                {`$${calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.ages[0]))}B*`}
+                {index === 0
+                  ? `${secondPerson.beginAmount}B*`
+                  : `$${calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.beginAge))}B*`}
               </span>
             </div>
           ))}
         </div>
 
-        {/* Target Tax Coverage Section */}
         <div className="lg:w-1/2 lg:ml-10 mt-8 lg:mt-5">
           {/* First Person Tax Coverage */}
-          <div className="font-bold text-gray-800 mb-4">{firstPerson.name}'s Target Tax Coverage 25%</div>
-          {firstPerson.ages.map((age) => (
+          <div className="font-bold text-gray-800 mb-1">{firstPerson.name}'s Target Tax Coverage 25%</div>
+          {generateAges(firstPerson.beginAge).map((age) => (
             <div key={`tax-first-${age}`} className="mb-2">
               <span>
-                {`$${calculateTaxCoverage(calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.ages[0])))}MM`}
+                {`$${calculateTaxCoverage(calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.beginAge)))}MM`}
               </span>
             </div>
           ))}
           {/* Second Person Tax Coverage */}
-          <div className="font-bold text-gray-800 mb-10">{secondPerson.name}'s Target Tax Coverage 25%</div>
-          {secondPerson.ages.map((age) => (
-            <div key={`tax-second-${age}`} className="mb-2">
+          <div className="font-bold text-gray-800 mb-7">{secondPerson.name}'s Target Tax Coverage 25%</div>
+          {generateAges(secondPerson.beginAge).map((age) => (
+            <div key={`tax-second-${age}`} className="mb-3">
               <span>
-                {`$${calculateTaxCoverage(calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.ages[0])))}B*`}
+                {`$${calculateTaxCoverage(calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.beginAge)))}B*`}
               </span>
             </div>
           ))}
