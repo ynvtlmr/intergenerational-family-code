@@ -1,20 +1,33 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import { Loader2Icon } from "lucide-react";
-import { useFormStatus } from "react-dom";
 
-export default function FormSubmitButton() {
-  const { pending } = useFormStatus();
+type FormSubmitButtonProps = {
+  loadingText?: string;
+  defaultText?: string;
+} & ButtonProps;
+
+export default function FormSubmitButton({
+  loadingText = "Submitting...",
+  defaultText = "Submit",
+  ...props
+}: FormSubmitButtonProps) {
   return (
-    <Button size="lg" className="w-full" type="submit" disabled={pending}>
-      {pending ? (
+    <Button
+      {...props}
+      size="lg"
+      className="w-full"
+      type="submit"
+      disabled={props.disabled}
+    >
+      {props.disabled ? (
         <>
           <Loader2Icon className="animate-spin w-6 h-6 mr-2" />
-          <span>Generating....</span>
+          <span>{loadingText}....</span>
         </>
       ) : (
-        <span>Generate Family Crest</span>
+        <span>{defaultText}</span>
       )}
     </Button>
   );
