@@ -1,12 +1,23 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import FormSubmitButton from "./form-submit-button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useState } from "react";
 
-const familySchema = z.object({
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
+const formSchema = z.object({
   name: z.string(),
   symbol: z.string(),
   animal: z.string(),
@@ -15,56 +26,103 @@ const familySchema = z.object({
 });
 
 export default function FamilyCrestForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "The Stark Family",
+      symbol: "Sword",
+      animal: "Eagle, Lion",
+      motto: "Unity in Love, Strength in Respect",
+      details: "Flames coming off both sides of the sword",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    console.log(values);
+    setIsSubmitting(false);
+  }
   return (
-    <form className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="familyName">Family Name</Label>
-        <Input
-          id="familyName"
-          name="familyName"
-          placeholder="The Stark Family"
-          value="The Stark Family"
-          required
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          name="name"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Family Name</FormLabel>
+              <FormControl>
+                <Input placeholder="The Stark Family" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="symbol">Symbol</Label>
-        <Input
-          id="symbol"
+        <FormField
           name="symbol"
-          placeholder="Sword"
-          value="Sword"
-          required
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Symbol</FormLabel>
+              <FormControl>
+                <Input placeholder="Sword" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="animal">Animal</Label>
-        <Input
-          id="animal"
+        <FormField
           name="animal"
-          placeholder="Eagle, lion"
-          value="Eagle, lion"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Animal</FormLabel>
+              <FormControl>
+                <Input placeholder="Eagle, Lion" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="familyMotto">Family Motto</Label>
-        <Input
-          id="familyMotto"
-          name="familyMotto"
-          placeholder="Unity in Love, Strength in Respect"
-          value="Unity in Love, Strength in Respect"
+        <FormField
+          name="motto"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Family Motto</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Unity in Love, Strength in Respect"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="details">Additional Details</Label>
-        <Textarea
-          id="details"
+        <FormField
           name="details"
-          placeholder="Flames coming off both sides of the sword"
-          value="Flames coming off both sides of the sword"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Additional Details</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Flames coming off both sides of the sword"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <FormSubmitButton />
-    </form>
+        <FormSubmitButton
+          disabled={isSubmitting}
+          loadingText="Generating..."
+          defaultText="Generate"
+        />
+      </form>
+    </Form>
   );
 }

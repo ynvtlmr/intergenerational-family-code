@@ -24,7 +24,7 @@ export default function FormSubmitButton({
       {props.disabled ? (
         <>
           <Loader2Icon className="animate-spin w-6 h-6 mr-2" />
-          <span>{loadingText}....</span>
+          <span>{loadingText}</span>
         </>
       ) : (
         <span>{defaultText}</span>
