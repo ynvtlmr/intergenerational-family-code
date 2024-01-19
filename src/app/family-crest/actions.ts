@@ -6,7 +6,8 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function generateCrest(family: FormSchema) {
   let prompt =
-    `A family crest for the ${family.name}.` +
+    ` A family crest for the ${family.name}. ` +
+    ` Please do not generate text of any kind, Instead add a place for text to be inserted.` +
     ` The symbol for the family crest: ${family.symbol}.` +
     ` The colors that I want on the crest are ${family.color}.`;
 

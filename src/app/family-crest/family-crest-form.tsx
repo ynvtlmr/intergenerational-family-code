@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { generateCrest } from "./actions";
+import { useFamilyCrest } from "./family-crest-store";
 
 const formSchema = z.object({
   name: z.string(),
@@ -30,6 +31,7 @@ const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 
 export default function FamilyCrestForm() {
+  const { updateCrest } = useFamilyCrest();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -45,7 +47,10 @@ export default function FamilyCrestForm() {
 
   async function onSubmit(values: FormSchema) {
     setIsSubmitting(true);
-    await generateCrest(values);
+    const generatedCrest = await generateCrest(values);
+    if (generatedCrest) {
+      updateCrest(generatedCrest);
+    }
     setIsSubmitting(false);
   }
   return (
