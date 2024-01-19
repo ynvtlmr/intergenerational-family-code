@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const FamilyGarden = () => {
   const [growthRate] = useState(0.05); // Assumed growth rate
@@ -14,7 +14,13 @@ const FamilyGarden = () => {
     beginAmount: 0,
     beginAge: 60
   });
+  useEffect(() => {
+    document.body.style.backgroundColor = "white";
 
+    return () => {
+      document.body.style.backgroundColor = "white";
+    };
+  }, []);
   // Function to calculate compound interest
   const calculateGrowth = (initialAmount: string | number, years: number) => {
     const amount = parseFloat(String(initialAmount)) || 0;
