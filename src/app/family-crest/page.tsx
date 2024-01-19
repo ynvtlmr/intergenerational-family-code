@@ -1,3 +1,4 @@
+"use client";
 import FamilyCrestForm from "./family-crest-form";
 
 export default function FamilyCrestPage() {
