@@ -36,12 +36,12 @@ export default function FamilyCrestForm() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "Stark",
-      symbol: "Sword",
-      color: "Blue, Red",
-      animal: "Eagle, Lion",
-      motto: "Unity in Love, Strength in Respect",
-      details: "Flames coming off both sides of the sword",
+      name: "",
+      symbol: "",
+      color: "",
+      animal: "",
+      motto: "",
+      details: "",
     },
   });
 
