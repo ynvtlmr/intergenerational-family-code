@@ -1,3 +1,20 @@
+function getInitialFamilyTreeData() {
+  return [
+    {
+      id: "9ad270aa-a486-41ef-a123-ace2b407dd4e",
+      data: {
+        gender: "M",
+        firstName: "FirstName",
+        lastName: "LastName",
+        birthday: "July 1, 1867",
+        avatar: "",
+        placeOfBirth: "Ottawa, Canada",
+      },
+      rels: {},
+    },
+  ];
+}
+
 // Define the parameters of the form for editing an individual's data
 function cardEditParams() {
   return [
@@ -14,7 +31,7 @@ function cardDisplay() {
   const d1 = (d) => `${d.data["firstName"] || ""} ${d.data["lastName"] || ""}`,
     d2 = (d) => `${d.data["birthday"] || ""} ${d.data["placeOfBirth"] || ""}`;
   d1.create_form = "{first name} {last name}";
-  d2.create_form = "{birthday} {placeOfBirth}";
+  d2.create_form = "{birthday} {place of birth}";
 
   return [d1, d2];
 }
@@ -125,4 +142,4 @@ function form({
   }
 }
 
-export { cardEditParams, cardDisplay, form };
+export { getInitialFamilyTreeData, cardEditParams, cardDisplay, form };

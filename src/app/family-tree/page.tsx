@@ -3,9 +3,13 @@
 import f3 from "family-chart";
 import "materialize-css/dist/css/materialize.min.css";
 
-import { useEffect, useState } from "react";
-import familyMembers from "@/app/family-tree/data.json";
-import { cardDisplay, cardEditParams, form } from "../../lib/familyTree";
+import { useEffect } from "react";
+import {
+  getInitialFamilyTreeData,
+  cardDisplay,
+  cardEditParams,
+  form,
+} from "../../lib/familyTree";
 
 interface IndividualData {
   firstName?: string;
@@ -32,17 +36,13 @@ interface FamilyChartIndividual {
 type FamilyChart = FamilyChartIndividual[];
 
 export default function FamilyTree() {
-  const [familyData, setFamilyData] = useState<FamilyChart>(
-    familyMembers as FamilyChart
-  );
-
   useEffect(() => {
     // Dynamically import the "materialize-css" library here to avoid SSR issues
     import("materialize-css").then((M) => {
       const cont = document.querySelector("#FamilyChart"),
         // Card dimensions
         card_dim = {
-          w: 220,
+          w: 300,
           h: 70,
           text_x: 75,
           text_y: 15,
@@ -57,8 +57,8 @@ export default function FamilyTree() {
         card_edit = cardEditParams();
 
       const store = f3.createStore({
-          data: familyData,
-          node_separation: 250,
+          data: getInitialFamilyTreeData(),
+          node_separation: 350,
           level_separation: 150,
         }),
         // View initialization
@@ -104,7 +104,7 @@ export default function FamilyTree() {
         form({ ...props, card_edit, card_display, edit });
       }
     });
-  }, [familyData]);
+  }, []);
 
   useEffect(() => {
     // Dynamically import the "materialize-css" library here to avoid SSR issues
