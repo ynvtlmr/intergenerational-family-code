@@ -5,7 +5,7 @@ import "materialize-css/dist/css/materialize.min.css";
 
 import { useEffect, useState } from "react";
 import familyMembers from "@/app/family-tree/data.json";
-import { Form } from "./Form.js";
+import { cardDisplay, cardEditParams, form } from "../../lib/familyTree";
 
 interface IndividualData {
   firstName?: string;
@@ -51,7 +51,9 @@ export default function FamilyTree() {
           img_x: 5,
           img_y: 5,
         },
+        // Format the display of individual information in a family card
         card_display = cardDisplay(),
+        // Define the parameters of the form for editing an individual's data
         card_edit = cardEditParams();
 
       const store = f3.createStore({
@@ -99,33 +101,10 @@ export default function FamilyTree() {
           // The "edit" object with properties containing the modal element
           // and functions to open and close the modal
           edit = { el, open: () => modal.open(), close: () => modal.close() };
-        Form({ ...props, card_edit, card_display, edit });
+        form({ ...props, card_edit, card_display, edit });
       }
     });
   }, [familyData]);
-
-  // Define the parameters of the form for editing an individual's data
-  function cardEditParams() {
-    return [
-      { type: "text", placeholder: "firstName", key: "firstName" },
-      { type: "text", placeholder: "lastName", key: "lastName" },
-      { type: "text", placeholder: "birthday", key: "birthday" },
-      { type: "text", placeholder: "avatar", key: "avatar" },
-      { type: "text", placeholder: "placeOfBirth", key: "placeOfBirth" },
-    ];
-  }
-
-  // Format the display of individual information in a family card
-  function cardDisplay() {
-    const d1 = (d: any) =>
-        `${d.data["firstName"] || ""} ${d.data["lastName"] || ""}`,
-      d2 = (d: any) =>
-        `${d.data["birthday"] || ""} ${d.data["placeOfBirth"] || ""}`;
-    d1.create_form = "{first name} {last name}";
-    d2.create_form = "{birthday} {placeOfBirth}";
-
-    return [d1, d2];
-  }
 
   useEffect(() => {
     // Dynamically import the "materialize-css" library here to avoid SSR issues
