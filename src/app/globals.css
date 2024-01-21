@@ -3,10 +3,8 @@
 @tailwind utilities;
 
 .f3 {
-  height: 700px;
-  max-height: calc(100vh - 80px);
-  width: 900px;
-  max-width: 100%;
+  height: 100dvh;
+  min-width: 100%;
   margin: auto;
   position: relative;
 }
