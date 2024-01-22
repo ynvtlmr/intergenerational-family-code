@@ -10,30 +10,7 @@ import {
   cardEditParams,
   form,
 } from "../../lib/familyTree";
-
-interface IndividualData {
-  firstName?: string;
-  lastName?: string;
-  birthday?: string;
-  avatar?: string;
-  placeOfBirth?: string;
-  gender: "M" | "F";
-}
-
-interface Relationships {
-  spouses?: string[];
-  father?: string;
-  mother?: string;
-  children?: string[];
-}
-
-interface FamilyChartIndividual {
-  id: string;
-  rels: Relationships;
-  data: IndividualData;
-}
-
-type FamilyChart = FamilyChartIndividual[];
+import FamilyTreeDataButton from "./family-tree-data-button";
 
 export default function FamilyTree() {
   useEffect(() => {
@@ -86,7 +63,13 @@ export default function FamilyTree() {
 
       // Set the card to be used in the view
       view.setCard(Card);
-      store.setOnUpdate((props: any) => view.update(props || {}));
+      store.setOnUpdate((props: any) => {
+        view.update(props || {});
+        localStorage.setItem(
+          "family-tree-data",
+          JSON.stringify(store.getData(), null, 4)
+        );
+      });
       // Initial tree update
       store.update.tree({ initial: true });
 
@@ -120,5 +103,10 @@ export default function FamilyTree() {
     });
   }, []);
 
-  return <div className="f3" id="FamilyChart"></div>;
+  return (
+    <div className="relative">
+      <div className="f3" id="FamilyChart"></div>
+      <FamilyTreeDataButton />
+    </div>
+  );
 }
