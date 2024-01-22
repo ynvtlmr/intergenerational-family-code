@@ -14,12 +14,14 @@ import { useState } from "react";
 
 export default function FamilyTreeDataButton() {
   const [familyTreeData, setFamilyTreeData] = useState(() => {
-    const saved = localStorage.getItem("family-tree-data");
-    return saved ? saved : "";
+    if (typeof localStorage !== "undefined") {
+      const saved = localStorage?.getItem("family-tree-data");
+      return saved ? saved : "";
+    }
   });
 
   const handleViewData = () => {
-    const saved = localStorage.getItem("family-tree-data");
+    const saved = localStorage?.getItem("family-tree-data");
     setFamilyTreeData(saved ? saved : "");
   };
 
