@@ -6,6 +6,7 @@ import "materialize-css/dist/css/materialize.min.css";
 import { useEffect } from "react";
 import {
   getInitialFamilyTreeData,
+  createFormModal,
   cardDisplay,
   cardEditParams,
   form,
@@ -16,6 +17,7 @@ export default function FamilyTree() {
   useEffect(() => {
     // Dynamically import the "materialize-css" library here to avoid SSR issues
     import("materialize-css").then((M) => {
+      createFormModal(M);
       const cont = document.querySelector("#FamilyChart"),
         // Card dimensions
         card_dim = {
@@ -86,20 +88,6 @@ export default function FamilyTree() {
           edit = { el, open: () => modal.open(), close: () => modal.close() };
         form({ ...props, card_edit, card_display, edit });
       }
-    });
-  }, []);
-
-  useEffect(() => {
-    // Dynamically import the "materialize-css" library here to avoid SSR issues
-    import("materialize-css").then((M) => {
-      // Check if an element with the id "form_modal" already exists in the DOM
-      if (document.getElementById("form_modal")) return;
-
-      // Create a new "div" modal element and append it to the document body
-      const modal = document.body.appendChild(document.createElement("div"));
-      modal.setAttribute("id", "form_modal");
-      modal.setAttribute("class", "modal");
-      M.Modal.init(modal, {});
     });
   }, []);
 

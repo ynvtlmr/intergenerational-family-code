@@ -15,6 +15,16 @@ function getInitialFamilyTreeData() {
   ];
 }
 
+function createFormModal(materialize) {
+  if (document.getElementById("form_modal")) return;
+
+  // Create a new "div" modal element and append it to the document body
+  const modal = document.body.appendChild(document.createElement("div"));
+  modal.setAttribute("id", "form_modal");
+  modal.setAttribute("class", "modal");
+  materialize.Modal.init(modal, {});
+}
+
 // Define the parameters of the form for editing an individual's data
 function cardEditParams() {
   return [
@@ -142,4 +152,10 @@ function form({
   }
 }
 
-export { getInitialFamilyTreeData, cardEditParams, cardDisplay, form };
+export {
+  getInitialFamilyTreeData,
+  createFormModal,
+  cardEditParams,
+  cardDisplay,
+  form,
+};
