@@ -1,4 +1,6 @@
 import { Copy } from "lucide-react";
+import { useCopyToClipboard } from "@/lib/hooks";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +15,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 
 export default function FamilyTreeDataButton() {
+  const [copiedText, copy] = useCopyToClipboard();
+  const { toast } = useToast();
+
   const [familyTreeData, setFamilyTreeData] = useState(() => {
     if (typeof localStorage !== "undefined") {
       const saved = localStorage?.getItem("family-tree-data");
@@ -35,9 +40,9 @@ export default function FamilyTreeDataButton() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="mt-0 mb-1">Share data</DialogTitle>
+            <DialogTitle className="mt-0 mb-1">Family tree data</DialogTitle>
             <DialogDescription>
-              Click on the copy icon to copy the data to your clipboard.
+              Click the copy icon to copy the data.
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-center space-x-2">
@@ -48,7 +53,17 @@ export default function FamilyTreeDataButton() {
                 readOnly
               ></Textarea>
             </div>
-            <Button type="submit" size="sm" className="px-3">
+            <Button
+              type="submit"
+              size="sm"
+              className="px-3"
+              onClick={() => {
+                copy(familyTreeData ?? "");
+                toast({
+                  description: "Copied to clipboard!",
+                });
+              }}
+            >
               <span className="sr-only">Copy</span>
               <Copy className="h-4 w-4" />
             </Button>
