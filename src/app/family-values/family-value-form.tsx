@@ -1,44 +1,91 @@
 "use client";
 
-import { useState } from "react";
 import { useFamilyValues } from "./family-value-store";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+
 export default function FamilyValueForm() {
-  const [value, setValue] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
   const { values, addFamilyValue } = useFamilyValues();
+  const familyValueFormSchema = z.object({
+    value: z
+      .string()
+      .min(2, {
+        message: "Value must be greater than 2 characters.",
+      })
+      .max(50, {
+        message: "Value must be less than 50 characters.",
+      })
+      .refine((v) => !values[v], {
+        message: "Value already exists.",
+      }),
+    description: z
+      .string()
+      .min(2, {
+        message: "Description must be greater than 2 characters.",
+      })
+      .max(200, {
+        message: "Description must be less than 200 characters.",
+      }),
+  });
+  type FamilyValueFormSchema = z.infer<typeof familyValueFormSchema>;
+  const form = useForm<FamilyValueFormSchema>({
+    resolver: zodResolver(familyValueFormSchema),
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (value.trim().length <= 2) return;
-    if (description.trim().length <= 2) return;
-    if (values[value]) return;
+  function onSubmit(formData: FamilyValueFormSchema) {
+    addFamilyValue(formData);
+    form.reset();
+  }
 
-    addFamilyValue({ value, description });
-    setValue("");
-    setDescription("");
-  };
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <h1 className="text-2xl font-bold">What are your family values?</h1>
-      <Input
-        type="text"
-        placeholder="Value"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <Textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Enter a short description..."
-      />
-      <Button type="submit" size="lg" className="w-full">
-        Add
-      </Button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        <h1 className="text-2xl font-bold">What are your family values?</h1>
+        <FormField
+          control={form.control}
+          name="value"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Value" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  placeholder="Enter a short description..."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" size="lg" className="w-full">
+          Add
+        </Button>
+      </form>
+    </Form>
   );
 }
