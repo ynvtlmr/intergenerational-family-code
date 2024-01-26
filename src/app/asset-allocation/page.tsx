@@ -29,7 +29,12 @@ const AssetTable = ({ data, onDataChange }: { data: AssetRow[]; onDataChange: (i
                   {data.map((row, idx) => (
                       <tr key={idx}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {row.band} {/* Non-editable band field */}
+                              <input
+                                  type="text"
+                                  value={row.band}
+                                  onChange={(e) => onDataChange(idx, 'band', e.target.value)}
+                                  className="w-full p-1 border-none bg-transparent"
+                              />
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
                               <input
@@ -52,8 +57,7 @@ const AssetTable = ({ data, onDataChange }: { data: AssetRow[]; onDataChange: (i
               </tbody>
           </table>
       </div>
-    );
-    
+  );
 
 const AssetPieChart = ({ data }: { data: AssetRow[] }) => (
   <div style={{ height: '300px' }}>
@@ -84,12 +88,12 @@ const AssetPieChart = ({ data }: { data: AssetRow[] }) => (
 
 const AssetAllocationComponent = () => {
   const [tableData, setTableData] = useState<AssetRow[]>([
-    { band: 'Real Estate 10-30%', targetAllocation: 25, targetNetReturn: 5 },
-    { band: 'Private Equity 0-90%', targetAllocation: 40, targetNetReturn: 20 },
-    { band: 'Public Equity 0-30%', targetAllocation: 20, targetNetReturn: 5 },
-    { band: 'Fixed Income 0-10%', targetAllocation: 5, targetNetReturn: 3 },
-    { band: 'Cash 0-20%', targetAllocation: 10, targetNetReturn: 0 },
-    { band: 'Life Insurance 25-100%', targetAllocation: 50, targetNetReturn: 0 },
+    { band: 'Real Estate', targetAllocation: 25, targetNetReturn: 5 },
+    { band: 'Private Equity', targetAllocation: 40, targetNetReturn: 20 },
+    { band: 'Public Equity', targetAllocation: 20, targetNetReturn: 5 },
+    { band: 'Fixed Income', targetAllocation: 5, targetNetReturn: 3 },
+    { band: 'Cash', targetAllocation: 10, targetNetReturn: 1 },
+    { band: 'Life Insurance', targetAllocation: 50, targetNetReturn: 1.25 },
   ]);
 
   const handleDataChange = (idx: number, field: keyof AssetRow, value: string) => {
