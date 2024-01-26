@@ -1,19 +1,29 @@
 import { create } from "zustand";
 
+type FamilyValue = {
+  value: string;
+  description: string;
+};
+
 interface FamilyValueState {
-  values: Set<string>;
-  addValue: (value: string) => void;
+  values: {
+    [key: string]: string;
+  };
+  addValue: (familyValue: FamilyValue) => void;
   deleteValue: (value: string) => void;
 }
 
 export const useFamilyValueStore = create<FamilyValueState>((set) => ({
-  values: new Set(),
-  addValue: (value) => set((state) => ({ values: state.values.add(value) })),
+  values: {},
+  addValue: ({ value, description }) =>
+    set((state) => {
+      state.values[value] = description;
+      return { values: { ...state.values } };
+    }),
   deleteValue: (value) =>
     set((state) => {
-      const valueExists = state.values.delete(value);
-      if (!valueExists) return state;
-      return { values: new Set(state.values) };
+      delete state.values[value];
+      return { values: { ...state.values } };
     }),
 }));
 

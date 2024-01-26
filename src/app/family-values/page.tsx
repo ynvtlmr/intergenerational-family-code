@@ -1,5 +1,3 @@
-"use client";
-
 import FamilyValueForm from "./family-value-form";
 import FamilyValueList from "./family-value-list";
 
