@@ -80,7 +80,7 @@ const FamilyGarden = () => {
         Family Garden
       </div>
       <div className="italic text-gray-500 my-2">
-        "The more powerful the seed the longer it takes to germinate"
+        The more powerful the seed the longer it takes to germinate
       </div>
 
       <div className="flex flex-col lg:flex-row justify-between mt-8">
@@ -154,7 +154,7 @@ const FamilyGarden = () => {
 
         <div className="lg:w-1/2 lg:ml-10 mt-8 lg:mt-5">
           {/* First Person Tax Coverage */}
-          <div className="font-bold text-gray-800 mb-1">{firstPerson.name}'s Target Tax Coverage 25%</div>
+          <div className="font-bold text-gray-800 mb-1">{firstPerson.name}s Target Tax Coverage 25%</div>
           {generateAges(firstPerson.beginAge).map((age) => (
             <div key={`tax-first-${age}`} className="mb-2">
               <span>
@@ -163,7 +163,7 @@ const FamilyGarden = () => {
             </div>
           ))}
           {/* Second Person Tax Coverage */}
-          <div className="font-bold text-gray-800 mb-7">{secondPerson.name}'s Target Tax Coverage 25%</div>
+          <div className="font-bold text-gray-800 mb-7">{secondPerson.name}s Target Tax Coverage 25%</div>
           {generateAges(secondPerson.beginAge).map((age) => (
             <div key={`tax-second-${age}`} className="mb-3">
               <span>
