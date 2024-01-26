@@ -1,10 +1,10 @@
 import "./globals.css";
 import AddQuestion from "../app/components/AddQuestion";
 import Questions from "../app/components/Questions";
-import { getAllQuestions } from "../../api";
+import { IQuestion } from "../../types/questions";
 
 export default async function Home() {
-  const questions = await getAllQuestions();
+  const questions = [] as IQuestion[];
   console.log(questions);
   return (
     <main className="max-w-4xl mx-auto mt-4">

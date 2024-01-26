@@ -68,7 +68,6 @@
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.4.17",
-    "daisyui": "^4.0.5",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "json-server": "^1.0.0-alpha.21",
