@@ -3,11 +3,9 @@ import { FaPlus } from "react-icons/fa6";
 import Modal from "./Modal";
 import { FormEventHandler, useState } from "react";
 import { addQuestion } from "../../../api";
-import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
 const AddQuestion = () => {
-  const router = useRouter();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [newQuestionValue, setNewQuestionValue] = useState<string>("");
 
@@ -21,7 +19,6 @@ const AddQuestion = () => {
     });
     setNewQuestionValue("");
     setModalOpen(false);
-    router.refresh();
   };
   return (
     <div>

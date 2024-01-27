@@ -10,10 +10,6 @@ const config = {
   ],
   prefix: "",
   theme: {
-    colors: {
-      blue: "#4f46e5",
-      red: "#e11d48",
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -78,7 +74,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("daisyui")],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
 
 export default config;
