@@ -1,8 +1,10 @@
 "use client";
-
 import { useState } from "react";
 import { OrgChartNode } from "./type";
 import OrgChartPage from "./org-chart/page";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 
 const initialData: OrgChartNode[] = [
   {
@@ -44,7 +46,7 @@ export default function Home() {
         <h1 className=" text-4xl font-bold">This is the Org Chart</h1>
       </div>
       <div>
-        <OrgChartPage />
+        <OrgChartPage data={orgChartInitialData} />
       </div>
     </>
   );
