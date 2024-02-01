@@ -28,15 +28,15 @@ const familyStatementFormSchema = z.object({
 type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;
 
 export default function FamilyCodeForm() {
-  const {addStatement} = useFamilyCode()
-  
+  const { addStatement } = useFamilyCode();
+
   const form = useForm<FamilyStatementFormSchema>({
     resolver: zodResolver(familyStatementFormSchema),
     defaultValues: {
       statement: "",
-    }
+    },
   });
-  function onSubmit({statement}: FamilyStatementFormSchema) {
+  function onSubmit({ statement }: FamilyStatementFormSchema) {
     addStatement(statement);
     form.reset();
   }
@@ -45,16 +45,17 @@ export default function FamilyCodeForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <h1 className="text-2xl font-bold">Family Code</h1>
-        <p>
-            Add a statement that your family commits to.
-        </p>
+        <p>Add a statement that your family commits to.</p>
         <FormField
           control={form.control}
           name="statement"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea placeholder="The Stark family commits to excellence in that which is most impactful." {...field} />
+                <Textarea
+                  placeholder="The Stark family commits to excellence in that which is most impactful."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

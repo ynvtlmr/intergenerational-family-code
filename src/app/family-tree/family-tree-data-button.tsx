@@ -31,7 +31,7 @@ export default function FamilyTreeDataButton() {
   };
 
   return (
-    <div className="absolute bottom-0 right-0 mr-5 mb-5">
+    <div className="absolute bottom-0 right-0 mb-5 mr-5">
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline" onClick={handleViewData}>
@@ -40,7 +40,7 @@ export default function FamilyTreeDataButton() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="mt-0 mb-1">Family tree data</DialogTitle>
+            <DialogTitle className="mb-1 mt-0">Family tree data</DialogTitle>
             <DialogDescription>
               Click the copy icon to copy the data.
             </DialogDescription>
@@ -48,7 +48,7 @@ export default function FamilyTreeDataButton() {
           <div className="flex items-center space-x-2">
             <div className="grid flex-1 gap-2">
               <Textarea
-                className="resize-none h-80"
+                className="h-80 resize-none"
                 value={familyTreeData}
                 readOnly
               ></Textarea>
