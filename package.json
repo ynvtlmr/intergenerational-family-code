@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "json-server": "json-server --watch data/questions.json --port 3002"
+    "lint": "next lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -42,7 +41,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
-    "daisyui": "^4.6.0",
     "date-fns": "^3.2.0",
     "embla-carousel-react": "^8.0.0-rc19",
     "family-chart": "^0.0.0-beta-1",
