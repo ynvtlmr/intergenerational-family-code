@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type FamilyValue = {
   value: string;
@@ -13,7 +14,7 @@ interface FamilyValueState {
   deleteValue: (value: string) => void;
 }
 
-export const useFamilyValueStore = create<FamilyValueState>((set) => ({
+export const useFamilyValueStore = create<FamilyValueState>()(persist((set) => ({
   values: {},
   addValue: ({ value, description }) =>
     set((state) => {
@@ -25,6 +26,8 @@ export const useFamilyValueStore = create<FamilyValueState>((set) => ({
       delete state.values[value];
       return { values: { ...state.values } };
     }),
+}), {
+  name: "family-value",
 }));
 
 export const useFamilyValues = () => {
