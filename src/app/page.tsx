@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 import { useState } from "react";
 import { OrgChartNode } from "./type";
@@ -49,5 +50,25 @@ export default function Home() {
         <OrgChartPage data={orgChartInitialData} />
       </div>
     </>
+=======
+import "./globals.css";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+export default async function Home() {
+  return (
+    <main className="max-w-4xl mx-auto pt-20 px-2">
+      <h1 className="font-bold text-4xl mb-8 text-center">Intergenerational Family Code</h1>
+      <div className="flex flex-col gap-2 justify-center max-w-xl mx-auto">
+      <Button><Link className="w-full" href="/decision-tree">Decision Tree</Link></Button>
+       <Button><Link className="w-full" href="/family-tree">Family Tree</Link></Button>
+     <Button> <Link className="w-full" href="/family-crest">Family Crest</Link></Button>
+     <Button><Link className="w-full" href="/family-garden">Family Garden</Link></Button>
+     <Button> <Link className="w-full" href="/family-values">Family Values</Link></Button>
+      <Button><Link className="w-full" href="/org-chart">Organizational Chart</Link></Button>
+      </div>
+    </main>
+>>>>>>> 8425f0c3bc30b56a99b1bec4703d24f2dc3caff8
   );
 }
