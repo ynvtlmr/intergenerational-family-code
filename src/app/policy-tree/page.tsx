@@ -127,15 +127,15 @@ export const policyData: User[] = [
   },
       ];
 
-      const YourComponent: React.FC = () => {
+      const policyComponent: React.FC = () => {
         return (
           <section className="py-24">
             <div className='container'>
-              <h1 className='text-center text-3xl font-bold mb-8'>Policy Tree</h1>
+              <h1 className='text-center text-5xl font-bold mb-8'>Policy Tree</h1>
               <DataTable columns={columns} data={policyData} />
             </div>
           </section>
         );
       };
       
-      export default YourComponent;
+      export default policyComponent;
