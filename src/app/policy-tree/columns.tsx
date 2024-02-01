@@ -32,6 +32,14 @@ export const columns: ColumnDef<User>[] = [
   {
         accessorKey: "Amount",
         header: "Amount",
+        cell: ({ row }) => {
+                const amount = parseFloat(row.getValue("amount"))
+                const formatted = new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(amount)
+           
+                return <div className="text-right font-medium">{formatted}</div> }
       },
       {
         accessorKey: "Owner",
@@ -48,7 +56,14 @@ export const columns: ColumnDef<User>[] = [
       {
         accessorKey: "Anniversary",
         header: "Anniversary",
-      },
+        cell: ({ row }) => {
+            const date = new Date(row.getValue('Anniversary'));
+            const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+            const formatted = date.toLocaleDateString();
+            return <div className="text-right font-medium">{formatted}</div>;
+        }
+    }
+    ,
       {
         accessorKey: "Insured",
         header: "Insured",

@@ -14,6 +14,7 @@ export default async function Home() {
      <Button><Link className="w-full" href="/family-garden">Family Garden</Link></Button>
      <Button> <Link className="w-full" href="/family-values">Family Values</Link></Button>
       <Button><Link className="w-full" href="/org-chart">Organizational Chart</Link></Button>
+      <Button><Link className="w-full" href="/policy-tree">Policy Tree</Link></Button>
       </div>
     </main>
   );
