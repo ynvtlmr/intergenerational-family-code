@@ -1,9 +1,16 @@
-import { OrgChartNode } from "../type";
+
 import { OrganizationChart } from "primereact/organizationchart";
 
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+
+type OrgChartNode = {
+  id: number;
+  label: string;
+  children?: OrgChartNode[];
+};
+
 
 const initialData: OrgChartNode[] = [
   {
