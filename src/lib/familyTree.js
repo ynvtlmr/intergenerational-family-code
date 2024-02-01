@@ -141,12 +141,12 @@ function form({
               d.placeholder
             }" value="${datum.data[d.key] || ""}">`
           : d.type === "textarea"
-          ? `<textarea class="materialize-textarea" name="${
-              d.key
-            }" placeholder="${d.placeholder}">${
-              datum.data[d.key] || ""
-            }</textarea>`
-          : ""
+            ? `<textarea class="materialize-textarea" name="${
+                d.key
+              }" placeholder="${d.placeholder}">${
+                datum.data[d.key] || ""
+              }</textarea>`
+            : ""
       )
       .join("\n");
   }

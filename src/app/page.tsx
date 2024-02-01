@@ -12,17 +12,22 @@ const links = [
   { href: "/family-crest", label: "Family Crest" },
   { href: "/family-garden", label: "Family Garden" },
   { href: "/org-chart", label: "Organizational Chart" },
-]
+];
 
 export default async function Home() {
   return (
-    <main className="max-w-4xl mx-auto pt-20 px-2">
-      <h1 className="font-bold text-4xl mb-8 text-center">Intergenerational Family Code</h1>
-      <div className="flex flex-col gap-2 justify-center max-w-xl mx-auto">
-        {
-links.map((link) => (
-  <Button key={link.label}><Link className="w-full" href={link.href}>{link.label}</Link></Button>
-  ))}
+    <main className="mx-auto max-w-4xl px-2 pt-20">
+      <h1 className="mb-8 text-center text-4xl font-bold">
+        Intergenerational Family Code
+      </h1>
+      <div className="mx-auto flex max-w-xl flex-col justify-center gap-2">
+        {links.map((link) => (
+          <Button key={link.label}>
+            <Link className="w-full" href={link.href}>
+              {link.label}
+            </Link>
+          </Button>
+        ))}
       </div>
     </main>
   );

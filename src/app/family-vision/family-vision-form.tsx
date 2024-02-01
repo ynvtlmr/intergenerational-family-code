@@ -28,15 +28,15 @@ const familyStatementFormSchema = z.object({
 type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;
 
 export default function FamilyVisionForm() {
-  const {addVisionStatement} = useFamilyVision()
-  
+  const { addVisionStatement } = useFamilyVision();
+
   const form = useForm<FamilyStatementFormSchema>({
     resolver: zodResolver(familyStatementFormSchema),
     defaultValues: {
       statement: "",
-    }
+    },
   });
-  function onSubmit({statement}: FamilyStatementFormSchema) {
+  function onSubmit({ statement }: FamilyStatementFormSchema) {
     addVisionStatement(statement);
     form.reset();
   }
@@ -45,16 +45,17 @@ export default function FamilyVisionForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <h1 className="text-2xl font-bold">Family Vision</h1>
-        <p>
-            Add a statement that defines your family&apos;s vision.
-        </p>
+        <p>Add a statement that defines your family&apos;s vision.</p>
         <FormField
           control={form.control}
           name="statement"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea placeholder="To be a family that is very deeply connected by love and meaning." {...field} />
+                <Textarea
+                  placeholder="To be a family that is very deeply connected by love and meaning."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

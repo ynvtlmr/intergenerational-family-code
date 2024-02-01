@@ -10,14 +10,10 @@ export default function Questions() {
   };
 
   return (
-     <ul className="space-y-5 mt-5 mb-10">
+    <ul className="mb-10 mt-5 space-y-5">
       {questions.map((q) => (
-       <FormItem
-          key={q}
-          title={q}
-          handleDelete={() => handleDelete(q)}
-        />
+        <FormItem key={q} title={q} handleDelete={() => handleDelete(q)} />
       ))}
     </ul>
   );
-};
+}
