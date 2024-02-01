@@ -10,7 +10,7 @@ import {
   cardDisplay,
   cardEditParams,
   form,
-} from "../../lib/familyTree";
+} from "./familyTree";
 import FamilyTreeDataButton from "./family-tree-data-button";
 
 export default function FamilyTree() {
