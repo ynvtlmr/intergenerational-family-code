@@ -2,13 +2,11 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type User = {
-  id: string
+  id: number
   Carrier: string
   Type: string
-  amount: number
+  Amount: number
   Owner: string
   Beneficiary: string
   Payor:  string    
@@ -30,16 +28,18 @@ export const columns: ColumnDef<User>[] = [
     header: "Type",
   },
   {
-        accessorKey: "Amount",
-        header: "Amount",
-        cell: ({ row }) => {
-                const amount = parseFloat(row.getValue("amount"))
-                const formatted = new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(amount)
-           
-                return <div className="text-right font-medium">{formatted}</div> }
+    accessorKey: "Amount",
+    header: () => <div>Amount</div>,
+    cell: ({ row }) => {
+      
+      const amountValue = row.getValue("Amount") as number; 
+      
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amountValue);
+
+      return <div className="text-left font-medium">{formatted}</div>;}
       },
       {
         accessorKey: "Owner",
@@ -60,7 +60,7 @@ export const columns: ColumnDef<User>[] = [
             const date = new Date(row.getValue('Anniversary'));
             const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
             const formatted = date.toLocaleDateString();
-            return <div className="text-right font-medium">{formatted}</div>;
+            return <div className="text-left font-medium">{formatted}</div>;
         }
     }
     ,
