@@ -1,10 +1,10 @@
 "use client";
 
 import FormItem from "@/components/form-item";
-import { useFamilyQuestions } from "./family-questions-store";
+import { useDecisionTree } from "./family-questions-store";
 
 export default function Questions() {
-  const { questions, deleteQuestion } = useFamilyQuestions();
+  const { questions, deleteQuestion } = useDecisionTree();
   const handleDelete = (q: string) => {
     deleteQuestion(q);
   };
