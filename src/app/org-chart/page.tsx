@@ -1,15 +1,12 @@
 
 import { OrganizationChart } from "primereact/organizationchart";
+import { OrgChartNode } from "../../../types/questions";
 
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-type OrgChartNode = {
-  id: number;
-  label: string;
-  children?: OrgChartNode[];
-};
+
 
 
 const initialData: OrgChartNode[] = [
@@ -44,8 +41,11 @@ const initialData: OrgChartNode[] = [
 
 export default function OrgChartPage() {
   return (
-    <div>
-      <OrganizationChart value={initialData} />
+    <>
+    <div className=" flex justify-center my-5">
+      <h1 className="text-4xl font-bold">Organizational Chart</h1>
     </div>
+      <OrganizationChart value={initialData} />
+    </>
   );
 }
