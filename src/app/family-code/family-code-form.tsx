@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import * as z from "zod";
@@ -14,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useFamilyCode } from "./family-code-store";
+import { Textarea } from "@/components/ui/textarea";
 
 const familyStatementFormSchema = z.object({
   statement: z
@@ -54,7 +54,7 @@ export default function FamilyCodeForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="The Stark family commits to excellence in that which is most impactful." {...field} />
+                <Textarea placeholder="The Stark family commits to excellence in that which is most impactful." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

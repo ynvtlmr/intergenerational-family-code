@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import * as z from "zod";
@@ -14,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useFamilyQuestions } from "./family-questions-store";
+import { Textarea } from "@/components/ui/textarea";
 
 const familyQuestionFormSchema = z.object({
   question: z
@@ -54,7 +54,7 @@ export default function FamilyQuestionForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Does this align with our family values?" {...field} />
+                <Textarea placeholder="Does this align with our family values?" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
