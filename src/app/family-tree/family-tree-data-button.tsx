@@ -1,5 +1,5 @@
 import { Copy } from "lucide-react";
-import { useCopyToClipboard } from "@/lib/hooks";
+import { useCopyToClipboard } from "@/app/family-tree/hooks";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Button } from "@/components/ui/button";
