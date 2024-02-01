@@ -14,6 +14,7 @@ export default function FamilyValueList() {
        <FormItem
           key={value}
           title={value}
+          desc={values[value]}
           handleDelete={() => handleDelete(value)}
         />
       ))}
