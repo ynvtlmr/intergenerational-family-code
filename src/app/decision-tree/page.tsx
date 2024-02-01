@@ -1,4 +1,4 @@
-import Questions from "./Questions";
+import Questions from "./questions";
 import FamilyQuestionForm from "./family-question-form";
 
 
