@@ -144,14 +144,14 @@ const FamilyGarden = () => {
         </div>
 
         <div className="lg:w-1/2 lg:ml-10 mt-8 lg:mt-0">
-          <div className="font-bold text-gray-800 mb-6">{firstPerson.name} Target Tax Coverage 25%</div>
+          <div className="font-bold text-gray-800 mb-7">{firstPerson.name} Target Tax Coverage 25%</div>
           {generateAges(firstPerson.beginAge).map((age) => (
             <div key={`tax-first-${age}`} className="mb-6">
               <div>Tax: {calculateTaxCoverage(calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.beginAge)))}</div>
             </div>
           ))}
 
-          <div className="font-bold text-gray-800 mb-6">{secondPerson.name} Target Tax Coverage 25%</div>
+          <div className="font-bold text-gray-800 mb-7">{secondPerson.name} Target Tax Coverage 25%</div>
           {generateAges(secondPerson.beginAge).map((age) => (
             <div key={`tax-second-${age}`} className="mb-6">
               <div>Tax: {calculateTaxCoverage(calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.beginAge)))}</div>
