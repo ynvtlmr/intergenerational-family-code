@@ -43,6 +43,10 @@ export default function FamilyValueForm() {
   type FamilyValueFormSchema = z.infer<typeof familyValueFormSchema>;
   const form = useForm<FamilyValueFormSchema>({
     resolver: zodResolver(familyValueFormSchema),
+    defaultValues: {
+      value: "",
+      description: "",
+    },
   });
 
   function onSubmit(formData: FamilyValueFormSchema) {
