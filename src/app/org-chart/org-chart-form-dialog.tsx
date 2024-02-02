@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button";
+import { OrgChartNode } from "../../../types/questions";
 
 
 
@@ -57,15 +58,15 @@ export default function OrgChartFormDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">New Node</Button>
+        <Button variant="outline">Edit Node</Button>
       </DialogTrigger>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Node</DialogTitle>
+          <DialogTitle>Edit</DialogTitle>
           <DialogDescription>
-            This is where you can create a new node.
+            This is where you can edit a node.
           </DialogDescription>
         </DialogHeader>
 

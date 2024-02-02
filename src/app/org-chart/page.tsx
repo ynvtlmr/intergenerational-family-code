@@ -21,7 +21,6 @@ export default function OrgChartPage() {
           ? [...(node.children || []), newNode]
           : node.children ? updateNode(node.children) : undefined
       }));
-    
     setOrgChartInitialData(updateNode(orgChartInitialData));
   };
 

@@ -29,7 +29,7 @@ export default function OrgChart({data, onAddNode, onDeleteNode}: OrgChartProps)
           <Button 
           className=" rounded-md gap-2"
           variant="outline"
-          onClick={() => handleAddNode(node.id)} >Create Node</Button>
+          onClick={() => handleAddNode(node.id)} >Create a Node</Button>
           <OrgChartFormDialog />
           <Button 
           className=" rounded-md gap-2" 
