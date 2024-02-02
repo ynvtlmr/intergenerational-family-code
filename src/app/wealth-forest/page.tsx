@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import Image from 'next/image';
+import React from 'react';
 
 interface WealthItem {
   alt: string;
@@ -59,14 +60,14 @@ export default function WealthForestPage() {
                   {selectedItem.alt}
                 </Dialog.Title>
                 <div className="mt-4">
-                  <p className="text-2xl text-gray-600">
+                  <p className="text-2xl text-gray-500">
                     {selectedItem.description}
                   </p>
                 </div>
                 <div className="mt-5 flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-lg font-medium text-red-600 bg-red-100 border border-transparent rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+                    className="inline-flex justify-center px-4 py-2 text-lg font-medium text-red-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
                     onClick={closeModal}>
                     Close
                   </button>
@@ -78,5 +79,3 @@ export default function WealthForestPage() {
       </div>
     );
   }
-
-
