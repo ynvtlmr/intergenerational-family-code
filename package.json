@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "json-server": "json-server --watch data/questions.json --port 3002"
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "primeicons": "^6.0.1",
+    "primereact": "^10.3.3",
     "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^3.3.4",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -43,7 +46,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
-    "daisyui": "^4.6.0",
     "date-fns": "^3.2.0",
     "embla-carousel-react": "^8.0.0-rc19",
     "family-chart": "^0.0.0-beta-1",
@@ -66,16 +68,23 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.1",
+    "@testing-library/react": "^14.2.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.7",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/ui": "^1.2.2",
     "autoprefixer": "^10.4.17",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "jsdom": "^24.0.0",
     "postcss": "^8.4.33",
     "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^1.2.2"
   }
 }

@@ -10,7 +10,7 @@ import {
   cardDisplay,
   cardEditParams,
   form,
-} from "../../lib/familyTree";
+} from "./familyTree";
 import FamilyTreeDataButton from "./family-tree-data-button";
 
 export default function FamilyTree() {
@@ -35,8 +35,11 @@ export default function FamilyTree() {
         // Define the parameters of the form for editing an individual's data
         card_edit = cardEditParams();
 
+      let d = localStorage?.getItem("family-tree-data");
+      const familyTreeData = d ? JSON.parse(d) : getInitialFamilyTreeData();
+
       const store = f3.createStore({
-          data: getInitialFamilyTreeData(),
+          data: familyTreeData,
           node_separation: 350,
           level_separation: 150,
         }),
