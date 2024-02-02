@@ -12,7 +12,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useFamilyQuestions } from "./family-questions-store";
+import { useDecisionTree } from "./family-questions-store";
 import { Textarea } from "@/components/ui/textarea";
 
 const familyQuestionFormSchema = z.object({
@@ -28,15 +28,15 @@ const familyQuestionFormSchema = z.object({
 type familyQuestionFormSchema = z.infer<typeof familyQuestionFormSchema>;
 
 export default function FamilyQuestionForm() {
-  const {addQuestion} = useFamilyQuestions()
-  
+  const { addQuestion } = useDecisionTree();
+
   const form = useForm<familyQuestionFormSchema>({
     resolver: zodResolver(familyQuestionFormSchema),
     defaultValues: {
       question: "",
-    }
+    },
   });
-  function onSubmit({question}: familyQuestionFormSchema) {
+  function onSubmit({ question }: familyQuestionFormSchema) {
     addQuestion(question);
     form.reset();
   }
@@ -54,7 +54,10 @@ export default function FamilyQuestionForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea placeholder="Does this align with our family values?" {...field} />
+                <Textarea
+                  placeholder="Does this align with our family values?"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

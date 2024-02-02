@@ -3,9 +3,9 @@ import VisionStatements from "./vision-statements";
 
 export default function FamilyVisionPage() {
   return (
-      <main className="max-w-xl mx-auto mt-20 px-2">
+    <main className="mx-auto mt-20 max-w-xl px-2">
       <FamilyVisionForm />
       <VisionStatements />
     </main>
-  )
+  );
 }

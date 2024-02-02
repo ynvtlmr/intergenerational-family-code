@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface FamilyCodeState {
   statements: string[];
@@ -6,11 +7,22 @@ interface FamilyCodeState {
   deleteStatement: (statement: string) => void;
 }
 
-export const useFamilyCodeStore = create<FamilyCodeState>((set) => ({
-  statements: [],
-  addStatement: (statement: string) => set((state) => ({ statements: [...state.statements, statement] })),
-  deleteStatement: (statement: string) => set((state) => ({ statements: state.statements.filter((s) => s !== statement) })),
-}));
+export const useFamilyCodeStore = create<FamilyCodeState>()(
+  persist(
+    (set) => ({
+      statements: [],
+      addStatement: (statement: string) =>
+        set((state) => ({ statements: [...state.statements, statement] })),
+      deleteStatement: (statement: string) =>
+        set((state) => ({
+          statements: state.statements.filter((s) => s !== statement),
+        })),
+    }),
+    {
+      name: "family-code",
+    }
+  )
+);
 
 export const useFamilyCode = () => {
   return {

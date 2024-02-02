@@ -1,23 +1,19 @@
 "use client";
 
 import FormItem from "@/components/form-item";
-import { useFamilyQuestions } from "./family-questions-store";
+import { useDecisionTree } from "./family-questions-store";
 
 export default function Questions() {
-  const { questions, deleteQuestion } = useFamilyQuestions();
+  const { questions, deleteQuestion } = useDecisionTree();
   const handleDelete = (q: string) => {
     deleteQuestion(q);
   };
 
   return (
-     <ul className="space-y-5 mt-5 mb-10">
+    <ul className="mb-10 mt-5 space-y-5">
       {questions.map((q) => (
-       <FormItem
-          key={q}
-          title={q}
-          handleDelete={() => handleDelete(q)}
-        />
+        <FormItem key={q} title={q} handleDelete={() => handleDelete(q)} />
       ))}
     </ul>
   );
-};
+}

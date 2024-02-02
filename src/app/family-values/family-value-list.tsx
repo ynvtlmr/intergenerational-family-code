@@ -9,11 +9,12 @@ export default function FamilyValueList() {
     deleteFamilyValue(value);
   };
   return (
-    <ul className="space-y-5 mt-5 mb-10">
+    <ul className="mb-10 mt-5 space-y-5">
       {Object.keys(values).map((value) => (
-       <FormItem
+        <FormItem
           key={value}
           title={value}
+          desc={values[value]}
           handleDelete={() => handleDelete(value)}
         />
       ))}
