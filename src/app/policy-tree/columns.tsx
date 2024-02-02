@@ -111,8 +111,10 @@ export const columns: ColumnDef<User>[] = [
                   Copy user ID
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>View customer</DropdownMenuItem>
-                <DropdownMenuItem>View payment details</DropdownMenuItem>
+                <DropdownMenuItem>View Carrier Details</DropdownMenuItem>
+                <DropdownMenuItem>View Type details</DropdownMenuItem>
+                <DropdownMenuItem>View Amount Details</DropdownMenuItem>
+                
               </DropdownMenuContent>
             </DropdownMenu>
           )
