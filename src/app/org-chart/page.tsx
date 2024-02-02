@@ -1,12 +1,12 @@
+"use client";
 
-import { OrganizationChart } from "primereact/organizationchart";
+import { useState } from "react";
+import OrgChart from "./org-chart";
 import { OrgChartNode } from "../../../types/questions";
 
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-
-
 
 
 const initialData: OrgChartNode[] = [
@@ -39,13 +39,32 @@ const initialData: OrgChartNode[] = [
   },
 ];
 
+
 export default function OrgChartPage() {
+  const [orgChartInitialData, setOrgChartInitialData] = useState<OrgChartNode[]>(initialData);
+
+  const addNodeToOrgChart = (parentId: number, newNode: OrgChartNode) => {
+    const updateNode = (nodes: OrgChartNode[]): OrgChartNode[] => {
+      return nodes.map((node) => {
+        if (node.id === parentId) {
+          return {
+            ...node,
+            children: node.children ? [...node.children, newNode] : [newNode],
+          };
+        }
+
+        if (node.children) {
+          return { ...node, children: updateNode(node.children) };
+        }
+        return node;
+      });
+    };
+    setOrgChartInitialData(updateNode(orgChartInitialData));
+  };
+
   return (
-    <>
-    <div className=" flex justify-center my-5">
-      <h1 className="text-4xl font-bold">Organizational Chart</h1>
+    <div>
+      <OrgChart data={orgChartInitialData} onAddNode={addNodeToOrgChart} />
     </div>
-      <OrganizationChart value={initialData} />
-    </>
   );
 }
