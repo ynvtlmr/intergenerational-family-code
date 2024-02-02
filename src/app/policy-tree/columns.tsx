@@ -28,7 +28,7 @@ export type User = {
 
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "ID",
+    accessorKey: "id",
     header: "ID",
   },
   {
@@ -57,7 +57,7 @@ export const columns: ColumnDef<User>[] = [
         accessorKey: "Owner",
         header: ({ column }) => {
           return (
-            <Button
+            <Button 
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             >
