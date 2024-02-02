@@ -5,6 +5,7 @@ import {
   flexRender,
   ColumnFiltersState,
   getCoreRowModel,
+  VisibilityState,
   getFilteredRowModel,
   getSortedRowModel,
 getPaginationRowModel,
@@ -21,6 +22,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
@@ -38,12 +46,15 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
+  const [columnVisibility, setColumnVisibility] =
+  useState<VisibilityState>({})
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
       columnFilters,
+      columnVisibility,
     },
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
@@ -51,12 +62,13 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
   })
 
   return (
     <>
     {/*table*/}
-    <div>
+    <div className="flex items-center justify-between">
     <div className="flex items-center py-4">
         <Input
           placeholder="Filter owner..."
@@ -67,6 +79,34 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
       </div>
+      <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columns
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter(
+                (column) => column.getCanHide()
+              )
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
     </div>
     <div className="rounded-md border">
       <Table>
