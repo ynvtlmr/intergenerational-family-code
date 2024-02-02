@@ -5,6 +5,7 @@ import {
   flexRender,
   ColumnFiltersState,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
 getPaginationRowModel,
 
@@ -21,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { useState } from "react"
 
 interface DataTableProps<TData, TValue> {
@@ -33,13 +35,18 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  )
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
+      columnFilters,
     },
-     
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -49,6 +56,18 @@ export function DataTable<TData, TValue>({
   return (
     <>
     {/*table*/}
+    <div>
+    <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter owner..."
+          value={(table.getColumn("Owner")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("Owner")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+    </div>
     <div className="rounded-md border">
       <Table>
         <TableHeader>
