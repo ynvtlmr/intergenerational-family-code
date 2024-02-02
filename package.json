@@ -6,10 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "json-server": "json-server --watch data/questions.json --port 3002"
+    "lint": "next lint"
   },
   "dependencies": {
+    "primeicons": "^6.0.1",
+    "primereact": "^10.3.3",
     "@hookform/resolvers": "^3.3.4",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -42,7 +43,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
-    "daisyui": "^4.6.0",
     "date-fns": "^3.2.0",
     "embla-carousel-react": "^8.0.0-rc19",
     "family-chart": "^0.0.0-beta-1",
@@ -74,6 +74,7 @@
     "eslint-config-next": "14.0.4",
     "postcss": "^8.4.33",
     "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

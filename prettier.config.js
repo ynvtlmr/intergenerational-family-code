@@ -1,3 +1,3 @@
 module.exports = {
-    plugins: ['prettier-plugin-tailwindscss']
+    plugins: ['prettier-plugin-tailwindscss'],
 }
