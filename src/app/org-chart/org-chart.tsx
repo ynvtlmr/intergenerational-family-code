@@ -6,9 +6,10 @@ import { OrgChartNode } from "../../../types/questions";
 type OrgChartProps = {
   data: OrgChartNode[];
   onAddNode: (parentId: number, newNode: OrgChartNode) => void;
+  onDeleteNode: (nodeId: number) => void;
 }
 
-export default function OrgChart({data, onAddNode}: OrgChartProps) {
+export default function OrgChart({data, onAddNode, onDeleteNode}: OrgChartProps) {
 
   const handleAddNode = (parentId: number) => {
     const newNode: OrgChartNode = {
@@ -20,15 +21,23 @@ export default function OrgChart({data, onAddNode}: OrgChartProps) {
 
   const nodeTemplate = (node: OrgChartNode) => {
     return (
-      <div>
+      <>
         <div>{node.label}</div>
-        <Button
-          label="Add Node"
-          onClick={() => handleAddNode(node.id)}
-          className=" rounded-md gap-2"
-        />
+
+        <div className=" grid grid-cols-1">
+          <Button
+            label="Add Node"
+            onClick={() => handleAddNode(node.id)}
+            className=" rounded-md gap-2 p-button-success my-3"
+          />
+          <Button
+          label="Delete Node"
+          onClick={() => onDeleteNode(node.id)}
+          className=" rounded-md gap-2 p-button-danger my-3"
+         />
+        </div>
        
-      </div>
+      </>
     );
   };
 
