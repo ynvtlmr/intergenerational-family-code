@@ -29,6 +29,7 @@
     ".next/types/**/*.ts",
     "family-tree.d.ts",
     "jest.setup.ts",
+    "vitest.config.mjs",
   ],
   "exclude": ["node_modules"],
 }
