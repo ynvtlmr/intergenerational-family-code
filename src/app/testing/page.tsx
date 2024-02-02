@@ -1,10 +1,10 @@
-import Link from "next/link";
+import Counter from "./counter";
 
 export default function Home() {
   return (
     <div>
       <h1>Testing React App</h1>
-      <Link href="/about">About</Link>
+      <Counter />
     </div>
   );
 }
