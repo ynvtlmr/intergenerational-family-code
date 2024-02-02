@@ -1,6 +1,7 @@
 import { OrganizationChart } from "primereact/organizationchart";
-import { Button } from "primereact/button";
 import { OrgChartNode } from "../../../types/questions";
+import { Button } from "@/components/ui/button";
+import OrgChartFormDialog from "./org-chart-form-dialog";
 
 
 type OrgChartProps = {
@@ -25,18 +26,18 @@ export default function OrgChart({data, onAddNode, onDeleteNode}: OrgChartProps)
         <div>{node.label}</div>
 
         <div className=" grid grid-cols-1">
-          <Button
-            label="Add Node"
-            onClick={() => handleAddNode(node.id)}
-            className=" rounded-md gap-2 p-button-success my-3"
-          />
-          <Button
-          label="Delete Node"
-          onClick={() => onDeleteNode(node.id)}
-          className=" rounded-md gap-2 p-button-danger my-3"
-         />
+          <Button 
+          className=" rounded-md gap-2"
+          variant="outline"
+          onClick={() => handleAddNode(node.id)} >Create Node</Button>
+          <OrgChartFormDialog />
+          <Button 
+          className=" rounded-md gap-2" 
+          variant="destructive"
+          onClick={() => onDeleteNode(node.id)}>
+            Delete Node
+          </Button>
         </div>
-       
       </>
     );
   };
@@ -46,6 +47,7 @@ export default function OrgChart({data, onAddNode, onDeleteNode}: OrgChartProps)
     <>
     <div className="flex justify-center my-5">
       <h1 className="text-4xl font-bold">Organizational Chart</h1>
+      
     </div>
      <OrganizationChart value={data} nodeTemplate={nodeTemplate} />
     </>
