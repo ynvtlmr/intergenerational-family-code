@@ -12,6 +12,7 @@ const links = [
   { href: "/family-crest", label: "Family Crest" },
   { href: "/family-garden", label: "Family Garden" },
   { href: "/org-chart", label: "Organizational Chart" },
+  { href: "/policy-tree", label: "Policy Tree" },
 ];
 
 export default async function Home() {
