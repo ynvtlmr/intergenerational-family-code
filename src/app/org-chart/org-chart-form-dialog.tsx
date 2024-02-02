@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import {
   Dialog,
@@ -20,40 +20,35 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { OrgChartNode } from "../../../types/questions";
-
-
 
 const formSchema = z.object({
   label: z
-  .string()
-  .min(2, {message: "characters must be at least 2 characters or more"})
-  .max(50, {message: "Characters must be less than 50 characters or lest"}),
-})
+    .string()
+    .min(2, { message: "characters must be at least 2 characters or more" })
+    .max(50, { message: "Characters must be less than 50 characters or lest" }),
+});
 
-type OrgChartFormSchema = z.infer<typeof formSchema>
+type OrgChartFormSchema = z.infer<typeof formSchema>;
 
 export default function OrgChartFormDialog() {
-
-   // 1. Define your form.
-   const form = useForm<OrgChartFormSchema>({
+  // 1. Define your form.
+  const form = useForm<OrgChartFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       label: "",
     },
-  })
- 
+  });
+
   // 2. Define a submit handler.
   function onSubmit(values: OrgChartFormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
-    console.log("Testing did the commit worked?")
+    console.log(values);
+    console.log("Testing did the commit worked?");
   }
-
 
   return (
     <Dialog>
@@ -61,36 +56,36 @@ export default function OrgChartFormDialog() {
         <Button variant="outline">Edit Node</Button>
       </DialogTrigger>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit</DialogTitle>
-          <DialogDescription>
-            This is where you can edit a node.
-          </DialogDescription>
-        </DialogHeader>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Edit</DialogTitle>
+              <DialogDescription>
+                This is where you can edit a node.
+              </DialogDescription>
+            </DialogHeader>
 
-        <FormField
-          control={form.control}
-          name="label"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-              <Input placeholder="Name of Company" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <DialogFooter>
-          <Button type="submit" size="lg" className="w-full">
-              Add
-         </Button>
-        </DialogFooter>
-      </DialogContent>
+            <FormField
+              control={form.control}
+              name="label"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Name of Company" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit" size="lg" className="w-full">
+                Add
+              </Button>
+            </DialogFooter>
+          </DialogContent>
         </form>
       </Form>
     </Dialog>
-  )
+  );
 }
