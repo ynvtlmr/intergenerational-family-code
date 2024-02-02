@@ -1,8 +1,7 @@
-import { expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Page from "./page";
 
-test("Page", () => {
+test("Expect Testing React App to be in the page", () => {
   render(<Page />);
-  expect(screen.getByRole("heading", { level: 1, name: "Home" })).toBeDefined();
+  expect(screen.getByText("Testing React App")).toBeInTheDocument();
 });
