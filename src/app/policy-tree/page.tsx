@@ -28,7 +28,7 @@ import { User, columns } from './columns';
 
 export const policyData: User[] = [
         {
-          id: 1,
+          id: "1",
           Carrier: "Sun Life",
           Type: "Par Whole Life",
           Amount: 100000000,
@@ -39,7 +39,7 @@ export const policyData: User[] = [
           Insured: "Dustin Stark",
         },
         {
-          id: 2,
+          id: "2",
           Carrier: "Manulife",
           Type: "Par Whole Life",
           Amount: 100000000,
@@ -49,7 +49,7 @@ export const policyData: User[] = [
           Anniversary: "2026-01-01",
           Insured: "Dustin Stark",
         },
-      {  id: 3,
+      {  id: "3",
     Carrier: "Canada Life",
     Type: "Par Whole Life",
     Amount: 100000000,
@@ -60,7 +60,7 @@ export const policyData: User[] = [
     Insured: "Dustin Stark",
   },
   {
-    id: 4,
+    id: "4",
     Carrier: "Sun Life",
     Type: "Par Whole Life",
     Amount: 10000000,
@@ -71,7 +71,7 @@ export const policyData: User[] = [
     Insured: "Amy Stark",
   },
   {
-    id: 5,
+    id: "5",
     Carrier: "Manulife",
     Type: "Par Whole Life",
     Amount: 10000000,
@@ -82,7 +82,7 @@ export const policyData: User[] = [
     Insured: "Amy Stark",
   },
   {
-    id: 6,
+    id: "6",
     Carrier: "Canada Life",
     Type: "Par Whole Life",
     Amount: 10000000,
@@ -93,7 +93,7 @@ export const policyData: User[] = [
     Insured: "Amy Stark",
   },
   {
-    id: 7,
+    id: "7",
     Carrier: "Sun Life",
     Type: "Par Whole Life",
     Amount: 100000000,
@@ -104,7 +104,7 @@ export const policyData: User[] = [
     Insured: "April Stark",
   },
   {
-    id: 8,
+    id: "8",
     Carrier: "Manulife",
     Type: "Par Whole Life",
     Amount: 100000000,
@@ -115,7 +115,7 @@ export const policyData: User[] = [
     Insured: "April Stark",
   },
   {
-    id: 9,
+    id: "9",
     Carrier: "Canada Life",
     Type: "Par Whole Life",
     Amount: 100000000,
