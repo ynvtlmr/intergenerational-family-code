@@ -64,7 +64,7 @@ export default function FamilyValueForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Value" {...field} />
+                <Input placeholder="Title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
