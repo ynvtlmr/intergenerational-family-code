@@ -1,12 +1,10 @@
 "use client";
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
 const formatCurrency = (value) => {
   const numberValue = parseFloat(value);
   if (isNaN(numberValue) || numberValue === 0) return "";
-  
   return numberValue.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -14,7 +12,7 @@ const formatCurrency = (value) => {
 };
 
 const parseCurrency = (formattedValue) => {
-  return formattedValue.replace(/[$,]/, '');
+  return formattedValue.replace(/[$,]/g, '');
 };
 
 const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
@@ -22,6 +20,9 @@ const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
     <table className="w-full table-auto divide-y divide-gray-200">
       <thead className="bg-gray-50">
         <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Type
+          </th>
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Band
           </th>
@@ -39,6 +40,14 @@ const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
       <tbody className="bg-white divide-y divide-gray-200">
         {data.map((row, idx) => (
           <tr key={idx}>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <input
+                type="text"
+                value={row.type}
+                onChange={(e) => onDataChange(idx, 'type', e.target.value)}
+                className="w-full p-1 border-none bg-transparent"
+              />
+            </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               <input
                 type="text"
@@ -76,7 +85,6 @@ const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
 );
 
 const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => {
-
   const [focusedIndex, setFocusedIndex] = useState(null);
   useEffect(() => {
     data.forEach((row, index) => {
@@ -95,6 +103,9 @@ const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => {
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Type
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Band
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -108,6 +119,14 @@ const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => {
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((row, index) => (
             <tr key={index}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <input
+                  type="text"
+                  value={row.type}
+                  onChange={(e) => onDataChange(index, 'type', e.target.value)}
+                  className="w-full p-1 border-none bg-transparent"
+                />
+              </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 <input
                   type="text"
@@ -144,7 +163,7 @@ const AssetPieChart = ({ data }) => (
   <div style={{ height: 300 }}>
     <ResponsivePie
       data={data.map((asset) => ({
-        id: asset.band,
+        id: asset.type,
         label: asset.band,
         value: asset.targetAllocation,
       }))}
@@ -168,37 +187,32 @@ const AssetPieChart = ({ data }) => (
 
 const AssetAllocationComponent = () => {
   const [tableData, setTableData] = useState([
-    { band: 'Bonds', targetAllocation: 40, targetNetReturn: 5 },
-    { band: 'Stocks', targetAllocation: 60, targetNetReturn: 10 }
+    { type: 'Bonds', band: '0-24%', targetAllocation: 40, targetNetReturn: 5 },
+    { type: 'Stocks', band: '25-50%', targetAllocation: 60, targetNetReturn: 10 }
   ]);
   const [sharpeRatioData, setSharpeRatioData] = useState([
-    { band: 'Bonds', sharpeRatioTarget: '0.5' },
-    { band: 'Stocks', sharpeRatioTarget: '1.2' }
+    { type: 'Bonds', band: '0-24%', sharpeRatioTarget: '0.5' },
+    { type: 'Stocks', band: '25-50%', sharpeRatioTarget: '1.2' }
   ]);
 
   const handleDataChange = (idx, field, value) => {
-    const updateFunction = field === 'band' ? value : parseFloat(value) || 0;
-    setTableData(currentData =>
-      currentData.map((item, index) =>
-        index === idx ? { ...item, [field]: updateFunction } : item,
-      ),
-    );
+    const updatedData = [...tableData];
+    updatedData[idx][field] = value;
+    setTableData(updatedData);
   };
 
   const handleSharpeRatioChange = (index, field, value) => {
-    setSharpeRatioData(currentData =>
-      currentData.map((item, idx) =>
-        idx === index ? { ...item, [field]: value } : item,
-      ),
-    );
+    const updatedData = [...sharpeRatioData];
+    updatedData[index][field] = value;
+    setSharpeRatioData(updatedData);
   };
 
   const addAssetRow = () => {
-    setTableData(currentData => [...currentData, { band: '', targetAllocation: 0, targetNetReturn: 0 }]);
+    setTableData(currentData => [...currentData, { type: '', band: '', targetAllocation: 0, targetNetReturn: 0 }]);
   };
 
   const addSharpeRatioRow = () => {
-    setSharpeRatioData(currentData => [...currentData, { band: '', sharpeRatioTarget: '' }]);
+    setSharpeRatioData(currentData => [...currentData, { type: '', band: '', sharpeRatioTarget: '' }]);
   };
 
   const deleteAssetRow = (idx) => {
@@ -226,5 +240,3 @@ const AssetAllocationComponent = () => {
 };
 
 export default AssetAllocationComponent;
-
-
