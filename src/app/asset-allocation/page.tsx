@@ -1,79 +1,159 @@
 "use client";
-
-import React, { useState } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
-type AssetRow = {
-  band: string;
-  targetAllocation: number;
-  targetNetReturn: number;
+const formatCurrency = (value) => {
+  const numberValue = parseFloat(value);
+  if (isNaN(numberValue) || numberValue === 0) return "";
+  
+  return numberValue.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 };
 
-const AssetTable = ({ data, onDataChange }: { data: AssetRow[]; onDataChange: (idx: number, field: keyof AssetRow, value: string) => void }) => (
-      <div className="overflow-x-auto">
-          <table className="w-full table-auto divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                  <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Target Allocation (%)
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Target Net Return (%)
-                      </th>
-                  </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                  {data.map((row, idx) => (
-                      <tr key={idx}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              <input
-                                  type="text"
-                                  value={row.band}
-                                  onChange={(e) => onDataChange(idx, 'band', e.target.value)}
-                                  className="w-full p-1 border-none bg-transparent"
-                              />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm">
-                              <input
-                                  type="number"
-                                  value={row.targetAllocation}
-                                  onChange={(e) => onDataChange(idx, 'targetAllocation', e.target.value)}
-                                  className="w-full p-1 border-none bg-transparent text-right"
-                              />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm">
-                              <input
-                                  type="number"
-                                  value={row.targetNetReturn}
-                                  onChange={(e) => onDataChange(idx, 'targetNetReturn', e.target.value)}
-                                  className="w-full p-1 border-none bg-transparent text-right"
-                              />
-                          </td>
-                      </tr>
-                  ))}
-              </tbody>
-          </table>
-      </div>
-  );
+const parseCurrency = (formattedValue) => {
+  return formattedValue.replace(/[$,]/, '');
+};
 
-const AssetPieChart = ({ data }: { data: AssetRow[] }) => (
-  <div style={{ height: '300px' }}>
+const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
+  <div className="overflow-x-auto">
+    <table className="w-full table-auto divide-y divide-gray-200">
+      <thead className="bg-gray-50">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Band
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Target Allocation (%)
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Target Net Return (%)
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {data.map((row, idx) => (
+          <tr key={idx}>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <input
+                type="text"
+                value={row.band}
+                onChange={(e) => onDataChange(idx, 'band', e.target.value)}
+                className="w-full p-1 border-none bg-transparent"
+              />
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm">
+              <input
+                type="number"
+                value={row.targetAllocation}
+                onChange={(e) => onDataChange(idx, 'targetAllocation', e.target.value)}
+                className="w-full p-1 border-none bg-transparent text-right"
+              />
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm">
+              <input
+                type="number"
+                value={row.targetNetReturn}
+                onChange={(e) => onDataChange(idx, 'targetNetReturn', e.target.value)}
+                className="w-full p-1 border-none bg-transparent text-right"
+              />
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <button onClick={() => onDeleteRow(idx)} className="text-red-600 hover:text-red-900">
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => {
+
+  const [focusedIndex, setFocusedIndex] = useState(null);
+  useEffect(() => {
+    data.forEach((row, index) => {
+      if (index !== focusedIndex) {
+        const element = document.getElementById(`sharpeRatioTarget-${index}`) as HTMLInputElement;
+        if (element) {
+          element.value = formatCurrency(row.sharpeRatioTarget);
+        }
+      }
+    });
+  }, [focusedIndex, data]);
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full table-auto divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Band
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Sharpe Ratio Target ($)
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((row, index) => (
+            <tr key={index}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <input
+                  type="text"
+                  value={row.band}
+                  onChange={(e) => onDataChange(index, 'band', e.target.value)}
+                  className="w-full p-1 border-none bg-transparent"
+                />
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">
+                <input
+                  id={`sharpeRatioTarget-${index}`}
+                  type="text"
+                  defaultValue={formatCurrency(row.sharpeRatioTarget)}
+                  onChange={(e) => onDataChange(index, 'sharpeRatioTarget', parseCurrency(e.target.value))}
+                  onBlur={() => setFocusedIndex(null)}
+                  onFocus={() => setFocusedIndex(index)}
+                  className="w-full p-1 border-none bg-transparent text-right"
+                />
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button onClick={() => onDeleteRow(index)} className="text-red-600 hover:text-red-900">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+const AssetPieChart = ({ data }) => (
+  <div style={{ height: 300 }}>
     <ResponsivePie
-      data={data.map((item) => ({
-        id: item.band,
-        label: item.band,
-        value: item.targetAllocation,
-        color: `hsl(${Math.random() * 360}, 70%, 50%)`
+      data={data.map((asset) => ({
+        id: asset.band,
+        label: asset.band,
+        value: asset.targetAllocation,
       }))}
       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
       activeOuterRadiusOffset={8}
-      colors={{ scheme: 'nivo' }}
+      colors={{ scheme: 'set3' }}
       borderWidth={1}
       borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
       arcLinkLabelsSkipAngle={10}
@@ -87,40 +167,64 @@ const AssetPieChart = ({ data }: { data: AssetRow[] }) => (
 );
 
 const AssetAllocationComponent = () => {
-  const [tableData, setTableData] = useState<AssetRow[]>([
-    { band: 'Real Estate', targetAllocation: 25, targetNetReturn: 5 },
-    { band: 'Private Equity', targetAllocation: 40, targetNetReturn: 20 },
-    { band: 'Public Equity', targetAllocation: 20, targetNetReturn: 5 },
-    { band: 'Fixed Income', targetAllocation: 5, targetNetReturn: 3 },
-    { band: 'Cash', targetAllocation: 10, targetNetReturn: 1 },
-    { band: 'Life Insurance', targetAllocation: 50, targetNetReturn: 1.25 },
+  const [tableData, setTableData] = useState([
+    { band: 'Bonds', targetAllocation: 40, targetNetReturn: 5 },
+    { band: 'Stocks', targetAllocation: 60, targetNetReturn: 10 }
+  ]);
+  const [sharpeRatioData, setSharpeRatioData] = useState([
+    { band: 'Bonds', sharpeRatioTarget: '0.5' },
+    { band: 'Stocks', sharpeRatioTarget: '1.2' }
   ]);
 
-  const handleDataChange = (idx: number, field: keyof AssetRow, value: string) => {
-    setTableData((currentData) => {
-      return currentData.map((item, index) => {
-        return index === idx
-          ? {
-              ...item,
-              [field]: field === 'band' ? value : parseFloat(value) || 0,
-            }
-          : item;
-      });
-    });
+  const handleDataChange = (idx, field, value) => {
+    const updateFunction = field === 'band' ? value : parseFloat(value) || 0;
+    setTableData(currentData =>
+      currentData.map((item, index) =>
+        index === idx ? { ...item, [field]: updateFunction } : item,
+      ),
+    );
+  };
+
+  const handleSharpeRatioChange = (index, field, value) => {
+    setSharpeRatioData(currentData =>
+      currentData.map((item, idx) =>
+        idx === index ? { ...item, [field]: value } : item,
+      ),
+    );
+  };
+
+  const addAssetRow = () => {
+    setTableData(currentData => [...currentData, { band: '', targetAllocation: 0, targetNetReturn: 0 }]);
+  };
+
+  const addSharpeRatioRow = () => {
+    setSharpeRatioData(currentData => [...currentData, { band: '', sharpeRatioTarget: '' }]);
+  };
+
+  const deleteAssetRow = (idx) => {
+    setTableData(currentData => currentData.filter((_, index) => index !== idx));
+  };
+
+  const deleteSharpeRatioRow = (idx) => {
+    setSharpeRatioData(currentData => currentData.filter((_, index) => index !== idx));
   };
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <h1 className="text-4xl font-bold text-gray-900 mb-12 text-center">Asset Allocation</h1>
+      <button onClick={addAssetRow}>Add Asset Row</button>
+      <button onClick={addSharpeRatioRow}>Add Sharpe Ratio Row</button>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <AssetTable data={tableData} onDataChange={handleDataChange} />
         <div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Sharpe Ratio Target Pie Chart Format</h2>
+          <AssetTable data={tableData} onDataChange={handleDataChange} onDeleteRow={deleteAssetRow} />
           <AssetPieChart data={tableData} />
         </div>
+        <SharpeRatioTable data={sharpeRatioData} onDataChange={handleSharpeRatioChange} onDeleteRow={deleteSharpeRatioRow} />
       </div>
     </div>
   );
 };
 
 export default AssetAllocationComponent;
+
+
