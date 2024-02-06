@@ -2,6 +2,7 @@ import "./globals.css";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import FileProcess from "./file-process";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -30,10 +31,7 @@ export default async function Home() {
           </Button>
         ))}
       </div>
-      <div className="mx-auto mt-2 flex max-w-xl justify-center gap-2">
-        <Button>Download JSON</Button>
-        <Button>Upload JSON</Button>
-      </div>
+      <FileProcess />
     </main>
   );
 }
