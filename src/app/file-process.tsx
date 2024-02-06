@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const jsonKeys = [
   "decision-tree",
@@ -39,10 +41,35 @@ export default function FileProcess() {
     document.body.removeChild(link);
   };
 
+  const jsonFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    if (!file) return;
+
+    const fileReader = new FileReader();
+    fileReader.readAsText(file[0], "UTF-8");
+    fileReader.onload = (e) => {
+      if (!e.target || typeof e.target.result !== "string") return;
+      const data = JSON.parse(e.target.result);
+      jsonKeys.forEach((key) => {
+        localStorage.setItem(key, JSON.stringify(data[key]));
+      });
+    };
+  };
+
   return (
     <div className="mx-auto mt-2 flex max-w-xl justify-center gap-2">
       <Button onClick={jsonFileDownload}>Download JSON</Button>
-      <Button>Upload JSON</Button>
+      <Button>
+        <Label htmlFor="upload-json" className="cursor-pointer">
+          Upload JSON
+        </Label>
+        <Input
+          id="upload-json"
+          type="file"
+          className="hidden"
+          onChange={jsonFileUpload}
+        />
+      </Button>
     </div>
   );
 }
