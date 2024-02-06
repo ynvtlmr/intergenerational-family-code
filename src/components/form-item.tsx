@@ -9,7 +9,7 @@ type FormItemProps = {
 
 export default function FormItem({ title, desc, handleDelete }: FormItemProps) {
   return (
-    <li className="rounded-lg border p-5">
+    <li className="rounded-lg border p-5" data-test="form-item">
       <h2 className="text-xl">{title}</h2>
       {desc && <p className="text-gray-500 dark:text-gray-400">{desc}</p>}
       <div className="mt-5 flex justify-end">
