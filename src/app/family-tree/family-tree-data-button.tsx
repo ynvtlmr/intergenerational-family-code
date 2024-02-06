@@ -20,13 +20,13 @@ export default function FamilyTreeDataButton() {
 
   const [familyTreeData, setFamilyTreeData] = useState(() => {
     if (typeof localStorage !== "undefined") {
-      const saved = localStorage?.getItem("family-tree-data");
+      const saved = localStorage?.getItem("family-tree");
       return saved ? saved : "";
     }
   });
 
   const handleViewData = () => {
-    const saved = localStorage?.getItem("family-tree-data");
+    const saved = localStorage?.getItem("family-tree");
     setFamilyTreeData(saved ? saved : "");
   };
 
