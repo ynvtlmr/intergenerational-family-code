@@ -13,7 +13,11 @@ export default function FormItem({ title, desc, handleDelete }: FormItemProps) {
       <h2 className="text-xl">{title}</h2>
       {desc && <p className="text-gray-500 dark:text-gray-400">{desc}</p>}
       <div className="mt-5 flex justify-end">
-        <Button variant="destructive" onClick={handleDelete}>
+        <Button
+          variant="destructive"
+          onClick={handleDelete}
+          data-test="delete-button"
+        >
           <Trash2Icon size={24}>
             <title className="sr-only">Delete</title>
           </Trash2Icon>
