@@ -1,4 +1,4 @@
-describe("decision", () => {
+describe("decision tree", () => {
   beforeEach(() => {
     cy.visit("/decision-tree");
   });
