@@ -64,7 +64,12 @@ export default function FamilyQuestionForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" size="lg" className="w-full">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          data-test="add-button"
+        >
           Add
         </Button>
       </form>
