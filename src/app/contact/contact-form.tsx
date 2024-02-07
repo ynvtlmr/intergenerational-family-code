@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -66,9 +65,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="name" {...field} />
               </FormControl>
-              <FormDescription>
-                What is your name?
-              </FormDescription>
+            
               <FormMessage />
             </FormItem>
           )}
@@ -82,9 +79,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="Organization" {...field} />
               </FormControl>
-              <FormDescription>
-                What is your organization?
-              </FormDescription>
+             
               <FormMessage />
             </FormItem>
           )}
@@ -98,10 +93,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="test123@gmail.com" {...field} />
               </FormControl>
-              <FormDescription>
-                What is your email?
-              
-              </FormDescription>
+           
               <FormMessage />
             </FormItem>
           )}
@@ -115,9 +107,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="Phone" {...field} />
               </FormControl>
-              <FormDescription>
-               What is your Phone Number
-              </FormDescription>
+             
               <FormMessage />
             </FormItem>
           )}
