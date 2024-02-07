@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test": "cypress run",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
@@ -40,8 +41,8 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@testing-library/user-event": "^14.5.2",
     "@tanstack/react-table": "^8.11.7",
+    "@testing-library/user-event": "^14.5.2",
     "@types/materialize-css": "^1.0.14",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -71,7 +72,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.4.1",
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -80,6 +81,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/ui": "^1.2.2",
     "autoprefixer": "^10.4.17",
+    "cypress": "^13.6.4",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "jsdom": "^24.0.0",

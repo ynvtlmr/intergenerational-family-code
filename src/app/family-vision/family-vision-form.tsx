@@ -53,6 +53,7 @@ export default function FamilyVisionForm() {
             <FormItem>
               <FormControl>
                 <Textarea
+                  data-test="statement-textarea"
                   placeholder="To be a family that is very deeply connected by love and meaning."
                   {...field}
                 />
@@ -61,7 +62,12 @@ export default function FamilyVisionForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" size="lg" className="w-full">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          data-test="add-button"
+        >
           Add
         </Button>
       </form>
