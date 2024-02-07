@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
+import FileProcess from "@/app/file-process";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -26,6 +28,8 @@ export default function NavBar() {
           </Button>
         ))}
       </nav>
+      <Separator className="my-4" />
+      <FileProcess />
     </header>
   );
 }
