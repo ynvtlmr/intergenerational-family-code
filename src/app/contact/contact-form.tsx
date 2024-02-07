@@ -14,6 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useContact } from "./contact-store";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 const formSchema = z.object({
@@ -33,7 +36,10 @@ const formSchema = z.object({
 
 
 export function ContactForm () {
-   // 1. Define your form.
+  const {updateContact} =useContact();
+  // const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
+
    const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,11 +51,10 @@ export function ContactForm () {
   })
 
 
-   // 2. Define a submit handler.
    function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+    updateContact(values.name, values.email, values.phone, values.org)
+    form.reset()
+    router.push("/")
   }
 
 

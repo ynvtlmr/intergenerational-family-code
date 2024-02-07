@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-
 interface ContactState {
   name: string | null;
   email: string | null;
