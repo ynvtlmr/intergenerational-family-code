@@ -9,8 +9,8 @@ export default function FamilyCrestPreview() {
 
   if (!crest) {
     return (
-      <div className="w-[320px] h-[320px] xl:w-[448px] xl:h-[448px]">
-        <div className="border w-full h-full flex items-center justify-center bg-secondary">
+      <div className="h-[320px] w-[320px] xl:h-[448px] xl:w-[448px]">
+        <div className="flex h-full w-full items-center justify-center border bg-secondary">
           <ImageIcon size={64} className="stroke-border" />
         </div>
       </div>
@@ -19,10 +19,10 @@ export default function FamilyCrestPreview() {
 
   return (
     <div>
-      <a href={crest} target="_blank">
+      <a href={crest} target="_blank" rel="noopener noreferrer">
         <img src={crest} alt="Family Crest" className="mb-4 w-[448px]" />
       </a>
-      <a href={crest} target="_blank">
+      <a href={crest} target="_blank" rel="noopener noreferrer">
         <Button className="w-full">Download</Button>
       </a>
     </div>

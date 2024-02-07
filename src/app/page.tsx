@@ -1,8 +1,5 @@
 import "./globals.css";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
 export default async function Home() {
   return (
     <main className="max-w-4xl mx-auto pt-20 px-2">

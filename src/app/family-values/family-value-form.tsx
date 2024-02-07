@@ -43,6 +43,10 @@ export default function FamilyValueForm() {
   type FamilyValueFormSchema = z.infer<typeof familyValueFormSchema>;
   const form = useForm<FamilyValueFormSchema>({
     resolver: zodResolver(familyValueFormSchema),
+    defaultValues: {
+      value: "",
+      description: "",
+    },
   });
 
   function onSubmit(formData: FamilyValueFormSchema) {
@@ -60,7 +64,11 @@ export default function FamilyValueForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Value" {...field} />
+                <Input
+                  data-test="family-value-title-input"
+                  placeholder="Title"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -73,6 +81,7 @@ export default function FamilyValueForm() {
             <FormItem>
               <FormControl>
                 <Textarea
+                  data-test="family-value-description-textarea"
                   placeholder="Enter a short description..."
                   {...field}
                 />
@@ -82,7 +91,12 @@ export default function FamilyValueForm() {
           )}
         />
 
-        <Button type="submit" size="lg" className="w-full">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          data-test="add-button"
+        >
           Add
         </Button>
       </form>
