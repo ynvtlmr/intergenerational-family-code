@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const FamilyGarden = () => {
   const [growthRate,setGrowthRate] = useState(0.05);
@@ -82,6 +82,7 @@ const FamilyGarden = () => {
       <div className="italic text-gray-500 my-2">
         The more powerful the seed the longer it takes to germinate
       </div>
+<<<<<<< HEAD
   
       <div className="my-4">
         <label htmlFor="growthRate" className="block text-gray-700 text-sm font-bold mb-2">
@@ -98,6 +99,10 @@ const FamilyGarden = () => {
       </div>
   
       <div className="flex flex-col lg:flex-row justify-between mt-8">
+=======
+
+      <div className="mt-8 flex flex-col justify-between lg:flex-row">
+>>>>>>> 10b3528f170de15c4ebbc8de82242bfbff227fdf
         <div className="lg:w-1/2">
           <input
             type="text"
@@ -160,14 +165,25 @@ const FamilyGarden = () => {
         </div>
   
         <div className="lg:w-1/2 lg:ml-10 mt-8 lg:mt-0">
+<<<<<<< HEAD
           <div className="font-bold text-gray-800 mb-7">Target Tax Coverage(25%) for {firstPerson.name}</div>
           {generateAges(firstPerson.beginAge).map((age) => (
+=======
+          <div className="font-bold text-gray-800 mb-7">{firstPerson.name} Target Tax Coverage 25%</div>
+   {generateAges(firstPerson.beginAge).map((age) => (
+>>>>>>> 10b3528f170de15c4ebbc8de82242bfbff227fdf
             <div key={`tax-first-${age}`} className="mb-6">
               <div>Tax: {calculateTaxCoverage(calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.beginAge)))}</div>
             </div>
           ))}
+<<<<<<< HEAD
           <div className="font-bold text-gray-800 mb-7">Target Tax Coverage(25%) for {secondPerson.name}</div>
           {generateAges(secondPerson.beginAge).map((age) => (
+=======
+
+          <div className="font-bold text-gray-800 mb-7">{secondPerson.name} Target Tax Coverage 25%</div>
+   {generateAges(secondPerson.beginAge).map((age) => (
+>>>>>>> 10b3528f170de15c4ebbc8de82242bfbff227fdf
             <div key={`tax-second-${age}`} className="mb-6">
               <div>Tax: {calculateTaxCoverage(calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.beginAge)))}</div>
             </div>
