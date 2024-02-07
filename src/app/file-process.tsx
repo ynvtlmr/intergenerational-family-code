@@ -53,11 +53,12 @@ export default function FileProcess() {
       jsonKeys.forEach((key) => {
         localStorage.setItem(key, JSON.stringify(data[key]));
       });
+      window.location.reload();
     };
   };
 
   return (
-    <div className="mx-auto mt-2 flex max-w-xl justify-center gap-2">
+    <div className="mx-auto mt-2 flex w-full max-w-xl flex-col justify-center gap-2">
       <Button onClick={jsonFileDownload}>Download JSON</Button>
       <Button>
         <Label htmlFor="upload-json" className="cursor-pointer">
