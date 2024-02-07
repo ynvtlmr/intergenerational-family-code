@@ -53,6 +53,7 @@ export default function FamilyCodeForm() {
             <FormItem>
               <FormControl>
                 <Textarea
+                  data-test="statement-textarea"
                   placeholder="The Stark family commits to excellence in that which is most impactful."
                   {...field}
                 />
@@ -61,7 +62,12 @@ export default function FamilyCodeForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" size="lg" className="w-full">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          data-test="add-button"
+        >
           Add
         </Button>
       </form>
