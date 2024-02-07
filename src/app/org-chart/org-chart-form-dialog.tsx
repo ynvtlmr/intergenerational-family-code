@@ -80,7 +80,7 @@ export default function OrgChartFormDialog() {
             />
             <DialogFooter>
               <Button type="submit" size="lg" className="w-full">
-                Add
+                Save Changes
               </Button>
             </DialogFooter>
           </DialogContent>
