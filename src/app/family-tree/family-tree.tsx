@@ -35,7 +35,7 @@ export default function FamilyTree() {
         // Define the parameters of the form for editing an individual's data
         card_edit = cardEditParams();
 
-      let d = localStorage?.getItem("family-tree-data");
+      let d = localStorage?.getItem("family-tree");
       const familyTreeData = d ? JSON.parse(d) : getInitialFamilyTreeData();
 
       const store = f3.createStore({
@@ -71,7 +71,7 @@ export default function FamilyTree() {
       store.setOnUpdate((props: any) => {
         view.update(props || {});
         localStorage.setItem(
-          "family-tree-data",
+          "family-tree",
           JSON.stringify(store.getData(), null, 4)
         );
       });
