@@ -1,6 +1,6 @@
 // inside the contact page it should have a function name org and email
 // right now it is just a form not using any react.
-export default function Contactpage() {
+export default function ContactPage() {
   return (
     <>
       <h1 className="flex justify-center py-2 font-bold text-3xl">
