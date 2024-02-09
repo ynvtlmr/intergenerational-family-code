@@ -5,7 +5,7 @@ import { ResponsivePie } from '@nivo/pie';
 const formatCurrency = (value: string) => {
   const numberValue = parseFloat(value);
   if (isNaN(numberValue) || numberValue === 0) return "";
-  return numberValue.toLocaleString('en-US', {
+  return numberValue.toLocaleString(undefined, {
     style: 'currency',
     currency: 'USD',
   });
