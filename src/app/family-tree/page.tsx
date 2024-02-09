@@ -1,5 +1,5 @@
-import FamilyTree from "./family-tree";
+import FamilyTreeFlow from "./family-tree-flow";
 
 export default function FamilyTreePage() {
-  return <FamilyTree />;
+  return <FamilyTreeFlow />;
 }

@@ -1,3 +1,15 @@
+"use client";
+
+import ReactFlow, { Controls, Background } from "reactflow";
+import "reactflow/dist/style.css";
+
 export default function FamilyTreeFlow() {
-  return <div>Family Tree</div>;
+  return (
+    <div style={{ height: "100%" }}>
+      <ReactFlow>
+        <Background />
+        <Controls />
+      </ReactFlow>
+    </div>
+  );
 }
