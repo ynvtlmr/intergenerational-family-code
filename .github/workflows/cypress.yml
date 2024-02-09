@@ -9,15 +9,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: "latest"
+      - name: Setup Node
+        uses: actions/setup-node@v4
 
       - name: Install dependencies
-        run: bun install
+        run: npm install
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          run: bun run test
+          run: npm run test
