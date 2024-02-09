@@ -4,6 +4,8 @@ import ReactFlow, { Controls, Background } from "reactflow";
 import "reactflow/dist/style.css";
 
 export default function FamilyTreeFlow() {
+  const edges = [{ id: "1-2", source: "1", target: "2", label: "to the" }];
+
   const nodes = [
     {
       id: "1",
@@ -20,7 +22,7 @@ export default function FamilyTreeFlow() {
 
   return (
     <div style={{ height: "100%" }}>
-      <ReactFlow nodes={nodes}>
+      <ReactFlow nodes={nodes} edges={edges}>
         <Background />
         <Controls />
       </ReactFlow>
