@@ -1,6 +1,8 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Card, CardContent, Typography, Box, Container } from '@mui/material';
+import { TextField, Button, Card, CardContent, Typography, Box, Container, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const FamilyGarden = () => {
   const [growthRate, setGrowthRate] = useState(0.05);
@@ -18,7 +20,7 @@ const FamilyGarden = () => {
 
   const handleGrowthRateChange = (e) => {
     const rate = parseFloat(e.target.value);
-    const roundedRate = Math.round(rate * 100) / 100; // Rounds to 2 decimal places
+    const roundedRate = Math.round(rate * 100) / 100;
     setGrowthRate(roundedRate / 100);
   };
 
@@ -48,6 +50,10 @@ const FamilyGarden = () => {
   const addNewPerson = () => {
     const newId = people.length > 0 ? people[people.length - 1].id + 1 : 1;
     setPeople([...people, { id: newId, name: '', beginAmount: '', beginAge: 0 }]);
+  };
+
+  const handleDeletePerson = (id) => {
+    setPeople(prevPeople => prevPeople.filter(person => person.id !== id));
   };
 
   const calculateGrowth = (initialAmount, years) => {
@@ -94,7 +100,7 @@ const FamilyGarden = () => {
       </Box>
 
       {people.map((person, index) => (
-        <Card key={person.id} variant="outlined" sx={{ mb: 5 }}>
+        <Card key={person.id} variant="outlined" sx={{ mb: 5, position: 'relative' }}>
           <CardContent>
             <TextField
               label={`Person ${index + 1}'s Name`}
@@ -129,24 +135,29 @@ const FamilyGarden = () => {
               </Box>
             ))}
           </CardContent>
+          <Box sx={{ position: 'absolute', top: -5, right: -5 }}>
+            <IconButton onClick={() => handleDeletePerson(person.id)} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          </Box>
         </Card>
       ))}
 
-<Button
-  variant="contained"
-  color="primary"
-  onClick={addNewPerson}
-  sx={{
-    mt: 3,
-    ':hover': {
-      backgroundColor: 'secondary.main',
-      transform: 'scale(1.15)', 
-      transition: 'transform 0.2s ease-in-out',
-    },
-  }}
->
-  Add Person
-</Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={addNewPerson}
+        sx={{
+          mt: 3,
+          ':hover': {
+            backgroundColor: 'secondary.main',
+            transform: 'scale(1.15)',
+            transition: 'transform 0.2s ease-in-out',
+          },
+        }}
+      >
+        Add Person
+      </Button>
     </Container>
   );
 };
