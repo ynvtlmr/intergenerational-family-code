@@ -23,9 +23,11 @@ const FamilyGarden = () => {
   }, []);
 
   const handleGrowthRateChange = (newRate: string) => {
-    const rate = parseFloat(newRate) / 100;
-    setGrowthRate(rate);
-  };
+    const rate = parseFloat(newRate);
+    // Adjust the rounding as needed for your use case
+    const roundedRate = Math.round(rate * 100) / 100; // Rounds to 2 decimal places
+    setGrowthRate(roundedRate / 100);
+};
 
   const formatCurrencyInput = (inputValue: string) => {
     const numbersOnly = inputValue.replace(/[^0-9]/g, '');
@@ -62,9 +64,13 @@ const FamilyGarden = () => {
   };
 
   const calculateTaxCoverage = (growthAmount: string) => {
-    const amount = parseFloat(growthAmount.replace(/[$,]/g, '')) || 0;
-    return formatCurrencyInput((amount * 0.25).toString());
+    const amount = parseFloat(growthAmount.replace(/[$,]/g, ''));
+    const tax = amount * 0.25;
+    return `$${tax.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
   };
+  
+  
+  
 
   const generateAges = (beginAge: number) => {
     const ages: number[] = [];
