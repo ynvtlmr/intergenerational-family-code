@@ -20,14 +20,7 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Build
-        run: bun run build
-
-      - name: Start server
-        run: bun start
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: npm start # Keep this as npm start since the server is already running
-          wait-on: "http://localhost:3000"
+          run: bun run test
