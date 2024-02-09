@@ -9,5 +9,5 @@ jobs:
       - name: Run E2E tests
         uses: cypress-io/github-action@v5
         with:
-          build: bun run build
-          start: bun start
+          build: npm run build
+          start: npm start
