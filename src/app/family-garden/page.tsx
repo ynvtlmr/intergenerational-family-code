@@ -1,19 +1,13 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
+import { TextField, Button, Card, CardContent, Typography, Box, Container } from '@mui/material';
 
 const FamilyGarden = () => {
-  const [growthRate,setGrowthRate] = useState(0.05);
-  const [firstPerson, setFirstPerson] = useState({
-    name: 'First Person Name',
-    beginAmount: '',
-    beginAge: 36,
-  });
-  const [secondPerson, setSecondPerson] = useState({
-    name: 'Second Person Name',
-    beginAmount: '',
-    beginAge: 60,
-  });
+  const [growthRate, setGrowthRate] = useState(0.05);
+  const [people, setPeople] = useState([
+    { id: 1, name: '', beginAmount: '', beginAge: 30 },
+    { id: 2, name: '', beginAmount: '', beginAge: 60 },
+  ]);
 
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
@@ -22,14 +16,13 @@ const FamilyGarden = () => {
     };
   }, []);
 
-  const handleGrowthRateChange = (newRate: string) => {
-    const rate = parseFloat(newRate);
-    // Adjust the rounding as needed for your use case
+  const handleGrowthRateChange = (e) => {
+    const rate = parseFloat(e.target.value);
     const roundedRate = Math.round(rate * 100) / 100; // Rounds to 2 decimal places
     setGrowthRate(roundedRate / 100);
-};
+  };
 
-  const formatCurrencyInput = (inputValue: string) => {
+  const formatCurrencyInput = (inputValue) => {
     const numbersOnly = inputValue.replace(/[^0-9]/g, '');
     if (numbersOnly) {
       return `$${parseInt(numbersOnly, 10).toLocaleString()}`;
@@ -37,152 +30,125 @@ const FamilyGarden = () => {
     return '';
   };
 
-  const handleBeginAmountChange = (isSecondPerson: boolean, newAmount: string) => {
+  const handleBeginAmountChange = (id, newAmount) => {
     const formattedAmount = formatCurrencyInput(newAmount);
-    if (isSecondPerson) {
-      setSecondPerson((prev) => ({ ...prev, beginAmount: formattedAmount }));
-    } else {
-      setFirstPerson((prev) => ({ ...prev, beginAmount: formattedAmount }));
-    }
+    setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: formattedAmount } : person));
   };
 
-  const handleNameChange = (isSecondPerson: boolean, newName: string) => {
-    const setter = isSecondPerson ? setSecondPerson : setFirstPerson;
-    setter((prev) => ({ ...prev, name: newName }));
+  const handleNameChange = (id, newName) => {
+    setPeople(prev => prev.map(person => person.id === id ? { ...person, name: newName } : person));
   };
 
-  const handleBeginAgeChange = (isSecondPerson: boolean, newAge: string) => {
+  const handleBeginAgeChange = (id, newAge) => {
     const age = parseInt(newAge, 10);
     const validAge = !isNaN(age) ? age : '';
-    const setter = isSecondPerson ? setSecondPerson : setFirstPerson;
-    setter((prev) => ({ ...prev, beginAge: parseInt(validAge.toString(), 10) }));
+    setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAge: parseInt(validAge.toString(), 10) } : person));
   };
 
-  const calculateGrowth = (initialAmount: string, years: number) => {
+  const addNewPerson = () => {
+    const newId = people.length > 0 ? people[people.length - 1].id + 1 : 1;
+    setPeople([...people, { id: newId, name: '', beginAmount: '', beginAge: 0 }]);
+  };
+
+  const calculateGrowth = (initialAmount, years) => {
     const amount = parseFloat(initialAmount.replace(/[$,]/g, '')) || 0;
     return `$${(amount * Math.pow(1 + growthRate, years)).toFixed(2)}`;
   };
 
-  const calculateTaxCoverage = (growthAmount: string) => {
+  const calculateTaxCoverage = (growthAmount) => {
     const amount = parseFloat(growthAmount.replace(/[$,]/g, ''));
     const tax = amount * 0.25;
     return `$${tax.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
   };
-  
-  
-  
 
-  const generateAges = (beginAge: number) => {
-    const ages: number[] = [];
+  const generateAges = (beginAge) => {
+    const ages:number[] = [];
     for (let age = beginAge; age <= 120; age += 10) {
       ages.push(age);
     }
     return ages;
   };
 
-  const yearsSinceBegin = (age: number, beginAge: number) => age - beginAge;
+  const yearsSinceBegin = (age, beginAge) => age - beginAge;
 
   return (
-    <div className="bg-white p-8">
-      <div className="font-serif text-4xl text-gray-700">Family Garden</div>
-      <div className="italic text-gray-500 my-2">
+    <Container>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Family Garden
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom>
         The more powerful the seed the longer it takes to germinate
-      </div>
-  
-      <div className="my-4">
-        <label htmlFor="growthRate" className="block text-gray-700 text-sm font-bold mb-2">
-          Growth Rate (%):
-        </label>
-        <input
+      </Typography>
+
+      <Box my={4}>
+        <TextField
           id="growthRate"
+          label="Growth Rate (%)"
           type="number"
-          placeholder="Enter Growth Rate in %"
-          className="shadow appearance-none border rounded w-64 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          variant="outlined"
+          fullWidth
           value={(growthRate * 100).toString()}
-          onChange={(e) => handleGrowthRateChange(e.target.value)}
+          onChange={handleGrowthRateChange}
+          margin="normal"
         />
-      </div>
-  
-      <div className="flex flex-col lg:flex-row justify-between mt-8">
-        <div className="lg:w-1/2">
-          <input
-            type="text"
-            placeholder="Enter First Person's Name"
-            className="border-2 border-gray-200 rounded p-1 text-left my-2"
-            value={firstPerson.name}
-            onChange={(e) => handleNameChange(false, e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Enter First Person's Begin Age"
-            className="border-2 border-gray-200 rounded p-1 my-2"
-            value={firstPerson.beginAge || ''}
-            onChange={(e) => handleBeginAgeChange(false, e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Enter Begin Amount"
-            className="border-2 border-gray-200 rounded p-1 pl-3 text-right my-2"
-            value={firstPerson.beginAmount}
-            onChange={(e) => handleBeginAmountChange(false, e.target.value)}
-          />
-          <div>
-            {generateAges(firstPerson.beginAge).map((age) => (
-              <div key={`first-${age}`} className="flex justify-between mb-6">
-                <div>Age: {age}</div>
-                <div>Growth: {calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.beginAge))}</div>
-              </div>
+      </Box>
+
+      {people.map((person, index) => (
+        <Card key={person.id} variant="outlined" sx={{ mb: 5 }}>
+          <CardContent>
+            <TextField
+              label={`Person ${index + 1}'s Name`}
+              variant="outlined"
+              fullWidth
+              value={person.name}
+              onChange={(e) => handleNameChange(person.id, e.target.value)}
+              margin="normal"
+            />
+            <TextField
+              label={`Person ${index + 1}'s Begin Age`}
+              type="number"
+              variant="outlined"
+              fullWidth
+              value={person.beginAge || ''}
+              onChange={(e) => handleBeginAgeChange(person.id, e.target.value)}
+              margin="normal"
+            />
+            <TextField
+              label="Begin Amount"
+              variant="outlined"
+              fullWidth
+              value={person.beginAmount}
+              onChange={(e) => handleBeginAmountChange(person.id, e.target.value)}
+              margin="normal"
+            />
+            {generateAges(person.beginAge).map((age) => (
+              <Box key={`${person.id}-${age}`} display="flex" justifyContent="space-between" my={3}>
+                <Typography>Age: {age}</Typography>
+                <Typography>Net Worth Growth: {calculateGrowth(person.beginAmount, yearsSinceBegin(age, person.beginAge))}</Typography>
+                <Typography>Target Tax Coverage(25%): {calculateTaxCoverage(calculateGrowth(person.beginAmount, yearsSinceBegin(age, person.beginAge)))}</Typography>
+              </Box>
             ))}
-          </div>
-          <input
-            type="text"
-            placeholder="Enter Second Person's Name"
-            className="border-2 border-gray-200 rounded p-1 text-left my-2"
-            value={secondPerson.name}
-            onChange={(e) => handleNameChange(true, e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Enter Second Person's Begin Age"
-            className="border-2 border-gray-200 rounded p-1 my-2"
-            value={secondPerson.beginAge || ''}
-            onChange={(e) => handleBeginAgeChange(true, e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Enter Begin Amount"
-            className="border-2 border-gray-200 rounded p-1 pl-3 text-right my-2"
-            value={secondPerson.beginAmount}
-            onChange={(e) => handleBeginAmountChange(true, e.target.value)}
-          />
-          <div>
-            {generateAges(secondPerson.beginAge).map((age) => (
-              <div key={`second-${age}`} className="flex justify-between mb-6">
-                <div>Age: {age}</div>
-                <div>Growth: {calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.beginAge))}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-  
-        <div className="lg:w-1/2 lg:ml-10 mt-8 lg:mt-0">
-          <div className="font-bold text-gray-800 mb-7">Target Tax Coverage(25%) for {firstPerson.name}</div>
-          {generateAges(firstPerson.beginAge).map((age) => (
-            <div key={`tax-first-${age}`} className="mb-6">
-              <div>Tax: {calculateTaxCoverage(calculateGrowth(firstPerson.beginAmount, yearsSinceBegin(age, firstPerson.beginAge)))}</div>
-            </div>
-          ))}
-          <div className="font-bold text-gray-800 mb-7">Target Tax Coverage(25%) for {secondPerson.name}</div>
-          {generateAges(secondPerson.beginAge).map((age) => (
-            <div key={`tax-second-${age}`} className="mb-6">
-              <div>Tax: {calculateTaxCoverage(calculateGrowth(secondPerson.beginAmount, yearsSinceBegin(age, secondPerson.beginAge)))}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+          </CardContent>
+        </Card>
+      ))}
+
+<Button
+  variant="contained"
+  color="primary"
+  onClick={addNewPerson}
+  sx={{
+    mt: 3,
+    ':hover': {
+      backgroundColor: 'secondary.main',
+      transform: 'scale(1.15)', 
+      transition: 'transform 0.2s ease-in-out',
+    },
+  }}
+>
+  Add Person
+</Button>
+    </Container>
   );
-  
 };
 
 export default FamilyGarden;
