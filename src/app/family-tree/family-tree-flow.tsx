@@ -7,6 +7,9 @@ import ReactFlow, {
   applyNodeChanges,
   NodeChange,
   EdgeChange,
+  addEdge,
+  Edge,
+  Connection,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
@@ -26,7 +29,7 @@ const initialNodes = [
   },
 ];
 
-const initialEdges = [{ id: "1-2", source: "1", target: "2", label: "to the" }];
+const initialEdges = [{ id: "1-2", source: "1", target: "2" }];
 
 export default function FamilyTreeFlow() {
   const [nodes, setNodes] = useState(initialNodes);
@@ -42,6 +45,10 @@ export default function FamilyTreeFlow() {
       setEdges((eds) => applyEdgeChanges(changes, eds)),
     []
   );
+  const onConnect = useCallback(
+    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+    []
+  );
 
   return (
     <div style={{ height: "100%" }}>
@@ -50,6 +57,7 @@ export default function FamilyTreeFlow() {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
         fitView
       >
         <Background />
