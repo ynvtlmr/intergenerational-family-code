@@ -131,7 +131,7 @@ const FamilyGarden = () => {
               <Box key={`${person.id}-${age}`} display="flex" justifyContent="space-between" my={3}>
                 <Typography>Age: {age}</Typography>
                 <Typography>Net Worth Growth: {calculateGrowth(person.beginAmount, yearsSinceBegin(age, person.beginAge))}</Typography>
-                <Typography>Target Tax Coverage(25%): {calculateTaxCoverage(calculateGrowth(person.beginAmount, yearsSinceBegin(age, person.beginAge)))}</Typography>
+                <Typography>Target Tax (25%): {calculateTaxCoverage(calculateGrowth(person.beginAmount, yearsSinceBegin(age, person.beginAge)))}</Typography>
               </Box>
             ))}
           </CardContent>
