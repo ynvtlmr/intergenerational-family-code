@@ -6,6 +6,7 @@ import OrgChart from "./org-chart";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import OrgChartFlow from "./org-chart-flow";
 
 export type OrgChartNode = {
   id: number;
@@ -77,11 +78,13 @@ export default function OrgChartPage() {
 
   return (
     <div>
-      <OrgChart
+      {/* <OrgChart
         data={orgChartInitialData}
         onAddNode={addNodeToOrgChart}
         onDeleteNode={deleteNodeFromOrgChart}
-      />
+      /> */}
+
+      <OrgChartFlow />
     </div>
   );
 }
