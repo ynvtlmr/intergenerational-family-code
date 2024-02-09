@@ -15,11 +15,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Start up server
-        run: npm run build
-        start: npm run start
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          run: npm run test
+          build: npm run build
+          start: npm start
+          browser: chrome
