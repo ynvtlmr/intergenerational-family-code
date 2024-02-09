@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
-const formatCurrency = (value) => {
+const formatCurrency = (value: string) => {
   const numberValue = parseFloat(value);
   if (isNaN(numberValue) || numberValue === 0) return "";
   return numberValue.toLocaleString('en-US', {
@@ -11,11 +11,11 @@ const formatCurrency = (value) => {
   });
 };
 
-const parseCurrency = (formattedValue) => {
+const parseCurrency = (formattedValue: string) => {
   return formattedValue.replace(/[$,]/g, '');
 };
 
-const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
+const AssetTable = ({ data, onDataChange, onDeleteRow }: { data: any, onDataChange: any, onDeleteRow: any }) => (
   <div className="overflow-x-auto">
     <table className="w-full table-auto divide-y divide-gray-200">
       <thead className="bg-gray-50">
@@ -38,7 +38,7 @@ const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
-        {data.map((row, idx) => (
+        {data.map((row: { type: string | number | readonly string[] | undefined; band: string | number | readonly string[] | undefined; targetAllocation: string | number | readonly string[] | undefined; targetNetReturn: string | number | readonly string[] | undefined; }, idx: React.Key | null | undefined) => (
           <tr key={idx}>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
               <input
@@ -84,10 +84,10 @@ const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
   </div>
 );
 
-const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => {
-  const [focusedIndex, setFocusedIndex] = useState(null);
+const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }: { data: any, onDataChange: any, onDeleteRow: any }) => {
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   useEffect(() => {
-    data.forEach((row, index) => {
+    data.forEach((row: { sharpeRatioTarget: any; }, index: number) => {
       if (index !== focusedIndex) {
         const element = document.getElementById(`sharpeRatioTarget-${index}`) as HTMLInputElement;
         if (element) {
@@ -117,7 +117,7 @@ const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {data.map((row, index) => (
+          {data.map((row: { type: string | number | readonly string[] | undefined; band: string | number | readonly string[] | undefined; sharpeRatioTarget: any; }, index: number) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 <input
@@ -159,7 +159,7 @@ const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => {
   );
 };
 
-const AssetPieChart = ({ data }) => (
+const AssetPieChart = ({ data }: { data: any[] }) => (
   <div style={{ height: 300 }}>
     <ResponsivePie
       data={data.map((asset) => ({
@@ -195,15 +195,15 @@ const AssetAllocationComponent = () => {
     { type: 'Stocks', band: '25-50%', sharpeRatioTarget: '1.2' }
   ]);
 
-  const handleDataChange = (idx, field, value) => {
-    const updatedData = [...tableData];
-    updatedData[idx][field] = value;
+  const handleDataChange = (idx: string | number, field: string | number, value: any) => {
+    const updatedData: typeof tableData = [...tableData];
+    (updatedData[Number(idx)] as any)[field as keyof typeof updatedData[0]] = value;
     setTableData(updatedData);
   };
 
-  const handleSharpeRatioChange = (index, field, value) => {
-    const updatedData = [...sharpeRatioData];
-    updatedData[index][field] = value;
+  const handleSharpeRatioChange = (index: string | number, field: string | number, value: any) => {
+    const updatedData: typeof sharpeRatioData = [...sharpeRatioData];
+    (updatedData[Number(index)] as any)[field as keyof typeof updatedData[0]] = value;
     setSharpeRatioData(updatedData);
   };
 
@@ -215,19 +215,19 @@ const AssetAllocationComponent = () => {
     setSharpeRatioData(currentData => [...currentData, { type: '', band: '', sharpeRatioTarget: '' }]);
   };
 
-  const deleteAssetRow = (idx) => {
+  const deleteAssetRow = (idx: number) => {
     setTableData(currentData => currentData.filter((_, index) => index !== idx));
   };
 
-  const deleteSharpeRatioRow = (idx) => {
+  const deleteSharpeRatioRow = (idx: number) => {
     setSharpeRatioData(currentData => currentData.filter((_, index) => index !== idx));
   };
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <h1 className="text-4xl font-bold text-gray-900 mb-12 text-center">Asset Allocation</h1>
-      <button onClick={addAssetRow}>Add Asset Row</button>
-      <button onClick={addSharpeRatioRow}>Add Sharpe Ratio Row</button>
+      <button onClick={addAssetRow} className="mr-5">Add Asset Row</button>
+  <button onClick={addSharpeRatioRow}>Add Sharpe Ratio Row</button>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <AssetTable data={tableData} onDataChange={handleDataChange} onDeleteRow={deleteAssetRow} />
