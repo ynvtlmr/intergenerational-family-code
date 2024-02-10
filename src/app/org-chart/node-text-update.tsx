@@ -4,7 +4,6 @@ import { useCallback } from "react";
 import { Handle, Position } from "reactflow";
 
 interface TextUpdaterNodeProps {
-  data: any;
   isConnectable: boolean;
 }
 
@@ -15,7 +14,6 @@ interface handleStyle {
 const handleStyle = { left: 30 };
 
 export default function TextUpdaterNode({
-  data,
   isConnectable,
 }: TextUpdaterNodeProps) {
   const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,19 +38,6 @@ export default function TextUpdaterNode({
         position={Position.Bottom}
         id="a"
         style={handleStyle}
-        isConnectable={isConnectable}
-      />
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="b"
-        isConnectable={isConnectable}
-      />
-
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="c"
         isConnectable={isConnectable}
       />
     </div>
