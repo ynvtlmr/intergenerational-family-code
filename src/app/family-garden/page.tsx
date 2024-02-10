@@ -125,13 +125,16 @@ const FamilyGarden = () => {
               margin="normal"
             />
             <TextField
-              label="Begin Amount"
-              variant="outlined"
-              fullWidth
-              value={person.beginAmount}
-              onChange={(e) => handleBeginAmountChange(person.id, e.target.value)}
-              margin="normal"
-            />
+                label="Begin Amount"
+                variant="outlined"
+                fullWidth
+                value={person.beginAmount}
+                onChange={(e) => handleBeginAmountChange(person.id, e.target.value)}
+                margin="normal"
+                InputProps={{
+                  style: { textAlign: 'right' },
+                  }}
+                />
             {generateAges(person.beginAge).map(age => (
               <Box key={`${person.id}-${age}`} display="flex" justifyContent="space-between" my={3}>
                 <Typography>Age: {age}</Typography>
