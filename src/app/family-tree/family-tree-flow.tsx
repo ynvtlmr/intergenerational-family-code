@@ -15,6 +15,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 
 import { useCallback, useRef } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 const initialNodes = [
   {
@@ -34,6 +35,7 @@ export default function FamilyTreeFlow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { screenToFlowPosition, setViewport, toObject } = useReactFlow();
+  const { toast } = useToast();
 
   const onConnect = useCallback(
     (params: Edge | Connection) => {
@@ -100,7 +102,8 @@ export default function FamilyTreeFlow() {
     // creates a JSON-compatible representation of the flow
     const flow = toObject();
     localStorage.setItem("family-tree", JSON.stringify(flow));
-  }, [toObject]);
+    toast({ title: "Your flow has been saved." });
+  }, [toObject, toast]);
 
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
