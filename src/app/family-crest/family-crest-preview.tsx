@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useFamilyCrest } from "./family-crest-store";
 import { ImageIcon } from "lucide-react";
-import useGenerateCrest from "./useGenerateCrest";
 
 export default function FamilyCrestPreview() {
-  const { crest } = useGenerateCrest();
+  const { crest } = useFamilyCrest();
 
   if (!crest) {
     return (
