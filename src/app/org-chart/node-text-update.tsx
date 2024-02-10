@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 
 import { useCallback } from "react";
 import { Handle, Position } from "reactflow";
+import CreateNodeDialog from "./create-node-dialog";
 
 interface TextUpdaterNodeProps {
   isConnectable: boolean;
@@ -37,12 +38,7 @@ export default function TextUpdaterNode({
           onChange={onChange}
           className="rounded border-2 border-gray-300 p-1 text-xs"
         />
-        <Button
-          onClick={handleClick}
-          className="rounded bg-black p-1 text-xs text-white"
-        >
-          create Node
-        </Button>
+        <CreateNodeDialog />
       </div>
       <Handle
         type="source"
