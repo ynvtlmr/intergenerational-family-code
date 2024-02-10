@@ -3,65 +3,116 @@
 import ReactFlow, {
   Controls,
   Background,
-  applyEdgeChanges,
-  applyNodeChanges,
-  NodeChange,
-  EdgeChange,
   addEdge,
   Edge,
   Connection,
   Panel,
+  useNodesState,
+  useEdgesState,
+  useReactFlow,
+  OnConnectStartParams,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { useState, useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 const initialNodes = [
   {
-    id: "1",
+    id: "0",
     data: { label: "Hello" },
     position: { x: 0, y: 0 },
     style: { backgroundColor: "#9ad3f6" },
   },
-  {
-    id: "2",
-    data: { label: "World" },
-    position: { x: 100, y: 100 },
-    style: { backgroundColor: "#f5a2e5" },
-  },
 ];
 
-const initialEdges = [{ id: "1-2", source: "1", target: "2" }];
+let id = 1;
+const getId = () => `${id++}`;
 
 export default function FamilyTreeFlow() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const reactFlowWrapper = useRef(null);
+  const connectingNodeId = useRef<string | null>(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { screenToFlowPosition } = useReactFlow();
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
   const onConnect = useCallback(
-    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Edge | Connection) => {
+      // reset the start node on connections
+      connectingNodeId.current = null;
+      setEdges((eds) => addEdge(params, eds));
+    },
+    [setEdges]
+  );
+
+  const onConnectStart = useCallback(
+    (
+      _: React.MouseEvent | React.TouchEvent,
+      { nodeId }: OnConnectStartParams
+    ) => {
+      connectingNodeId.current = nodeId;
+    },
     []
+  );
+
+  const onConnectEnd = useCallback(
+    (event: MouseEvent | TouchEvent) => {
+      if (!connectingNodeId.current || !event.target) return;
+
+      // check if the event is a MouseEvent and the target is a pane
+      if (
+        !(event instanceof MouseEvent) ||
+        !(event.target instanceof HTMLDivElement)
+      )
+        return;
+
+      const targetIsPane = event.target.classList.contains("react-flow__pane");
+      if (targetIsPane) {
+        // we need to remove the wrapper bounds, in order to get the correct position
+        const id = getId();
+        const newNode = {
+          id,
+          position: screenToFlowPosition({
+            x: event.clientX,
+            y: event.clientY,
+          }),
+          data: { label: `Node ${id}` },
+          origin: [0.5, 0.0],
+        };
+
+        setNodes((nds) => nds.concat(newNode));
+
+        setEdges((eds) => {
+          // if we are not connecting a node, we don't need to create an edge
+          if (!connectingNodeId.current) return eds;
+
+          return eds.concat({
+            id,
+            source: connectingNodeId.current,
+            target: id,
+          });
+        });
+      }
+    },
+    [setNodes, setEdges, screenToFlowPosition]
   );
 
   return (
-    <div style={{ height: "100%" }}>
+    <div
+      className="h-full grow"
+      ref={reactFlowWrapper}
+      style={{ height: "100%" }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onConnectStart={onConnectStart}
+        onConnectEnd={onConnectEnd}
         fitView
         fitViewOptions={{ padding: 2 }}
+        nodeOrigin={[0.5, 0]}
       >
         <Panel
           className="rounded border bg-background px-3 py-1 shadow-xl"
