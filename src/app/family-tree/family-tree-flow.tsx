@@ -11,12 +11,10 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
   OnConnectStartParams,
-  OnInit,
-  ReactFlowInstance,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 
 const initialNodes = [
   {
