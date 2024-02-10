@@ -21,12 +21,40 @@ const initialNodes = [
     position: { x: 0, y: 0 },
     data: { value: 123 },
   },
+  {
+    id: "node-2",
+    type: "output",
+    targetPosition: "top",
+    position: { x: 0, y: 200 },
+    data: { label: "second company" },
+  },
+
+  {
+    id: "node-3",
+    type: "output",
+    targetPosition: "top",
+    position: { x: 200, y: 200 },
+    data: { label: "third company" },
+  },
+  {
+    id: "node-4",
+    type: "output",
+    targetPosition: "top",
+    position: { x: 400, y: 200 },
+    data: { label: "fourth company" },
+  },
 ];
 
-// const initialEdges = [
-//   { id: "1-2", source: "1", target: "2", label: "to the", type: "step" },
-//   { id: "2-3", source: "2", target: "3", label: "connected" },
-// ];
+const initialEdges = [
+  {
+    id: "edge-1",
+    source: "node-1",
+    target: "node-2",
+    sourceHandle: "a",
+  },
+  { id: "edge-1", source: "node-1", target: "node-3", sourceHandle: "b" },
+  { id: "edge-1", source: "node-1", target: "node-4", sourceHandle: "c" },
+];
 
 const rfStyle = {
   backgroundColor: "#B8CEFF",
@@ -36,7 +64,7 @@ const nodeTypes = { textUpdater: TextUpdaterNode };
 
 export default function OrgChartFlow() {
   const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState([]);
+  const [edges, setEdges] = useState(initialEdges);
 
   const onNodesChange = useCallback(
     (changes: any) => setNodes((node) => applyNodeChanges(changes, node)),

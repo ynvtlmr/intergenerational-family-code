@@ -48,6 +48,13 @@ export default function TextUpdaterNode({
         id="b"
         isConnectable={isConnectable}
       />
+
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="c"
+        isConnectable={isConnectable}
+      />
     </div>
   );
 }
