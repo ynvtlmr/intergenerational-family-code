@@ -28,6 +28,10 @@ const initialNodes = [
 //   { id: "2-3", source: "2", target: "3", label: "connected" },
 // ];
 
+const rfStyle = {
+  backgroundColor: "#B8CEFF",
+};
+
 const nodeTypes = { textUpdater: TextUpdaterNode };
 
 export default function OrgChartFlow() {
@@ -58,6 +62,7 @@ export default function OrgChartFlow() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        style={rfStyle}
         fitView
       >
         <Background />
