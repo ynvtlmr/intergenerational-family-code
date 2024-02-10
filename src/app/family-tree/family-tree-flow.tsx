@@ -10,6 +10,7 @@ import ReactFlow, {
   addEdge,
   Edge,
   Connection,
+  Panel,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
@@ -21,11 +22,13 @@ const initialNodes = [
     data: { label: "Hello" },
     position: { x: 0, y: 0 },
     type: "input",
+    style: { backgroundColor: "#9ad3f6" },
   },
   {
     id: "2",
     data: { label: "World" },
     position: { x: 100, y: 100 },
+    style: { backgroundColor: "#f5a2e5" },
   },
 ];
 
