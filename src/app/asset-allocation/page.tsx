@@ -7,20 +7,20 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { ResponsivePie } from '@nivo/pie';
 
 // Custom Currency Input Component
-const CurrencyInput = ({ value, onChange, ...props }) => {
+const CurrencyInput = ({ value, onChange, ...props }: { value: string, onChange: (value: string) => void, [key: string]: any }) => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     setInputValue(formatNumberAsCurrency(value));
   }, [value]);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: { target: { value: string; }; }) => {
     const value = event.target.value.replace(/[^\d.]/g, ''); // Allow numbers and dot only
     onChange(value); // Update external state
     setInputValue(formatNumberAsCurrency(value));
   };
 
-  const formatNumberAsCurrency = (value) => {
+  const formatNumberAsCurrency = (value: string) => {
     if (!value) return '';
     const number = Number(value.replace(/,/g, ''));
     return number.toLocaleString('en-US', {
@@ -44,7 +44,7 @@ const CurrencyInput = ({ value, onChange, ...props }) => {
 };
 
 // Asset Table Component
-const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
+const AssetTable = ({ data, onDataChange, onDeleteRow }: { data: any, onDataChange: any, onDeleteRow: any }) => (
   <TableContainer component={Paper}>
     <Table>
       <TableHead>
@@ -57,7 +57,7 @@ const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((row, idx) => (
+        {data.map((row: { type: unknown; band: unknown; targetAllocation: unknown; targetNetReturn: unknown; }, idx: React.Key | null | undefined) => (
           <TableRow key={idx}>
             <TableCell>
               <TextField
@@ -112,7 +112,7 @@ const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
 );
 
 // Sharpe Ratio Table Component
-const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => (
+const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }: { data: any[]; onDataChange: any; onDeleteRow: any }) => (
   <TableContainer component={Paper}>
     <Table>
       <TableHead>
@@ -124,7 +124,7 @@ const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((row, idx) => (
+        {data.map((row: { type: unknown; band: unknown; sharpeRatioTarget: string; }, idx: React.Key | null | undefined) => (
           <TableRow key={idx}>
             <TableCell>
               <TextField
@@ -163,10 +163,10 @@ const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => (
 );
 
 // Asset Pie Chart Component
-const AssetPieChart = ({ data }) => (
+const AssetPieChart = ({ data }: { data: any[] }) => (
   <div style={{ height: 400 }}>
     <ResponsivePie
-      data={data.map((asset) => ({
+      data={data.map((asset: { type: any; targetAllocation: any; }) => ({
         id: asset.type,
         label: asset.type,
         value: asset.targetAllocation,
@@ -189,24 +189,28 @@ const AssetPieChart = ({ data }) => (
   </div>
 );
 
+type Idk = {
+  [key: string]: any;
+};
+
 // Main Asset Allocation Component
 const AssetAllocationComponent = () => {
-  const [tableData, setTableData] = useState([
+  const [tableData, setTableData] = useState<Idk[]>([
     { type: 'Bonds', band: '0-24%', targetAllocation: 40, targetNetReturn: 5 },
     { type: 'Stocks', band: '25-50%', targetAllocation: 60, targetNetReturn: 10 }
   ]);
-  const [sharpeRatioData, setSharpeRatioData] = useState([
+  const [sharpeRatioData, setSharpeRatioData] = useState<Idk[]>([
     { type: 'Bonds', band: '0-24%', sharpeRatioTarget: '0.5' },
     { type: 'Stocks', band: '25-50%', sharpeRatioTarget: '1.2' }
   ]);
 
-  const handleDataChange = (idx, field, value) => {
+  const handleDataChange = (idx: number, field: string, value: any) => {
     const updatedData = [...tableData];
     updatedData[idx][field] = value;
     setTableData(updatedData);
   };
 
-  const handleSharpeRatioChange = (idx, field, value) => {
+  const handleSharpeRatioChange = (idx: number, field: string, value: any) => {
     const updatedData = [...sharpeRatioData];
     updatedData[idx][field] = value;
     setSharpeRatioData(updatedData);
@@ -220,11 +224,11 @@ const AssetAllocationComponent = () => {
     setSharpeRatioData(currentData => [...currentData, { type: '', band: '', sharpeRatioTarget: '' }]);
   };
 
-  const deleteAssetRow = (idx) => {
+  const deleteAssetRow = (idx: number) => {
     setTableData(currentData => currentData.filter((_, index) => index !== idx));
   };
 
-  const deleteSharpeRatioRow = (idx) => {
+  const deleteSharpeRatioRow = (idx: number) => {
     setSharpeRatioData(currentData => currentData.filter((_, index) => index !== idx));
   };
 
