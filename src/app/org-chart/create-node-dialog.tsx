@@ -16,7 +16,7 @@ export default function CreateNodeDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="rounded-xl">
           <Plus />
         </Button>
       </DialogTrigger>

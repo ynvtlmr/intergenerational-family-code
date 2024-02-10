@@ -11,6 +11,7 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
   OnConnectStartParams,
+  Panel,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import TextUpdaterNode from "./node-text-update";
@@ -104,6 +105,7 @@ export default function OrgChartFlow() {
         onConnectEnd={onConnectEnd}
         fitView
       >
+        <Panel position="top-left">Organizational Chart</Panel>
         <Background />
         <Controls />
       </ReactFlow>
