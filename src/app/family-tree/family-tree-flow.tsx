@@ -63,6 +63,12 @@ export default function FamilyTreeFlow() {
         onConnect={onConnect}
         fitView
       >
+        <Panel
+          className="rounded border bg-background px-3 py-1 shadow-xl"
+          position="top-left"
+        >
+          Family Tree
+        </Panel>
         <Background />
         <Controls />
       </ReactFlow>
