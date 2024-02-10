@@ -1,170 +1,174 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Button, IconButton, InputAdornment } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { ResponsivePie } from '@nivo/pie';
 
-const formatCurrency = (value: string) => {
-  const numberValue = parseFloat(value);
-  if (isNaN(numberValue) || numberValue === 0) return "";
-  return numberValue.toLocaleString(undefined, {
-    style: 'currency',
-    currency: 'USD',
-  });
-};
+// Custom Currency Input Component
+const CurrencyInput = ({ value, onChange, ...props }) => {
+  const [inputValue, setInputValue] = useState('');
 
-const parseCurrency = (formattedValue: string) => {
-  return formattedValue.replace(/[$,]/g, '');
-};
-
-const AssetTable = ({ data, onDataChange, onDeleteRow }: { data: any, onDataChange: any, onDeleteRow: any }) => (
-  <div className="overflow-x-auto">
-    <table className="w-full table-auto divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Type
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Band
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Target Allocation (%)
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Target Net Return (%)
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        {data.map((row: { type: string | number | readonly string[] | undefined; band: string | number | readonly string[] | undefined; targetAllocation: string | number | readonly string[] | undefined; targetNetReturn: string | number | readonly string[] | undefined; }, idx: React.Key | null | undefined) => (
-          <tr key={idx}>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              <input
-                type="text"
-                value={row.type}
-                onChange={(e) => onDataChange(idx, 'type', e.target.value)}
-                className="w-full p-1 border-none bg-transparent"
-              />
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              <input
-                type="text"
-                value={row.band}
-                onChange={(e) => onDataChange(idx, 'band', e.target.value)}
-                className="w-full p-1 border-none bg-transparent"
-              />
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm">
-              <input
-                type="number"
-                value={row.targetAllocation}
-                onChange={(e) => onDataChange(idx, 'targetAllocation', e.target.value)}
-                className="w-full p-1 border-none bg-transparent text-right"
-              />
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm">
-              <input
-                type="number"
-                value={row.targetNetReturn}
-                onChange={(e) => onDataChange(idx, 'targetNetReturn', e.target.value)}
-                className="w-full p-1 border-none bg-transparent text-right"
-              />
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <button onClick={() => onDeleteRow(idx)} className="text-red-600 hover:text-red-900">
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
-
-const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }: { data: any, onDataChange: any, onDeleteRow: any }) => {
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   useEffect(() => {
-    data.forEach((row: { sharpeRatioTarget: any; }, index: number) => {
-      if (index !== focusedIndex) {
-        const element = document.getElementById(`sharpeRatioTarget-${index}`) as HTMLInputElement;
-        if (element) {
-          element.value = formatCurrency(row.sharpeRatioTarget);
-        }
-      }
+    setInputValue(formatNumberAsCurrency(value));
+  }, [value]);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value.replace(/[^\d.]/g, ''); // Allow numbers and dot only
+    onChange(value); // Update external state
+    setInputValue(formatNumberAsCurrency(value));
+  };
+
+  const formatNumberAsCurrency = (value) => {
+    if (!value) return '';
+    const number = Number(value.replace(/,/g, ''));
+    return number.toLocaleString('en-US', {
+      style: 'decimal',
+      maximumFractionDigits: 20,
     });
-  }, [focusedIndex, data]);
+  };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full table-auto divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Type
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Band
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Sharpe Ratio Target ($)
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {data.map((row: { type: string | number | readonly string[] | undefined; band: string | number | readonly string[] | undefined; sharpeRatioTarget: any; }, index: number) => (
-            <tr key={index}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                <input
-                  type="text"
-                  value={row.type}
-                  onChange={(e) => onDataChange(index, 'type', e.target.value)}
-                  className="w-full p-1 border-none bg-transparent"
-                />
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                <input
-                  type="text"
-                  value={row.band}
-                  onChange={(e) => onDataChange(index, 'band', e.target.value)}
-                  className="w-full p-1 border-none bg-transparent"
-                />
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm">
-                <input
-                  id={`sharpeRatioTarget-${index}`}
-                  type="text"
-                  defaultValue={formatCurrency(row.sharpeRatioTarget)}
-                  onChange={(e) => onDataChange(index, 'sharpeRatioTarget', parseCurrency(e.target.value))}
-                  onBlur={() => setFocusedIndex(null)}
-                  onFocus={() => setFocusedIndex(index)}
-                  className="w-full p-1 border-none bg-transparent text-right"
-                />
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button onClick={() => onDeleteRow(index)} className="text-red-600 hover:text-red-900">
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <TextField
+      {...props}
+      value={inputValue}
+      onChange={handleInputChange}
+      InputProps={{
+        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+        style: { textAlign: 'right' },
+      }}
+      placeholder="$0"
+    />
   );
 };
 
-const AssetPieChart = ({ data }: { data: any[] }) => (
-  <div style={{ height: 300 }}>
+// Asset Table Component
+const AssetTable = ({ data, onDataChange, onDeleteRow }) => (
+  <TableContainer component={Paper}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Type</TableCell>
+          <TableCell>Band</TableCell>
+          <TableCell align="right">Target Allocation (%)</TableCell>
+          <TableCell align="right">Target Net Return (%)</TableCell>
+          <TableCell align="right">Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data.map((row, idx) => (
+          <TableRow key={idx}>
+            <TableCell>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={row.type}
+                onChange={(e) => onDataChange(idx, 'type', e.target.value)}
+              />
+            </TableCell>
+            <TableCell>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={row.band}
+                onChange={(e) => onDataChange(idx, 'band', e.target.value)}
+              />
+            </TableCell>
+            <TableCell align="right">
+              <TextField
+                fullWidth
+                variant="outlined"
+                type="number"
+                value={row.targetAllocation}
+                onChange={(e) => onDataChange(idx, 'targetAllocation', e.target.value)}
+                InputProps={{
+                  style: { textAlign: 'right' },
+                }}
+              />
+            </TableCell>
+            <TableCell align="right">
+              <TextField
+                fullWidth
+                variant="outlined"
+                type="number"
+                value={row.targetNetReturn}
+                onChange={(e) => onDataChange(idx, 'targetNetReturn', e.target.value)}
+                InputProps={{
+                  style: { textAlign: 'right' },
+                }}
+              />
+            </TableCell>
+            <TableCell align="right">
+              <IconButton onClick={() => onDeleteRow(idx)}>
+                <DeleteIcon color="error" />
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
+
+// Sharpe Ratio Table Component
+const SharpeRatioTable = ({ data, onDataChange, onDeleteRow }) => (
+  <TableContainer component={Paper}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Type</TableCell>
+          <TableCell>Band</TableCell>
+          <TableCell align="right">Sharpe Ratio Target ($)</TableCell>
+          <TableCell align="right">Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data.map((row, idx) => (
+          <TableRow key={idx}>
+            <TableCell>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={row.type}
+                onChange={(e) => onDataChange(idx, 'type', e.target.value)}
+              />
+            </TableCell>
+            <TableCell>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={row.band}
+                onChange={(e) => onDataChange(idx, 'band', e.target.value)}
+              />
+            </TableCell>
+            <TableCell align="right">
+              <CurrencyInput
+                fullWidth
+                variant="outlined"
+                value={row.sharpeRatioTarget}
+                onChange={(newValue) => onDataChange(idx, 'sharpeRatioTarget', newValue)}
+              />
+            </TableCell>
+            <TableCell align="right">
+              <IconButton onClick={() => onDeleteRow(idx)}>
+                <DeleteIcon color="error" />
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
+
+// Asset Pie Chart Component
+const AssetPieChart = ({ data }) => (
+  <div style={{ height: 400 }}>
     <ResponsivePie
       data={data.map((asset) => ({
         id: asset.type,
-        label: asset.band,
+        label: asset.type,
         value: asset.targetAllocation,
       }))}
       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -172,7 +176,7 @@ const AssetPieChart = ({ data }: { data: any[] }) => (
       padAngle={0.7}
       cornerRadius={3}
       activeOuterRadiusOffset={8}
-      colors={{ scheme: 'set3' }}
+      colors={{ scheme: 'nivo' }}
       borderWidth={1}
       borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
       arcLinkLabelsSkipAngle={10}
@@ -185,6 +189,7 @@ const AssetPieChart = ({ data }: { data: any[] }) => (
   </div>
 );
 
+// Main Asset Allocation Component
 const AssetAllocationComponent = () => {
   const [tableData, setTableData] = useState([
     { type: 'Bonds', band: '0-24%', targetAllocation: 40, targetNetReturn: 5 },
@@ -195,15 +200,15 @@ const AssetAllocationComponent = () => {
     { type: 'Stocks', band: '25-50%', sharpeRatioTarget: '1.2' }
   ]);
 
-  const handleDataChange = (idx: string | number, field: string | number, value: any) => {
-    const updatedData: typeof tableData = [...tableData];
-    (updatedData[Number(idx)] as any)[field as keyof typeof updatedData[0]] = value;
+  const handleDataChange = (idx, field, value) => {
+    const updatedData = [...tableData];
+    updatedData[idx][field] = value;
     setTableData(updatedData);
   };
 
-  const handleSharpeRatioChange = (index: string | number, field: string | number, value: any) => {
-    const updatedData: typeof sharpeRatioData = [...sharpeRatioData];
-    (updatedData[Number(index)] as any)[field as keyof typeof updatedData[0]] = value;
+  const handleSharpeRatioChange = (idx, field, value) => {
+    const updatedData = [...sharpeRatioData];
+    updatedData[idx][field] = value;
     setSharpeRatioData(updatedData);
   };
 
@@ -215,25 +220,31 @@ const AssetAllocationComponent = () => {
     setSharpeRatioData(currentData => [...currentData, { type: '', band: '', sharpeRatioTarget: '' }]);
   };
 
-  const deleteAssetRow = (idx: number) => {
+  const deleteAssetRow = (idx) => {
     setTableData(currentData => currentData.filter((_, index) => index !== idx));
   };
 
-  const deleteSharpeRatioRow = (idx: number) => {
+  const deleteSharpeRatioRow = (idx) => {
     setSharpeRatioData(currentData => currentData.filter((_, index) => index !== idx));
   };
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <h1 className="text-4xl font-bold text-gray-900 mb-12 text-center">Asset Allocation</h1>
-      <button onClick={addAssetRow} className="mr-5">Add Asset Row</button>
-  <button onClick={addSharpeRatioRow}>Add Sharpe Ratio Row</button>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <Button startIcon={<AddCircleOutlineIcon />} onClick={addAssetRow} variant="contained" color="primary" style={{ marginRight: 10 }}>
+        Add Asset Row
+      </Button>
+      <Button startIcon={<AddCircleOutlineIcon />} onClick={addSharpeRatioRow} variant="contained" color="primary">
+        Add Sharpe Ratio Row
+      </Button>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-8">
         <div>
           <AssetTable data={tableData} onDataChange={handleDataChange} onDeleteRow={deleteAssetRow} />
           <AssetPieChart data={tableData} />
         </div>
-        <SharpeRatioTable data={sharpeRatioData} onDataChange={handleSharpeRatioChange} onDeleteRow={deleteSharpeRatioRow} />
+        <div>
+          <SharpeRatioTable data={sharpeRatioData} onDataChange={handleSharpeRatioChange} onDeleteRow={deleteSharpeRatioRow} />
+        </div>
       </div>
     </div>
   );
