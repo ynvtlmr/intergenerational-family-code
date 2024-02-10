@@ -31,8 +31,20 @@ const FamilyGarden = () => {
   };
 
   const handleBeginAmountChange = (id, newAmount) => {
-    const formattedAmount = formatCurrencyInput(newAmount);
-    setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: formattedAmount } : person));
+    const numbersOnly = newAmount.replace(/[^0-9.]/g, '');
+    const numericValue = parseFloat(numbersOnly);
+    if (!isNaN(numericValue) && numericValue < Number.MAX_SAFE_INTEGER) {
+      const formattedAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0, 
+        maximumFractionDigits: 0,
+      }).format(numericValue);
+  
+      setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: formattedAmount } : person));
+    } else {
+      setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: '' } : person));
+    }
   };
 
   const handleNameChange = (id, newName) => {
