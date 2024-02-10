@@ -13,8 +13,15 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.4",
+<<<<<<< HEAD
     "@nivo/pie": "^0.84.0",
+=======
+    "@mui/icons-material": "^5.15.9",
+    "@mui/material": "^5.15.9",
+>>>>>>> 73b0cd30659d0e073977d4180f1348840487b678
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
