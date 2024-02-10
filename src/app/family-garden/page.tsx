@@ -92,7 +92,7 @@ const FamilyGarden = () => {
 
   const generateAges = (beginAge) => {
     const ages:number[] = [];
-    for (let age = beginAge; age <= 120; age += 10) {
+    for (let age = beginAge; age <= 110; age += 10) {
       ages.push(age);
     }
     return ages;
