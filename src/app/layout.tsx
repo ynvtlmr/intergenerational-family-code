@@ -23,7 +23,7 @@ export default function RootLayout({
         <div className="flex">
           <NavBar />
           <Provider>
-            <div className="flex-1">{children}P</div>
+            <div className="flex-1">{children}</div>
           </Provider>
         </div>
         <Toaster />
