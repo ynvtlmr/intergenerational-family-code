@@ -136,13 +136,13 @@ export default function FamilyTreeFlow() {
         nodeOrigin={[0.5, 0]}
       >
         <Panel
-          className="divide-x rounded border bg-background px-3 py-1 shadow-xl"
+          className="divide-x rounded border bg-background py-1 shadow-xl"
           position="top-right"
         >
-          <button className="pr-2" onClick={onSave}>
+          <button className="px-3" onClick={onSave}>
             save
           </button>
-          <button className="pl-2" onClick={onRestore}>
+          <button className="px-3" onClick={onRestore}>
             restore
           </button>
         </Panel>
