@@ -12,8 +12,14 @@
     "cypress:run": "cypress run"
   },
   "dependencies": {
+    "primeicons": "^6.0.1",
+    "primereact": "^10.3.3",
     "@headlessui/react": "^1.7.18",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.4",
+    "@mui/icons-material": "^5.15.9",
+    "@mui/material": "^5.15.9",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
