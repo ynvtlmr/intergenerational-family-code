@@ -61,6 +61,7 @@ export default function FamilyTreeFlow() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
+        fitViewOptions={{ padding: 2 }}
       >
         <Panel
           className="rounded border bg-background px-3 py-1 shadow-xl"
