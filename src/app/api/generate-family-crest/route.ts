@@ -1,13 +1,19 @@
-"use server";
-
-import { FormSchema } from "./family-crest-form";
+import { NextResponse } from "next/server";
 import OpenAI from "openai";
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Set the runtime to edge for best performance
-export const runtime = "edge";
+const openai = new OpenAI();
 
-export async function generateCrest(family: FormSchema) {
+type Family = {
+  name: string;
+  symbol: string;
+  color: string;
+  motto?: string;
+  animal?: string;
+  details?: string;
+};
+
+export async function POST(request: Request) {
+  const family: Family = await request.json();
   let prompt =
     ` A family crest for the ${family.name}. ` +
     ` Please do not generate text of any kind, Instead add a place for text to be inserted.` +
@@ -28,5 +34,5 @@ export async function generateCrest(family: FormSchema) {
     model: "dall-e-3",
   });
 
-  return res.data[0].url;
+  return NextResponse.json({ url: res.data[0].url });
 }
