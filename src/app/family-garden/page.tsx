@@ -11,7 +11,7 @@ const FamilyGarden = () => {
     { id: 2, name: '', beginAmount: '', beginAge: 60 },
   ]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [personToDelete, setPersonToDelete] = useState(null);
+  const [personToDelete, setPersonToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
@@ -20,17 +20,18 @@ const FamilyGarden = () => {
     };
   }, []);
 
-  const handleGrowthRateChange = (e) => {
+  const handleGrowthRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rate = parseFloat(e.target.value) / 100;
     setGrowthRate(rate);
   };
 
-  const formatCurrencyInput = (inputValue) => {
+  const formatCurrencyInput = (inputValue: string) => {
     const numbersOnly = inputValue.replace(/[^0-9]/g, '');
     return numbersOnly ? `$${parseInt(numbersOnly, 10).toLocaleString()}` : '';
   };
+  
 
-  const handleBeginAmountChange = (id, newAmount) => {
+  const handleBeginAmountChange = (id: number, newAmount: string) => {
     const numbersOnly = newAmount.replace(/[^0-9.]/g, '');
     const numericValue = parseFloat(numbersOnly);
     if (!isNaN(numericValue) && numericValue < Number.MAX_SAFE_INTEGER) {
@@ -47,11 +48,12 @@ const FamilyGarden = () => {
     }
   };
 
-  const handleNameChange = (id, newName) => {
+  const handleNameChange = (id: number, newName: string) => {
     setPeople(prev => prev.map(person => person.id === id ? { ...person, name: newName } : person));
   };
+  
 
-  const handleBeginAgeChange = (id, newAge) => {
+  const handleBeginAgeChange = (id:number, newAge:string) => {
     const age = parseInt(newAge, 10);
     const validAge = !isNaN(age) ? age : '';
     setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAge: parseInt(validAge.toString(), 10) } : person));
@@ -63,10 +65,11 @@ const FamilyGarden = () => {
     setPeople([...people, { id: newId, name: '', beginAmount: '', beginAge: 30 }]);
   };
 
-  const handleDialogOpen = (personId) => {
+  const handleDialogOpen = (personId: number) => {
     setOpenDialog(true);
     setPersonToDelete(personId);
   };
+  
 
   const handleDialogClose = () => {
     setOpenDialog(false);
@@ -79,18 +82,18 @@ const FamilyGarden = () => {
     }
   };
 
-  const calculateGrowth = (initialAmount, years) => {
+  const calculateGrowth = (initialAmount:string, years:number) => {
     const amount = parseFloat(initialAmount.replace(/[$,]/g, '')) || 0;
     return `$${(amount * Math.pow(1 + growthRate, years)).toFixed(2)}`;
   };
 
-  const calculateTaxCoverage = (growthAmount) => {
+  const calculateTaxCoverage = (growthAmount:string) => {
     const amount = parseFloat(growthAmount.replace(/[$,]/g, ''));
     const tax = amount * 0.25;
     return `$${tax.toFixed(2)}`;
   };
 
-  const generateAges = (beginAge) => {
+  const generateAges = (beginAge:number) => {
     const ages:number[] = [];
     for (let age = beginAge; age <= 110; age += 10) {
       ages.push(age);
@@ -98,7 +101,7 @@ const FamilyGarden = () => {
     return ages;
   };
 
-  const yearsSinceBegin = (age, beginAge) => age - beginAge;
+  const yearsSinceBegin = (age:number, beginAge:number) => age - beginAge;
 
   return (
     <Container>
