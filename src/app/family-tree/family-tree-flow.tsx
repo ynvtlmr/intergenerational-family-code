@@ -21,7 +21,6 @@ const initialNodes = [
     id: "1",
     data: { label: "Hello" },
     position: { x: 0, y: 0 },
-    type: "input",
     style: { backgroundColor: "#9ad3f6" },
   },
   {
