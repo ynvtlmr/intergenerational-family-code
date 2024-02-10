@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI();
@@ -12,7 +13,7 @@ type Family = {
 };
 
 export async function POST(request: Request) {
-  const { family }: { family: Family } = await request.json();
+  const family: Family = await request.json();
   let prompt =
     ` A family crest for the ${family.name}. ` +
     ` Please do not generate text of any kind, Instead add a place for text to be inserted.` +
@@ -33,5 +34,5 @@ export async function POST(request: Request) {
     model: "dall-e-3",
   });
 
-  return res.data[0].url;
+  return NextResponse.json({ url: res.data[0].url });
 }
