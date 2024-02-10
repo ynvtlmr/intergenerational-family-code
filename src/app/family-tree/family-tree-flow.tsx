@@ -11,10 +11,12 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
   OnConnectStartParams,
+  OnInit,
+  ReactFlowInstance,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const initialNodes = [
   {
@@ -33,7 +35,7 @@ export default function FamilyTreeFlow() {
   const connectingNodeId = useRef<string | null>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, setViewport, toObject } = useReactFlow();
 
   const onConnect = useCallback(
     (params: Edge | Connection) => {
@@ -96,6 +98,27 @@ export default function FamilyTreeFlow() {
     [setNodes, setEdges, screenToFlowPosition]
   );
 
+  const onSave = useCallback(() => {
+    // creates a JSON-compatible representation of the flow
+    const flow = toObject();
+    localStorage.setItem("family-tree", JSON.stringify(flow));
+  }, [toObject]);
+
+  const onRestore = useCallback(() => {
+    const restoreFlow = async () => {
+      const data = localStorage.getItem("family-tree");
+      const flow = data ? JSON.parse(data) : null;
+      if (flow) {
+        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+        setNodes(flow.nodes || []);
+        setEdges(flow.edges || []);
+        setViewport({ x, y, zoom });
+      }
+    };
+
+    restoreFlow();
+  }, [setNodes, setEdges, setViewport]);
+
   return (
     <div
       className="h-full grow"
@@ -115,10 +138,15 @@ export default function FamilyTreeFlow() {
         nodeOrigin={[0.5, 0]}
       >
         <Panel
-          className="rounded border bg-background px-3 py-1 shadow-xl"
-          position="top-left"
+          className="divide-x rounded border bg-background px-3 py-1 shadow-xl"
+          position="top-right"
         >
-          Family Tree
+          <button className="pr-2" onClick={onSave}>
+            save
+          </button>
+          <button className="pl-2" onClick={onRestore}>
+            restore
+          </button>
         </Panel>
         <Background />
         <Controls />
