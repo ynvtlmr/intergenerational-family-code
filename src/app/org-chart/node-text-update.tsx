@@ -1,5 +1,6 @@
 "use client";
-import { Divide } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 import { useCallback } from "react";
 import { Handle, Position } from "reactflow";
 
@@ -20,18 +21,28 @@ export default function TextUpdaterNode({
     console.log(event.target.value);
   }, []);
 
+  const handleClick = () => {
+    console.log("clicked");
+  };
+
   return (
-    <div className="h-12 rounded-md border border-gray-200 bg-white p-1 ">
-      <Handle
-        type="target"
-        position={Position.Top}
-        isConnectable={isConnectable}
-      />
-      <div>
-        <label htmlFor="text" className="block text-xs text-gray-500">
+    <div className="h-18 rounded-md border border-gray-200 bg-white p-1 ">
+      <div className=" flex items-center space-x-2">
+        <label htmlFor="text" className="text-xs text-gray-500">
           Text:
         </label>
-        <input id="text" name="text" onChange={onChange} className="" />
+        <input
+          id="text"
+          name="text"
+          onChange={onChange}
+          className="rounded border-2 border-gray-300 p-1 text-xs"
+        />
+        <Button
+          onClick={handleClick}
+          className="rounded bg-black p-1 text-xs text-white"
+        >
+          create Node
+        </Button>
       </div>
       <Handle
         type="source"

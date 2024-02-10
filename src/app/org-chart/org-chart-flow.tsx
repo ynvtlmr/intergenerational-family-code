@@ -10,7 +10,6 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   useReactFlow,
-  MiniMap,
   OnConnectStartParams,
 } from "reactflow";
 import "reactflow/dist/style.css";
@@ -19,7 +18,7 @@ import TextUpdaterNode from "./node-text-update";
 const initialNodes = [
   {
     id: "0",
-    type: "input",
+    type: "textUpdater",
     data: { label: "Node" },
     position: { x: 0, y: 50 },
   },
@@ -84,7 +83,7 @@ export default function OrgChartFlow() {
 
         setNodes((nds) => nds.concat(newNode));
         setEdges((eds) =>
-          eds.concat({ id, source: connectingNodeId.current, target: id })
+          eds.concat({ id, source: connectingNodeId.current!, target: id })
         );
       }
     },
@@ -105,7 +104,6 @@ export default function OrgChartFlow() {
         onConnectEnd={onConnectEnd}
         fitView
       >
-        <MiniMap nodeStrokeWidth={3} />
         <Background />
         <Controls />
       </ReactFlow>
