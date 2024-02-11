@@ -54,11 +54,13 @@ export function useAddNodeOnEdgeDrop(
         const id = getId();
         const newNode = {
           id,
+          type: "customNode",
           position: screenToFlowPosition({
             x: event.clientX,
             y: event.clientY,
           }),
           data: { label: `Node ${id}` },
+          style: { backgroundColor: "#9ad3f6", borderRadius: "4px" },
           origin: [0.5, 0.0],
         };
 

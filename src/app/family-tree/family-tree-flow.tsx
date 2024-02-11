@@ -19,7 +19,7 @@ const initialNodes = [
     type: "customNode",
     data: { label: "Hello" },
     position: { x: 0, y: 0 },
-    style: { backgroundColor: "#9ad3f6" },
+    style: { backgroundColor: "#9ad3f6", borderRadius: "4px" },
   },
 ];
 
