@@ -11,15 +11,19 @@ import "reactflow/dist/style.css";
 
 import { useRef } from "react";
 import { useAddNodeOnEdgeDrop, useSaveAndRestore } from "./hooks";
+import FamilyTreeIndividualNode from "./family-tree-individual-node";
 
 const initialNodes = [
   {
     id: "0",
+    type: "customNode",
     data: { label: "Hello" },
     position: { x: 0, y: 0 },
     style: { backgroundColor: "#9ad3f6" },
   },
 ];
+
+const nodeTypes = { customNode: FamilyTreeIndividualNode };
 
 let id = 1;
 const getId = () => `${id++}`;
@@ -49,6 +53,7 @@ export default function FamilyTreeFlow() {
         onConnect={onConnect}
         onConnectStart={onConnectStart}
         onConnectEnd={onConnectEnd}
+        nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{ padding: 2 }}
         nodeOrigin={[0.5, 0]}
