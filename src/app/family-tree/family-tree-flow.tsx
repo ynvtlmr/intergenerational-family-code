@@ -13,17 +13,22 @@ import { useRef } from "react";
 import { useAddNodeOnEdgeDrop, useSaveAndRestore } from "./hooks";
 import FamilyTreeIndividualNode from "./family-tree-individual-node";
 
-const initialNodes = [
+export const nodeData = {
+  label: "Hello",
+};
+
+export const initialNodes = [
   {
     id: "0",
     type: "customNode",
-    data: { label: "Hello" },
+    data: nodeData,
     position: { x: 0, y: 0 },
     style: { backgroundColor: "#9ad3f6", borderRadius: "4px" },
+    origin: [0.5, 0.0],
   },
 ];
 
-const nodeTypes = { customNode: FamilyTreeIndividualNode };
+export const nodeTypes = { customNode: FamilyTreeIndividualNode };
 
 let id = 1;
 const getId = () => `${id++}`;

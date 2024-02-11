@@ -1,16 +1,18 @@
 import { useCallback } from "react";
 import { Handle, HandleProps, Node, Position } from "reactflow";
+import type { NodeData } from "./types";
 
 export default function FamilyTreeIndividualNode({
   data,
   isConnectable,
 }: {
-  data: Node["data"];
+  data: NodeData;
   isConnectable: HandleProps["isConnectable"];
 }) {
   const onChange = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
     console.log(evt.target.value);
   }, []);
+  const { label } = data;
 
   return (
     <div className="rounded-lg p-5">
@@ -21,7 +23,7 @@ export default function FamilyTreeIndividualNode({
       />
       <div>
         <label htmlFor="text" className="block">
-          Text:
+          {label}
         </label>
         <input id="text" name="text" onChange={onChange} />
       </div>

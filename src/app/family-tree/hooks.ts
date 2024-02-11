@@ -9,6 +9,7 @@ import {
 
 import { Dispatch, SetStateAction, useCallback, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { IndividualNode } from "./types";
 
 export function useAddNodeOnEdgeDrop(
   setEdges: Dispatch<SetStateAction<Edge<any>[]>>,
@@ -52,7 +53,7 @@ export function useAddNodeOnEdgeDrop(
       if (targetIsPane) {
         // we need to remove the wrapper bounds, in order to get the correct position
         const id = getId();
-        const newNode = {
+        const newNode: IndividualNode = {
           id,
           type: "customNode",
           position: screenToFlowPosition({
