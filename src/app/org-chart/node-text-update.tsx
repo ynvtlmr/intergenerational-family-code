@@ -1,8 +1,14 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { Handle, Position } from "reactflow";
 
 import { useCallback } from "react";
-import { Handle, Position } from "reactflow";
+import { Button } from "@/components/ui/button";
+
 import CreateNodeDialog from "./create-node-dialog";
 
 interface TextUpdaterNodeProps {
@@ -14,6 +20,10 @@ interface handleStyle {
 }
 
 const handleStyle = { left: 30 };
+
+const formSchema = z.object({
+  title: z.string().min(2).max(50),
+});
 
 export default function TextUpdaterNode({
   isConnectable,
@@ -30,7 +40,7 @@ export default function TextUpdaterNode({
     <div className="h-18 rounded-md border border-gray-200 bg-white p-1 ">
       <div className=" flex items-center space-x-2">
         <label htmlFor="text" className="text-xs text-gray-500">
-          Text:
+          Create:
         </label>
         <input
           id="text"
@@ -40,6 +50,14 @@ export default function TextUpdaterNode({
         />
         <CreateNodeDialog />
       </div>
+      <div className=" flex w-full items-center "></div>
+      <Button
+        onClick={handleClick}
+        className="flex w-full items-center rounded bg-black p-2 text-white"
+      >
+        Add
+      </Button>
+
       <Handle
         type="source"
         position={Position.Bottom}
