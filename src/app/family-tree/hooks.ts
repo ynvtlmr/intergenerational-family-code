@@ -60,7 +60,7 @@ export function useAddNodeOnEdgeDrop(
             x: event.clientX,
             y: event.clientY,
           }),
-          data: { label: `Node ${id}` },
+          data: { name: "", surname: "", dateOfBirth: "", placeOfBirth: "" },
           style: { backgroundColor: "#9ad3f6", borderRadius: "4px" },
           origin: [0.5, 0.0],
         };
