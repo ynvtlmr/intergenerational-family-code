@@ -14,7 +14,10 @@ import { useAddNodeOnEdgeDrop, useSaveAndRestore } from "./hooks";
 import FamilyTreeIndividualNode from "./family-tree-individual-node";
 
 export const nodeData = {
-  label: "Hello",
+  name: "",
+  surname: "",
+  dateOfBirth: "",
+  placeOfBirth: "",
 };
 
 export const initialNodes = [
