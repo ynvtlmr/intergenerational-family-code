@@ -1,20 +1,13 @@
-import {
-  Connection,
-  Node,
-  Edge,
-  OnConnectStartParams,
-  addEdge,
-  useReactFlow,
-} from "reactflow";
+import { addEdge, useReactFlow } from "reactflow";
+import type { Connection, Node, Edge, OnConnectStartParams } from "reactflow";
 
 import { Dispatch, SetStateAction, useCallback, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { IndividualNode } from "./types";
+import { IndividualNode, NodeData } from "./types";
 
 export function useAddNodeOnEdgeDrop(
   setEdges: Dispatch<SetStateAction<Edge<any>[]>>,
-  setNodes: Dispatch<SetStateAction<Node<any, string | undefined>[]>>,
-  getId: () => string
+  setNodes: Dispatch<SetStateAction<Node<NodeData, string | undefined>[]>>
 ) {
   const connectingNodeId = useRef<string | null>(null);
   const { screenToFlowPosition } = useReactFlow();
@@ -52,7 +45,7 @@ export function useAddNodeOnEdgeDrop(
       const targetIsPane = event.target.classList.contains("react-flow__pane");
       if (targetIsPane) {
         // we need to remove the wrapper bounds, in order to get the correct position
-        const id = getId();
+        const id = crypto.randomUUID();
         const newNode: IndividualNode = {
           id,
           type: "customNode",
@@ -60,12 +53,22 @@ export function useAddNodeOnEdgeDrop(
             x: event.clientX,
             y: event.clientY,
           }),
-          data: { name: "", surname: "", dateOfBirth: "", placeOfBirth: "" },
-          style: { backgroundColor: "#9ad3f6", borderRadius: "4px" },
+          data: {
+            name: "",
+            surname: "",
+            dateOfBirth: "",
+            placeOfBirth: "",
+            gender: "Male",
+            genderColor: {
+              Male: "#9ad3f6",
+              Female: "#f6bfba",
+            },
+          },
+          style: { borderRadius: "4px" },
           origin: [0.5, 0.0],
         };
 
-        setNodes((nds) => nds.concat(newNode));
+        setNodes((nds: Node<NodeData>[]) => nds.concat(newNode));
 
         setEdges((eds) => {
           // if we are not connecting a node, we don't need to create an edge
@@ -79,7 +82,7 @@ export function useAddNodeOnEdgeDrop(
         });
       }
     },
-    [setNodes, setEdges, screenToFlowPosition, getId]
+    [setNodes, setEdges, screenToFlowPosition]
   );
 
   return {
@@ -90,7 +93,7 @@ export function useAddNodeOnEdgeDrop(
 }
 
 export function useSaveAndRestore(
-  setNodes: Dispatch<SetStateAction<Node<any, string | undefined>[]>>,
+  setNodes: Dispatch<SetStateAction<Node<NodeData, string | undefined>[]>>,
   setEdges: Dispatch<SetStateAction<Edge<any>[]>>
 ) {
   const { setViewport, toObject } = useReactFlow();

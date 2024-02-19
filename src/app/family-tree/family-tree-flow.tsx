@@ -12,29 +12,32 @@ import "reactflow/dist/style.css";
 import { useRef } from "react";
 import { useAddNodeOnEdgeDrop, useSaveAndRestore } from "./hooks";
 import FamilyTreeIndividualNode from "./family-tree-individual-node";
+import type { IndividualNode, NodeData, NodeTypes } from "./types";
 
-export const nodeData = {
+const nodeData: NodeData = {
   name: "",
   surname: "",
   dateOfBirth: "",
   placeOfBirth: "",
+  gender: "Male",
+  genderColor: {
+    Male: "#9ad3f6",
+    Female: "#ffcdcd",
+  },
 };
 
-export const initialNodes = [
+const initialNodes: IndividualNode[] = [
   {
     id: "0",
     type: "customNode",
     data: nodeData,
     position: { x: 0, y: 0 },
-    style: { backgroundColor: "#9ad3f6", borderRadius: "4px" },
+    style: { borderRadius: "4px" },
     origin: [0.5, 0.0],
   },
 ];
 
-export const nodeTypes = { customNode: FamilyTreeIndividualNode };
-
-let id = 1;
-const getId = () => `${id++}`;
+const nodeTypes: NodeTypes = { customNode: FamilyTreeIndividualNode };
 
 export default function FamilyTreeFlow() {
   const reactFlowWrapper = useRef(null);
@@ -42,8 +45,7 @@ export default function FamilyTreeFlow() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { onConnect, onConnectStart, onConnectEnd } = useAddNodeOnEdgeDrop(
     setEdges,
-    setNodes,
-    getId
+    setNodes
   );
   const { onSave, onRestore } = useSaveAndRestore(setNodes, setEdges);
 
