@@ -11,7 +11,7 @@ export default function FamilyTreeIndividualNode({
   data: NodeData;
   isConnectable: HandleProps["isConnectable"];
 }) {
-  const { setNodes } = useReactFlow();
+  const { setNodes, toObject } = useReactFlow();
   const { name, surname, dateOfBirth, placeOfBirth } = data;
 
   const onChange = useCallback(
@@ -30,8 +30,11 @@ export default function FamilyTreeIndividualNode({
           };
         })
       );
+      // creates a JSON-compatible representation of the flow and saves it to local storage
+      const flow = toObject();
+      localStorage.setItem("family-tree", JSON.stringify(flow));
     },
-    [setNodes, id]
+    [setNodes, id, toObject]
   );
 
   return (
