@@ -22,7 +22,7 @@ const nodeData: NodeData = {
   gender: "Male",
   genderColor: {
     Male: "#9ad3f6",
-    Female: "#ffcdcd",
+    Female: "#f6bfba",
   },
 };
 
