@@ -1,4 +1,5 @@
-import { useCallback } from "react";
+import { useDebouncedCallback } from "use-debounce";
+
 import { Handle, HandleProps, Position, useReactFlow } from "reactflow";
 import type { IndividualNode, NodeData } from "./types";
 
@@ -14,7 +15,7 @@ export default function FamilyTreeIndividualNode({
   const { setNodes, toObject } = useReactFlow();
   const { name, surname, dateOfBirth, placeOfBirth } = data;
 
-  const onChange = useCallback(
+  const onChange = useDebouncedCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       const inputField = evt.target.name;
       const inputValue = evt.target.value;
@@ -34,7 +35,7 @@ export default function FamilyTreeIndividualNode({
       const flow = toObject();
       localStorage.setItem("family-tree", JSON.stringify(flow));
     },
-    [setNodes, id, toObject]
+    300
   );
 
   return (
