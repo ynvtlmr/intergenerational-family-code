@@ -66,6 +66,7 @@ export default function FamilyTreeFlow() {
         nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{ padding: 2 }}
+        defaultEdgeOptions={{ type: "smoothstep" }}
         nodeOrigin={[0.5, 0]}
       >
         <Panel
