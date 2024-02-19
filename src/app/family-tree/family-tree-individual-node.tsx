@@ -1,18 +1,38 @@
 import { useCallback } from "react";
-import { Handle, HandleProps, Position } from "reactflow";
-import type { NodeData } from "./types";
+import { Handle, HandleProps, Position, useReactFlow } from "reactflow";
+import type { IndividualNode, NodeData } from "./types";
 
 export default function FamilyTreeIndividualNode({
+  id,
   data,
   isConnectable,
 }: {
+  id: IndividualNode["id"];
   data: NodeData;
   isConnectable: HandleProps["isConnectable"];
 }) {
-  const onChange = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(evt.target.value);
-  }, []);
-  const { label } = data;
+  const { setNodes } = useReactFlow();
+  const { name, surname, dateOfBirth, placeOfBirth } = data;
+
+  const onChange = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      const inputField = evt.target.name;
+      const inputValue = evt.target.value;
+      setNodes((nodes) =>
+        nodes.map((node) => {
+          if (node.id !== id) return node;
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              [inputField]: inputValue,
+            },
+          };
+        })
+      );
+    },
+    [setNodes, id]
+  );
 
   return (
     <div className="rounded-lg p-5">
@@ -24,27 +44,32 @@ export default function FamilyTreeIndividualNode({
 
       <div className="grid grid-cols-2 gap-5">
         <input
-          contentEditable
           className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
-          name="firstName"
+          name="name"
           placeholder="Name"
+          defaultValue={name}
           onChange={onChange}
         />
         <input
-          contentEditable
           className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
           name="surname"
           placeholder="Surname"
+          defaultValue={surname}
+          onChange={onChange}
         />
         <input
           className="min-w-6 bg-transparent text-xs placeholder:text-[#eaf7ff] focus:outline-none"
           name="dateOfBirth"
           placeholder="Date of Birth"
+          defaultValue={dateOfBirth}
+          onChange={onChange}
         />
         <input
           className="min-w-6 bg-transparent text-xs placeholder:text-[#eaf7ff] focus:outline-none"
           name="placeOfBirth"
           placeholder="Place of Birth"
+          defaultValue={placeOfBirth}
+          onChange={onChange}
         />
       </div>
 
