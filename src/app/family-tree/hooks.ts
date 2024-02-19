@@ -1,8 +1,8 @@
 import { addEdge, useReactFlow } from "reactflow";
 import type { Connection, Node, Edge, OnConnectStartParams } from "reactflow";
+import { toast } from "sonner";
 
 import { Dispatch, SetStateAction, useCallback, useRef } from "react";
-import { useToast } from "@/components/ui/use-toast";
 import { IndividualNode, NodeData } from "./types";
 
 export function useAddNodeOnEdgeDrop(
@@ -97,14 +97,13 @@ export function useSaveAndRestore(
   setEdges: Dispatch<SetStateAction<Edge<any>[]>>
 ) {
   const { setViewport, toObject } = useReactFlow();
-  const { toast } = useToast();
 
   const onSave = useCallback(() => {
     // creates a JSON-compatible representation of the flow
     const flow = toObject();
     localStorage.setItem("family-tree", JSON.stringify(flow));
-    toast({ title: "Your flow has been saved." });
-  }, [toObject, toast]);
+    toast.success("Your flow has been saved.");
+  }, [toObject]);
 
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
