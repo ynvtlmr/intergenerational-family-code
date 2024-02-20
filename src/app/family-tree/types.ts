@@ -1,4 +1,4 @@
-import { NodeProps } from "reactflow";
+import { Node, NodeProps } from "reactflow";
 
 export type NodeData = {
   name: string;
@@ -12,13 +12,9 @@ export type NodeData = {
   };
 };
 
-export type IndividualNode = {
-  id: string;
-  type: keyof NodeTypes;
-  position: { x: number; y: number };
-  data: NodeData;
-  style: React.CSSProperties;
-  origin: [number, number];
-};
+export type IndividualNode = Node<NodeData, "customNode" | "customJunction">;
 
-export type NodeTypes = { customNode: React.ComponentType<NodeProps> };
+export type NodeTypes = {
+  customNode: React.ComponentType<NodeProps>;
+  customJunction: React.ComponentType<NodeProps>;
+};
