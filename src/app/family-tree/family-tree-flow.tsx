@@ -10,8 +10,13 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 
 import { useRef } from "react";
-import { useAddNodeOnEdgeDrop, useSaveAndRestore } from "./hooks";
+import {
+  useAddNewNode,
+  useAddNodeOnEdgeDrop,
+  useSaveAndRestore,
+} from "./hooks";
 import FamilyTreeIndividualNode from "./family-tree-individual-node";
+import FamilyTreeCustomJunctionNode from "./family-tree-custom-junction-node";
 import type { IndividualNode, NodeData, NodeTypes } from "./types";
 
 const nodeData: NodeData = {
@@ -33,11 +38,13 @@ const initialNodes: IndividualNode[] = [
     data: nodeData,
     position: { x: 0, y: 0 },
     style: { borderRadius: "4px" },
-    origin: [0.5, 0.0],
   },
 ];
 
-const nodeTypes: NodeTypes = { customNode: FamilyTreeIndividualNode };
+const nodeTypes: NodeTypes = {
+  customNode: FamilyTreeIndividualNode,
+  customJunction: FamilyTreeCustomJunctionNode,
+};
 
 export default function FamilyTreeFlow() {
   const reactFlowWrapper = useRef(null);
@@ -47,7 +54,30 @@ export default function FamilyTreeFlow() {
     setEdges,
     setNodes
   );
-  const { onSave, onRestore, onAdd } = useSaveAndRestore(setNodes, setEdges);
+  const { onSave, onRestore } = useSaveAndRestore(setNodes, setEdges);
+  const { onAdd } = useAddNewNode(
+    {
+      id: crypto.randomUUID(),
+      type: "customNode",
+      position: {
+        x: Math.random() * window.innerWidth - 100,
+        y: Math.random() * window.innerHeight,
+      },
+      data: {
+        name: "",
+        surname: "",
+        dateOfBirth: "",
+        placeOfBirth: "",
+        gender: "Male",
+        genderColor: {
+          Male: "#9ad3f6",
+          Female: "#f6bfba",
+        },
+      },
+      style: { borderRadius: "4px" },
+    },
+    setNodes
+  );
 
   return (
     <div

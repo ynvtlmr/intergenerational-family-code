@@ -3,7 +3,7 @@ import type { Connection, Node, Edge, OnConnectStartParams } from "reactflow";
 import { toast } from "sonner";
 
 import { Dispatch, SetStateAction, useCallback, useRef } from "react";
-import { IndividualNode, NodeData } from "./types";
+import { IndividualNode, NodeData, NodeTypes } from "./types";
 
 export function useAddNodeOnEdgeDrop(
   setEdges: Dispatch<SetStateAction<Edge<any>[]>>,
@@ -65,7 +65,6 @@ export function useAddNodeOnEdgeDrop(
             },
           },
           style: { borderRadius: "4px" },
-          origin: [0.5, 0.0],
         };
 
         setNodes((nds: Node<NodeData>[]) => nds.concat(newNode));
@@ -120,34 +119,19 @@ export function useSaveAndRestore(
     restoreFlow();
   }, [setNodes, setEdges, setViewport]);
 
-  const onAdd = useCallback(() => {
-    const newNode: IndividualNode = {
-      id: crypto.randomUUID(),
-      type: "customNode",
-      position: {
-        x: Math.random() * window.innerWidth - 100,
-        y: Math.random() * window.innerHeight,
-      },
-      data: {
-        name: "",
-        surname: "",
-        dateOfBirth: "",
-        placeOfBirth: "",
-        gender: "Male",
-        genderColor: {
-          Male: "#9ad3f6",
-          Female: "#f6bfba",
-        },
-      },
-      style: { borderRadius: "4px" },
-      origin: [0.5, 0.0],
-    };
-    setNodes((nds) => nds.concat(newNode));
-  }, [setNodes]);
-
   return {
     onSave,
     onRestore,
-    onAdd,
   };
+}
+
+export function useAddNewNode(
+  newNode: IndividualNode,
+  setNodes: Dispatch<SetStateAction<Node<NodeData, string | undefined>[]>>
+) {
+  const onAdd = useCallback(() => {
+    setNodes((nds) => nds.concat(newNode));
+  }, [newNode, setNodes]);
+
+  return { onAdd };
 }
