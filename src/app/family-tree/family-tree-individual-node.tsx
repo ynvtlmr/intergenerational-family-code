@@ -1,4 +1,4 @@
-import { Handle, Position, useReactFlow } from "reactflow";
+import { Handle, Position, addEdge, useReactFlow } from "reactflow";
 import type { Node, NodeProps } from "reactflow";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -10,13 +10,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import CustomSideHandle from "./family-tree-custom-side-handle";
 
 export default function FamilyTreeIndividualNode({
   id,
   data,
   isConnectable,
 }: NodeProps<NodeData>) {
-  const { setNodes, toObject } = useReactFlow();
+  const { setNodes, setEdges, toObject } = useReactFlow();
   const { name, surname, dateOfBirth, placeOfBirth, gender, genderColor } =
     data;
 
@@ -71,15 +72,26 @@ export default function FamilyTreeIndividualNode({
           >
             <Handle
               type="target"
-              id="a"
+              id="top"
               position={Position.Top}
               isConnectable={isConnectable}
             />
-            <Handle
+            <CustomSideHandle
               type="target"
-              id="b"
+              id="left"
               position={Position.Left}
-              isConnectable={isConnectable}
+              isConnectable={true}
+              connectionLimit={1}
+              onConnect={(params) => {
+                if (params.sourceHandle === "right") {
+                  const edge = {
+                    ...params,
+                    type: "straight",
+                    sourceHandle: "right",
+                  };
+                  setEdges((edges) => addEdge(edge, edges));
+                }
+              }}
             />
 
             <div className="grid grid-cols-2 gap-5">
@@ -113,15 +125,26 @@ export default function FamilyTreeIndividualNode({
               />
             </div>
 
-            <Handle
+            <CustomSideHandle
               type="source"
-              id="c"
+              id="right"
               position={Position.Right}
-              isConnectable={isConnectable}
+              isConnectable={true}
+              connectionLimit={1}
+              onConnect={(params) => {
+                if (params.targetHandle === "left") {
+                  const edge = {
+                    ...params,
+                    type: "straight",
+                    targetHandle: "left",
+                  };
+                  setEdges((edges) => addEdge(edge, edges));
+                }
+              }}
             />
             <Handle
               type="source"
-              id="d"
+              id="bottom"
               position={Position.Bottom}
               isConnectable={isConnectable}
             />
