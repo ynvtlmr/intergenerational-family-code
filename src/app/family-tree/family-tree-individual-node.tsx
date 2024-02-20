@@ -1,9 +1,9 @@
 import { Handle, Position, useReactFlow } from "reactflow";
-import type { HandleProps, Node } from "reactflow";
+import type { Node, NodeProps } from "reactflow";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useCallback } from "react";
-import type { IndividualNode, NodeData } from "./types";
+import type { NodeData } from "./types";
 import {
   Tooltip,
   TooltipContent,
@@ -15,11 +15,7 @@ export default function FamilyTreeIndividualNode({
   id,
   data,
   isConnectable,
-}: {
-  id: IndividualNode["id"];
-  data: NodeData;
-  isConnectable: HandleProps["isConnectable"];
-}) {
+}: NodeProps<NodeData>) {
   const { setNodes, toObject } = useReactFlow();
   const { name, surname, dateOfBirth, placeOfBirth, gender, genderColor } =
     data;
@@ -75,7 +71,14 @@ export default function FamilyTreeIndividualNode({
           >
             <Handle
               type="target"
+              id="a"
               position={Position.Top}
+              isConnectable={isConnectable}
+            />
+            <Handle
+              type="target"
+              id="b"
+              position={Position.Left}
               isConnectable={isConnectable}
             />
 
@@ -112,6 +115,13 @@ export default function FamilyTreeIndividualNode({
 
             <Handle
               type="source"
+              id="c"
+              position={Position.Right}
+              isConnectable={isConnectable}
+            />
+            <Handle
+              type="source"
+              id="d"
               position={Position.Bottom}
               isConnectable={isConnectable}
             />
