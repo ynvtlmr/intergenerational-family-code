@@ -47,7 +47,7 @@ export default function FamilyTreeFlow() {
     setEdges,
     setNodes
   );
-  const { onSave, onRestore } = useSaveAndRestore(setNodes, setEdges);
+  const { onSave, onRestore, onAdd } = useSaveAndRestore(setNodes, setEdges);
 
   return (
     <div
@@ -78,6 +78,9 @@ export default function FamilyTreeFlow() {
           </button>
           <button className="px-3" onClick={onRestore}>
             restore
+          </button>
+          <button className="px-3" onClick={onAdd}>
+            add node
           </button>
         </Panel>
         <Background />

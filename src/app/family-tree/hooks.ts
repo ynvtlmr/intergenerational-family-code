@@ -120,8 +120,34 @@ export function useSaveAndRestore(
     restoreFlow();
   }, [setNodes, setEdges, setViewport]);
 
+  const onAdd = useCallback(() => {
+    const newNode: IndividualNode = {
+      id: crypto.randomUUID(),
+      type: "customNode",
+      position: {
+        x: Math.random() * window.innerWidth - 100,
+        y: Math.random() * window.innerHeight,
+      },
+      data: {
+        name: "",
+        surname: "",
+        dateOfBirth: "",
+        placeOfBirth: "",
+        gender: "Male",
+        genderColor: {
+          Male: "#9ad3f6",
+          Female: "#f6bfba",
+        },
+      },
+      style: { borderRadius: "4px" },
+      origin: [0.5, 0.0],
+    };
+    setNodes((nds) => nds.concat(newNode));
+  }, [setNodes]);
+
   return {
     onSave,
     onRestore,
+    onAdd,
   };
 }
