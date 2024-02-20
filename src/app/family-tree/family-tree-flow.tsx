@@ -78,6 +78,18 @@ export default function FamilyTreeFlow() {
     },
     setNodes
   );
+  const { onAdd: onAddJunction } = useAddNewNode(
+    {
+      id: crypto.randomUUID(),
+      type: "customJunction",
+      data: {},
+      position: {
+        x: Math.random() * window.innerWidth - 100,
+        y: Math.random() * window.innerHeight,
+      },
+    },
+    setNodes
+  );
 
   return (
     <div
@@ -111,6 +123,9 @@ export default function FamilyTreeFlow() {
           </button>
           <button className="px-3" onClick={onAdd}>
             add node
+          </button>
+          <button className="px-3" onClick={onAddJunction}>
+            add junction
           </button>
         </Panel>
         <Background />
