@@ -126,7 +126,7 @@ export function useSaveAndRestore(
 }
 
 export function useAddNewNode(
-  newNode: IndividualNode,
+  newNode: Node<any, "customNode" | "customJunction">,
   setNodes: Dispatch<SetStateAction<Node<NodeData, string | undefined>[]>>
 ) {
   const onAdd = useCallback(() => {
