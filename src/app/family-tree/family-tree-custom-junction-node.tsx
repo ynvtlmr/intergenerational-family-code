@@ -1,8 +1,6 @@
 import { useReactFlow, Position, addEdge, Handle } from "reactflow";
 import type { NodeProps } from "reactflow";
 
-import CustomSideHandle from "./family-tree-custom-side-handle";
-
 export default function FamilyTreeCustomJunctionNode({
   isConnectable,
 }: NodeProps) {
@@ -10,29 +8,27 @@ export default function FamilyTreeCustomJunctionNode({
 
   return (
     <div className="rounded-lg border-foreground bg-foreground p-4">
-      <CustomSideHandle
-        type="target"
+      <Handle
+        type="source"
         id="left"
         position={Position.Left}
-        isConnectable={true}
-        connectionLimit={2}
+        isConnectable={isConnectable}
         onConnect={(params) => {
-          if (params.sourceHandle === "right") {
+          if (params.targetHandle === "right") {
             const edge = {
               ...params,
               type: "straight",
-              sourceHandle: "right",
+              targetHandle: "right",
             };
             setEdges((edges) => addEdge(edge, edges));
           }
         }}
       />
-      <CustomSideHandle
+      <Handle
         type="source"
         id="right"
         position={Position.Right}
-        isConnectable={true}
-        connectionLimit={2}
+        isConnectable={isConnectable}
         onConnect={(params) => {
           if (params.targetHandle === "left") {
             const edge = {

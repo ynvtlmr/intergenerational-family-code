@@ -10,7 +10,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import CustomSideHandle from "./family-tree-custom-side-handle";
 
 export default function FamilyTreeIndividualNode({
   id,
@@ -76,12 +75,11 @@ export default function FamilyTreeIndividualNode({
               position={Position.Top}
               isConnectable={isConnectable}
             />
-            <CustomSideHandle
+            <Handle
               type="target"
               id="left"
               position={Position.Left}
               isConnectable={true}
-              connectionLimit={1}
               onConnect={(params) => {
                 if (params.sourceHandle === "right") {
                   const edge = {
@@ -125,28 +123,21 @@ export default function FamilyTreeIndividualNode({
               />
             </div>
 
-            <CustomSideHandle
-              type="source"
+            <Handle
+              type="target"
               id="right"
               position={Position.Right}
               isConnectable={true}
-              connectionLimit={1}
               onConnect={(params) => {
-                if (params.targetHandle === "left") {
+                if (params.sourceHandle === "left") {
                   const edge = {
                     ...params,
                     type: "straight",
-                    targetHandle: "left",
+                    sourceHandle: "left",
                   };
                   setEdges((edges) => addEdge(edge, edges));
                 }
               }}
-            />
-            <Handle
-              type="source"
-              id="bottom"
-              position={Position.Bottom}
-              isConnectable={isConnectable}
             />
           </div>
         </TooltipTrigger>
