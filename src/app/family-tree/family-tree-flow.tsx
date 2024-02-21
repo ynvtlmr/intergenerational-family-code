@@ -54,10 +54,9 @@ export default function FamilyTreeFlow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { getNode } = useReactFlow();
-  const { onConnect, onConnectStart, onConnectEnd } = useAddNodeOnEdgeDrop(
-    setEdges,
-    setNodes
-  );
+
+  // there are also onConnectStart and onConnectEnd for adding node on edge drop
+  const { onConnect } = useAddNodeOnEdgeDrop(setEdges, setNodes);
   const { onSave, onRestore } = useSaveAndRestore(setNodes, setEdges);
   const { onAdd } = useAddNewNode(
     {
@@ -176,8 +175,6 @@ export default function FamilyTreeFlow() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        onConnectStart={onConnectStart}
-        onConnectEnd={onConnectEnd}
         onNodeDrag={handleNodeDrag}
         nodeTypes={nodeTypes}
         fitView
