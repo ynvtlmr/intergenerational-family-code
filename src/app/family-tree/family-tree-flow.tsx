@@ -12,7 +12,7 @@ import ReactFlow, {
 import type { NodeDragHandler } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import {
   useAddNewNode,
   useAddNodeOnEdgeDrop,
@@ -114,48 +114,55 @@ export default function FamilyTreeFlow() {
    * @param node The dragged node.
    * @param nodes A list of family tree nodes.
    */
-  const handleNodeDrag: NodeDragHandler = (_, node, __) => {
-    // If the node is not of type "customJunction", return
-    // We only want to update the positions of the connected nodes for junction nodes
-    if (node.type !== "customJunction") return;
+  const handleNodeDrag: NodeDragHandler = useCallback(
+    (_, node, __) => {
+      // If the node is not of type "customJunction", return
+      // We only want to update the positions of the connected nodes for junction nodes
+      if (node.type !== "customJunction") return;
 
-    // Get the connected edges of the node
-    const connectedEdges = getConnectedEdges([node], edges);
+      // Get the connected edges of the node
+      const connectedEdges = getConnectedEdges([node], edges);
 
-    // Get the node IDs of the left and right connected nodes
-    const leftAndRightNodeIds = connectedEdges
-      .filter((edge) => edge.type === "straight")
-      .map((edge) => edge.target);
+      // Get the node IDs of the left and right connected nodes
+      const leftAndRightNodeIds = connectedEdges
+        .filter((edge) => edge.type === "straight")
+        .map((edge) => edge.target);
 
-    // Get the node objects of the left and right connected nodes
-    const [nodeOneId, nodeTwoId] = leftAndRightNodeIds;
-    const nodeOne = getNode(nodeOneId);
-    const nodeTwo = getNode(nodeTwoId);
+      // Get the node objects of the left and right connected nodes
+      const [nodeOneId, nodeTwoId] = leftAndRightNodeIds;
+      const nodeOne = getNode(nodeOneId);
+      const nodeTwo = getNode(nodeTwoId);
 
-    // Update the position of the first connected node
-    if (nodeOne) {
-      const newY = node.position.y - 34;
-      const updatedNodeOne = {
-        ...nodeOne,
-        position: { ...nodeOne.position, y: newY },
-      };
-      setNodes((prevNodes) =>
-        prevNodes.map((n) => (n.id === updatedNodeOne.id ? updatedNodeOne : n))
-      );
-    }
+      // Update the position of the first connected node
+      if (nodeOne) {
+        const newY = node.position.y - 34;
+        const updatedNodeOne = {
+          ...nodeOne,
+          position: { ...nodeOne.position, y: newY },
+        };
+        setNodes((prevNodes) =>
+          prevNodes.map((n) =>
+            n.id === updatedNodeOne.id ? updatedNodeOne : n
+          )
+        );
+      }
 
-    // Update the position of the second connected node
-    if (nodeTwo) {
-      const newY = node.position.y - 34;
-      const updatedNodeTwo = {
-        ...nodeTwo,
-        position: { ...nodeTwo.position, y: newY },
-      };
-      setNodes((prevNodes) =>
-        prevNodes.map((n) => (n.id === updatedNodeTwo.id ? updatedNodeTwo : n))
-      );
-    }
-  };
+      // Update the position of the second connected node
+      if (nodeTwo) {
+        const newY = node.position.y - 34;
+        const updatedNodeTwo = {
+          ...nodeTwo,
+          position: { ...nodeTwo.position, y: newY },
+        };
+        setNodes((prevNodes) =>
+          prevNodes.map((n) =>
+            n.id === updatedNodeTwo.id ? updatedNodeTwo : n
+          )
+        );
+      }
+    },
+    [getNode, edges, setNodes]
+  );
 
   return (
     <div
