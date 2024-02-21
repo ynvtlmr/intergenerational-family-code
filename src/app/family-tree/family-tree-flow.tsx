@@ -64,8 +64,14 @@ export default function FamilyTreeFlow() {
       id: crypto.randomUUID(),
       type: "customNode",
       position: {
-        x: window ? Math.random() * window.innerWidth - 100 : 0,
-        y: window ? Math.random() * window.innerHeight : 0,
+        x:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerWidth - 100
+            : 0,
+        y:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerHeight
+            : 0,
       },
       data: {
         name: "",
@@ -88,8 +94,14 @@ export default function FamilyTreeFlow() {
       type: "customJunction",
       data: {},
       position: {
-        x: window ? Math.random() * window.innerWidth - 100 : 0,
-        y: window ? Math.random() * window.innerHeight : 0,
+        x:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerWidth - 100
+            : 0,
+        y:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerHeight
+            : 0,
       },
     },
     setNodes
