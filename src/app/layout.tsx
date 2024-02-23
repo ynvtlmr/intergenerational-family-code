@@ -1,4 +1,4 @@
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -26,7 +26,7 @@ export default function RootLayout({
             <div className="flex-1">{children}</div>
           </Provider>
         </div>
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   );
