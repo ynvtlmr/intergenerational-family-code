@@ -1,114 +1,71 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+
+import { useCallback } from "react";
+
 import ReactFlow, {
   Controls,
   Background,
   addEdge,
   Edge,
   Connection,
-  useNodesState,
-  useEdgesState,
-  useReactFlow,
-  OnConnectStartParams,
   Panel,
+  OnNodesChange,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import TextUpdaterNode from "./node-text-update";
+import UpdaterNode from "./custom-update-node";
+import { useOrgStore } from "./store";
 
-const initialNodes = [
-  {
-    id: "0",
-    type: "textUpdater",
-    data: { label: "Node" },
-    position: { x: 0, y: 50 },
-  },
-];
+interface CustomNodeData {
+  label: string;
+}
 
-let id = 1;
-const getId = () => `${id++}`;
+type CustomNode = {
+  id: string;
+  type: string;
+  data: CustomNodeData;
+  position: { x: number; y: number };
+}
+
+type CustomEdge = Edge;
+
 
 const rfStyle = {
   backgroundColor: "#B8CEFF",
 };
 
-const nodeTypes = { textUpdater: TextUpdaterNode };
+const nodeTypes = { textUpdater: UpdaterNode };
 
 export default function OrgChartFlow() {
-  const reactFlowWrapper = useRef(null);
-  const connectingNodeId = useRef<string>();
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { screenToFlowPosition } = useReactFlow();
+  const nodes = useOrgStore((state) => state.nodes) as CustomNode[];
+  const edges = useOrgStore((state) => state.edges) as CustomEdge[];
+  const addNode = useOrgStore((state) => state.addNode);
 
-  const onConnect = useCallback((params: Edge | Connection) => {
-    connectingNodeId.current = undefined;
-    setEdges((eds) => addEdge(params, eds));
-  }, []);
 
-  const onConnectStart = useCallback(
-    (
-      _: React.MouseEvent | React.TouchEvent,
-      { nodeId }: OnConnectStartParams
-    ) => {
-      if (!nodeId) return;
-      connectingNodeId.current = nodeId;
-    },
-    []
-  );
+  const handleConnect = (params: Edge | Connection) => {
+    const nextEdge = addEdge(params, edges);
+    useOrgStore.setState({ edges: nextEdge });
+  };
 
-  const onConnectEnd = useCallback(
-    (event: MouseEvent | TouchEvent) => {
-      if (!connectingNodeId.current || !event.target) return;
-
-      if (
-        !(event instanceof MouseEvent) ||
-        !(event.target instanceof HTMLDivElement)
-      )
-        return;
-      const targetIsPane = event.target.classList.contains("react-flow__pane");
-      console.log(event.target);
-
-      if (targetIsPane) {
-        // we need to remove the wrapper bounds, in order to get the correct position
-        const id = getId();
-        const newNode = {
-          id,
-          position: screenToFlowPosition({
-            x: event.clientX,
-            y: event.clientY,
-          }),
-          data: { label: `Node ${id}` },
-          origin: [0.5, 0.0],
-        };
-
-        setNodes((nds) => nds.concat(newNode));
-        setEdges((eds) =>
-          eds.concat({ id, source: connectingNodeId.current!, target: id })
-        );
-      }
-    },
-    [screenToFlowPosition]
-  );
+  
 
   return (
-    <div className="wrapper" ref={reactFlowWrapper} style={{ height: "100%" }}>
+    <div className="wrapper"  style={{ height: "100%" }}>
       <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
-        style={rfStyle}
-        onConnect={onConnect}
-        onConnectStart={onConnectStart}
-        onConnectEnd={onConnectEnd}
-        fitView
+      nodes={nodes}
+      edges={edges}
+     
+      onConnect={handleConnect}
+      nodeTypes={nodeTypes}
+      style={rfStyle}
+      fitView
       >
         <Panel position="top-left">Organizational Chart</Panel>
-        <Background />
+
         <Controls />
+        <Background />
       </ReactFlow>
     </div>
   );
 }
+
