@@ -22,7 +22,7 @@ export default function NavBar() {
   const pathname = usePathname();
   return (
     <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10">
-      <h1 className="mb-8 min-w-0 text-4xl font-bold">ICF</h1>
+      <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
       <nav className="flex flex-col justify-center gap-2">
         {links.map((link) => (
           <Link key={link.label} className="w-full" href={link.href}>
