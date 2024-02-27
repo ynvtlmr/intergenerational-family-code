@@ -1,7 +1,6 @@
 "use client";
 
-
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 import ReactFlow, {
   Controls,
@@ -11,8 +10,15 @@ import ReactFlow, {
   Connection,
   Panel,
   OnNodesChange,
+  useNodesState,
+  useEdgesState,
+  useReactFlow,
+  getConnectedEdges,
 } from "reactflow";
 import "reactflow/dist/style.css";
+import type { NodeDragHandler } from "reactflow";
+
+
 import UpdaterNode from "./custom-update-node";
 import { useOrgStore } from "./store";
 
@@ -37,6 +43,7 @@ const rfStyle = {
 const nodeTypes = { textUpdater: UpdaterNode };
 
 export default function OrgChartFlow() {
+  const reactFlowWrapper = useRef(null);
   const nodes = useOrgStore((state) => state.nodes) as CustomNode[];
   const edges = useOrgStore((state) => state.edges) as CustomEdge[];
   const addNode = useOrgStore((state) => state.addNode);
@@ -50,7 +57,7 @@ export default function OrgChartFlow() {
 
 
   return (
-    <div className="wrapper"  style={{ height: "100%" }}>
+    <div  ref={reactFlowWrapper} className="h-full grow"  style={{ height: "100%" }}>
       <ReactFlow
       nodes={nodes}
       edges={edges}
@@ -60,7 +67,28 @@ export default function OrgChartFlow() {
       style={rfStyle}
       fitView
       >
-        <Panel position="top-left">Organizational Chart</Panel>
+        <Panel 
+          className="divide-x rounded border bg-background py-1 shadow-xl"
+          position="top-right">
+
+            <button className="px-3">
+              save
+            </button>
+
+            <button className="px-3">
+              restore
+            </button>
+
+            <button className="px-3">
+              add node
+            </button>
+
+            <button className="px-3">
+              add junction
+            </button>
+
+
+        </Panel>
 
         <Controls />
         <Background />
