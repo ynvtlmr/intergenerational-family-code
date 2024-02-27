@@ -24,6 +24,7 @@ import { useOrgStore } from "./store";
 
 import { useAddNewNode } from "../family-tree/hooks";
 import type { IndividualNode, NodeOrgData, NodeTypes } from "./types";
+import FamilyTreeCustomJunctionNode from "../family-tree/family-tree-custom-junction-node";
 
 const nodeData: NodeOrgData = {
   title: "",
@@ -41,11 +42,15 @@ const initialNodes: IndividualNode[] = [
 ];
 
 
+const nodeTypes: NodeTypes = {
+  customJunction: FamilyTreeCustomJunctionNode,
+}
+
+
 const rfStyle = {
   backgroundColor: "#B8CEFF",
 };
 
-const nodeTypes = { textUpdater: UpdaterNode };
 
 export default function OrgChartFlow() {
   const reactFlowWrapper = useRef(null);
@@ -131,7 +136,7 @@ export default function OrgChartFlow() {
               add node
             </button>
 
-            <button className="px-3">
+            <button className="px-3" onClick={onAddJunction}>
               add junction
             </button>
 
