@@ -47,7 +47,7 @@ export default function OrgChartFlow() {
     useOrgStore.setState({ edges: nextEdge });
   };
 
-  
+
 
   return (
     <div className="wrapper"  style={{ height: "100%" }}>

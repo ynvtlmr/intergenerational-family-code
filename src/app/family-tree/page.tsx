@@ -1,5 +1,13 @@
-import FamilyTree from "./family-tree";
+"use client";
+
+import { ReactFlowProvider } from "reactflow";
+
+import FamilyTreeFlow from "./family-tree-flow";
 
 export default function FamilyTreePage() {
-  return <FamilyTree />;
+  return (
+    <ReactFlowProvider>
+      <FamilyTreeFlow />
+    </ReactFlowProvider>
+  );
 }
