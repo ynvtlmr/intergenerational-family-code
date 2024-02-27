@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { Node, Edge } from "reactflow";
 
-import initialNodes from "./nodes";
+import initialNodes from "./types";
 
 type RFState = {
   nodes: Node[];

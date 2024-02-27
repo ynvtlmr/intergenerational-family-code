@@ -22,18 +22,23 @@ import type { NodeDragHandler } from "reactflow";
 import UpdaterNode from "./custom-update-node";
 import { useOrgStore } from "./store";
 
-interface CustomNodeData {
-  label: string;
-}
+import { useAddNewNode } from "../family-tree/hooks";
+import type { IndividualNode, NodeOrgData, NodeTypes } from "./types";
 
-type CustomNode = {
-  id: string;
-  type: string;
-  data: CustomNodeData;
-  position: { x: number; y: number };
-}
+const nodeData: NodeOrgData = {
+  title: "",
+  description: "",
+};
 
-type CustomEdge = Edge;
+const initialNodes: IndividualNode[] = [
+  {
+    id: "0",
+    type: "customNode",
+    data: nodeData,
+    position: { x: 0, y: 0 },
+    style: { borderRadius: "4px" },
+  },
+];
 
 
 const rfStyle = {
@@ -44,15 +49,58 @@ const nodeTypes = { textUpdater: UpdaterNode };
 
 export default function OrgChartFlow() {
   const reactFlowWrapper = useRef(null);
-  const nodes = useOrgStore((state) => state.nodes) as CustomNode[];
-  const edges = useOrgStore((state) => state.edges) as CustomEdge[];
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  // const nodes = useOrgStore((state) => state.nodes) as CustomNode[];
+  // const edges = useOrgStore((state) => state.edges) as CustomEdge[];
   const addNode = useOrgStore((state) => state.addNode);
 
+  const { onAdd } = useAddNewNode(
+    {
+      id: crypto.randomUUID(),
+      type: "customNode",
+      position: {
+        x:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerWidth - 100
+            : 0,
+        y:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerHeight
+            : 0,
+      },
+      data: {
+        label: "",
+        description: "",
+      },
+      style: { borderRadius: "4px" },
+    },
+    setNodes
+  );
 
-  const handleConnect = (params: Edge | Connection) => {
-    const nextEdge = addEdge(params, edges);
-    useOrgStore.setState({ edges: nextEdge });
-  };
+  const { onAdd: onAddJunction } = useAddNewNode(
+    {
+      id: crypto.randomUUID(),
+      type: "customJunction",
+      data: {},
+      position: {
+        x:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerWidth - 100
+            : 0,
+        y:
+          typeof window !== "undefined"
+            ? Math.random() * window.innerHeight
+            : 0,
+      },
+    },
+    setNodes
+  );
+
+
+  // const handleConnect = (params: Edge | Connection) => {
+  //   const nextEdge = addEdge(params, edges);
+  //   useOrgStore.setState({ edges: nextEdge });
+  // };
 
 
 
@@ -60,9 +108,9 @@ export default function OrgChartFlow() {
     <div  ref={reactFlowWrapper} className="h-full grow"  style={{ height: "100%" }}>
       <ReactFlow
       nodes={nodes}
-      edges={edges}
-     
-      onConnect={handleConnect}
+      // edges={edges}
+      onNodesChange={onNodesChange}
+      // onConnect={handleConnect}
       nodeTypes={nodeTypes}
       style={rfStyle}
       fitView
@@ -79,7 +127,7 @@ export default function OrgChartFlow() {
               restore
             </button>
 
-            <button className="px-3">
+            <button className="px-3" onClick={onAdd}>
               add node
             </button>
 
@@ -87,11 +135,9 @@ export default function OrgChartFlow() {
               add junction
             </button>
 
-
         </Panel>
-
-        <Controls />
         <Background />
+        <Controls />
       </ReactFlow>
     </div>
   );
