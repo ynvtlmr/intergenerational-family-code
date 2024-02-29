@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { useFamilyVision } from "./family-vision-store";
+import { useFamilyVisionStore } from "./family-vision-store";
 
 const familyStatementFormSchema = z.object({
   statement: z
@@ -28,7 +28,7 @@ const familyStatementFormSchema = z.object({
 type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;
 
 export default function FamilyVisionForm() {
-  const { addVisionStatement } = useFamilyVision();
+  const addVisionStatement = useFamilyVisionStore((s) => s.addVisionStatement);
 
   const form = useForm<FamilyStatementFormSchema>({
     resolver: zodResolver(familyStatementFormSchema),

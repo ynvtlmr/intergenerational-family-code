@@ -27,11 +27,3 @@ export const useFamilyVisionStore = create<FamilyVisionState>()(
     }
   )
 );
-
-export const useFamilyVision = () => {
-  return {
-    visionStatements: useFamilyVisionStore((s) => s.visionStatements),
-    addVisionStatement: useFamilyVisionStore((s) => s.addVisionStatement),
-    deleteVisionStatement: useFamilyVisionStore((s) => s.deleteVisionStatement),
-  };
-};
