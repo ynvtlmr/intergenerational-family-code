@@ -21,8 +21,8 @@ const familyStatementFormSchema = z.object({
     .min(2, {
       message: "Statement must be greater than 2 characters.",
     })
-    .max(50, {
-      message: "Statement must be less than 50 characters.",
+    .max(250, {
+      message: "Statement must be less than 250 characters.",
     }),
 });
 type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;

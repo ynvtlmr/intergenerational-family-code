@@ -21,8 +21,8 @@ const familyQuestionFormSchema = z.object({
     .min(2, {
       message: "Question must be greater than 2 characters.",
     })
-    .max(50, {
-      message: "Question must be less than 50 characters.",
+    .max(250, {
+      message: "Question must be less than 250 characters.",
     }),
 });
 type familyQuestionFormSchema = z.infer<typeof familyQuestionFormSchema>;

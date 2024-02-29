@@ -37,8 +37,8 @@ export default function FamilyValueForm() {
       .min(2, {
         message: "Description must be greater than 2 characters.",
       })
-      .max(200, {
-        message: "Description must be less than 200 characters.",
+      .max(250, {
+        message: "Description must be less than 250 characters.",
       }),
   });
   type FamilyValueFormSchema = z.infer<typeof familyValueFormSchema>;
