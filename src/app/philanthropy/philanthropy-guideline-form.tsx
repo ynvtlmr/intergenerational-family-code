@@ -47,7 +47,6 @@ export default function PhilanthropyGuidelineForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <h2 className="text-lg font-semibold">Guidelines</h2>
-        <p className="">Write down your guidelines that for Philanthropy.</p>
         <FormField
           control={form.control}
           name="guideline"
@@ -56,8 +55,7 @@ export default function PhilanthropyGuidelineForm() {
               <FormControl>
                 <Textarea
                   data-test="guideline-textarea"
-                  placeholder="Donate 1% of total liquid investments a year between
-health sciences and educational platforms"
+                  placeholder="Write your guideline here"
                   {...field}
                 />
               </FormControl>
