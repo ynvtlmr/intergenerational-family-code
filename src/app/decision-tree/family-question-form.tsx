@@ -12,7 +12,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useDecisionTree } from "./family-questions-store";
+import { useDecisionTreeStore } from "./family-questions-store";
 import { Textarea } from "@/components/ui/textarea";
 
 const familyQuestionFormSchema = z.object({
@@ -28,7 +28,7 @@ const familyQuestionFormSchema = z.object({
 type familyQuestionFormSchema = z.infer<typeof familyQuestionFormSchema>;
 
 export default function FamilyQuestionForm() {
-  const { addQuestion } = useDecisionTree();
+  const addQuestion = useDecisionTreeStore((s) => s.addQuestion);
 
   const form = useForm<familyQuestionFormSchema>({
     resolver: zodResolver(familyQuestionFormSchema),
