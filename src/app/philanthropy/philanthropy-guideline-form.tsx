@@ -46,7 +46,7 @@ export default function PhilanthropyGuidelineForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        <h1 className="text-2xl font-bold">Philanthropy</h1>
+        <h2 className="text-lg font-semibold">Guidelines</h2>
         <p className="">Write down your guidelines that for Philanthropy.</p>
         <FormField
           control={form.control}
