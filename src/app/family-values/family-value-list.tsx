@@ -1,9 +1,10 @@
 "use client";
-import { useFamilyValues } from "./family-value-store";
+import { useFamilyValueStore } from "./family-value-store";
 import FormItem from "@/components/form-item";
 
 export default function FamilyValueList() {
-  const { values, deleteFamilyValue } = useFamilyValues();
+  const values = useFamilyValueStore((s) => s.values);
+  const deleteFamilyValue = useFamilyValueStore((s) => s.deleteValue);
 
   const handleDelete = (value: string) => {
     deleteFamilyValue(value);
