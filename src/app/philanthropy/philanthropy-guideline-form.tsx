@@ -21,8 +21,8 @@ const philanthropyGuidelineFormSchema = z.object({
     .min(2, {
       message: "Guideline must be greater than 2 characters.",
     })
-    .max(50, {
-      message: "Guideline must be less than 50 characters.",
+    .max(250, {
+      message: "Guideline must be less than 250 characters.",
     }),
 });
 type PhilanthropyGuidelineFormSchema = z.infer<
