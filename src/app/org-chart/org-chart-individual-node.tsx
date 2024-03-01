@@ -43,7 +43,7 @@ export default function OrgChartIndividualNode({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className=" rounded-lg bg-zinc-500 p-5 ">
+          <div className=" rounded-lg bg-zinc-300 p-5 ">
             <Handle
               type="target"
               id="top"
