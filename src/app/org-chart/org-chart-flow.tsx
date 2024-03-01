@@ -5,9 +5,6 @@ import { useCallback, useRef } from "react";
 import ReactFlow, {
   Controls,
   Background,
-  addEdge,
-  Edge,
-  Connection,
   Panel,
   OnNodesChange,
   useNodesState,
@@ -18,13 +15,14 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import type { NodeDragHandler } from "reactflow";
 
-
-import UpdaterNode from "./custom-update-node";
-import { useOrgStore } from "./store";
-
-import { useAddNewNode } from "../family-tree/hooks";
 import type { IndividualNode, NodeOrgData, NodeTypes } from "./types";
 import FamilyTreeCustomJunctionNode from "../family-tree/family-tree-custom-junction-node";
+import {
+  useAddNewNode,
+  useAddNodeOnEdgeDrop,
+  useSaveAndRestore,
+} from "./hooks";
+import OrgChartIndividualNode from "./org-chart-individual-node";
 
 const nodeData: NodeOrgData = {
   title: "",
@@ -41,24 +39,20 @@ const initialNodes: IndividualNode[] = [
   },
 ];
 
-
 const nodeTypes: NodeTypes = {
+  customNode: OrgChartIndividualNode,
   customJunction: FamilyTreeCustomJunctionNode,
-}
-
-
-const rfStyle = {
-  backgroundColor: "#B8CEFF",
 };
-
 
 export default function OrgChartFlow() {
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  // const nodes = useOrgStore((state) => state.nodes) as CustomNode[];
-  // const edges = useOrgStore((state) => state.edges) as CustomEdge[];
-  const addNode = useOrgStore((state) => state.addNode);
 
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { getNode } = useReactFlow();
+
+  const { onConnect } = useAddNodeOnEdgeDrop(setEdges, setNodes);
+  const { onSave, onRestore } = useSaveAndRestore(setNodes, setEdges);
   const { onAdd } = useAddNewNode(
     {
       id: crypto.randomUUID(),
@@ -101,45 +95,101 @@ export default function OrgChartFlow() {
     setNodes
   );
 
+  /**
+   * Handles the drag event for a node in the family tree.
+   * If the dragged node is of type "customJunction", it updates the positions of the connected nodes.
+   * @param event ReactMouseEvent.
+   * @param node The dragged node.
+   * @param nodes A list of family tree nodes.
+   */
+  const handleNodeDrag: NodeDragHandler = useCallback(
+    (_, node, __) => {
+      // If the node is not of type "customJunction", return
+      // We only want to update the positions of the connected nodes for junction nodes
+      if (node.type !== "customJunction") return;
 
-  // const handleConnect = (params: Edge | Connection) => {
-  //   const nextEdge = addEdge(params, edges);
-  //   useOrgStore.setState({ edges: nextEdge });
-  // };
+      // Get the connected edges of the node
+      const connectedEdges = getConnectedEdges([node], edges);
 
+      // Get the node IDs of the left and right connected nodes
+      const leftAndRightNodeIds = connectedEdges
+        .filter((edge) => edge.type === "straight")
+        .map((edge) => edge.target);
 
+      // Get the node objects of the left and right connected nodes
+      const [nodeOneId, nodeTwoId] = leftAndRightNodeIds;
+      const nodeOne = getNode(nodeOneId);
+      const nodeTwo = getNode(nodeTwoId);
+
+      // Update the position of the first connected node
+      if (nodeOne) {
+        const newY = node.position.y - 34;
+        const updatedNodeOne = {
+          ...nodeOne,
+          position: { ...nodeOne.position, y: newY },
+        };
+        setNodes((prevNodes) =>
+          prevNodes.map((n) =>
+            n.id === updatedNodeOne.id ? updatedNodeOne : n
+          )
+        );
+      }
+
+      // Update the position of the second connected node
+      if (nodeTwo) {
+        const newY = node.position.y - 34;
+        const updatedNodeTwo = {
+          ...nodeTwo,
+          position: { ...nodeTwo.position, y: newY },
+        };
+        setNodes((prevNodes) =>
+          prevNodes.map((n) =>
+            n.id === updatedNodeTwo.id ? updatedNodeTwo : n
+          )
+        );
+      }
+    },
+    [getNode, edges, setNodes]
+  );
 
   return (
-    <div  ref={reactFlowWrapper} className="h-full grow"  style={{ height: "100%" }}>
+    <div
+      ref={reactFlowWrapper}
+      className="h-full grow"
+      style={{ height: "100%" }}
+    >
       <ReactFlow
-      nodes={nodes}
-      // edges={edges}
-      onNodesChange={onNodesChange}
-      // onConnect={handleConnect}
-      nodeTypes={nodeTypes}
-      style={rfStyle}
-      fitView
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onNodeDrag={handleNodeDrag}
+        onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        fitView
+        fitViewOptions={{ padding: 2 }}
+        defaultEdgeOptions={{ type: "smoothstep" }}
+        nodeOrigin={[0.5, 0]}
       >
-        <Panel 
+        <Panel
           className="divide-x rounded border bg-background py-1 shadow-xl"
-          position="top-right">
+          position="top-right"
+        >
+          <button className="px-3" onClick={onSave}>
+            save
+          </button>
 
-            <button className="px-3">
-              save
-            </button>
+          <button className="px-3" onClick={onRestore}>
+            restore
+          </button>
 
-            <button className="px-3">
-              restore
-            </button>
+          <button className="px-3" onClick={onAdd}>
+            add node
+          </button>
 
-            <button className="px-3" onClick={onAdd}>
-              add node
-            </button>
-
-            <button className="px-3" onClick={onAddJunction}>
-              add junction
-            </button>
-
+          <button className="px-3" onClick={onAddJunction}>
+            add junction
+          </button>
         </Panel>
         <Background />
         <Controls />
@@ -147,4 +197,3 @@ export default function OrgChartFlow() {
     </div>
   );
 }
-
