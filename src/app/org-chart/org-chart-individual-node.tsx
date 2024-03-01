@@ -61,14 +61,14 @@ export default function OrgChartIndividualNode({
 
       <div className="grid grid-cols-2 gap-5">
         <input
-          className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
+          className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#000000] focus:outline-none"
           name="title"
           placeholder="Title"
           defaultValue={title}
           onChange={onChange}
         />
         <input
-          className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
+          className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#000000] focus:outline-none"
           name="description"
           placeholder="Description"
           defaultValue={description}
