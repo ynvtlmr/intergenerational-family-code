@@ -1,10 +1,10 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,35 +12,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useContact } from "./contact-store";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-
 const formSchema = z.object({
-  name: z.string().min(2 , {
-    message: "Name must be at least 2 characters long"
-  }).max(50, {
-    message: "50 characters long"
-  }),
-  org: z.string().min(5, {
-    message: "Organization must be at least 5 characters long"
-  }).max(50),
-  email: z.string().email( { message: "Invalid email"}),
-  phone: z.string().min(10, {
-    message: "Phone number must be at least 10 characters long"
-  }).max(15),
-})
+  name: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters long",
+    })
+    .max(50, {
+      message: "50 characters long",
+    }),
+  org: z
+    .string()
+    .min(5, {
+      message: "Organization must be at least 5 characters long",
+    })
+    .max(50),
+  email: z.string().email({ message: "Invalid email" }),
+  phone: z
+    .string()
+    .min(10, {
+      message: "Phone number must be at least 10 characters long",
+    })
+    .max(15),
+});
 
-
-export function ContactForm () {
-  const {updateContact} =useContact();
+export function ContactForm() {
+  const { updateContact } = useContact();
   // const [isSubmitting, setIsSubmitting] = useState(false)
-  const router = useRouter()
+  const router = useRouter();
 
-   const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -48,15 +55,13 @@ export function ContactForm () {
       email: "",
       phone: "",
     },
-  })
+  });
 
-
-   function onSubmit(values: z.infer<typeof formSchema>) {
-    updateContact(values.name, values.email, values.phone, values.org)
-    form.reset()
-    router.push("/")
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    updateContact(values.name, values.email, values.phone, values.org);
+    form.reset();
+    router.push("/");
   }
-
 
   return (
     <Form {...form}>
@@ -70,7 +75,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="name" {...field} />
               </FormControl>
-            
+
               <FormMessage />
             </FormItem>
           )}
@@ -84,7 +89,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="Organization" {...field} />
               </FormControl>
-             
+
               <FormMessage />
             </FormItem>
           )}
@@ -98,7 +103,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="test123@gmail.com" {...field} />
               </FormControl>
-           
+
               <FormMessage />
             </FormItem>
           )}
@@ -112,7 +117,7 @@ export function ContactForm () {
               <FormControl>
                 <Input placeholder="Phone" {...field} />
               </FormControl>
-             
+
               <FormMessage />
             </FormItem>
           )}
@@ -120,6 +125,5 @@ export function ContactForm () {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
-
+  );
 }
