@@ -125,7 +125,7 @@ export default function FamilyTreeFlow() {
       // Get the node IDs of the left and right connected nodes
       const leftAndRightNodeIds = connectedEdges
         .filter((edge) => edge.type === "straight")
-        .map((edge) => edge.target);
+        .map((edge) => (edge.source === node.id ? edge.target : edge.source));
 
       // Get the node objects of the left and right connected nodes
       const [nodeOneId, nodeTwoId] = leftAndRightNodeIds;
