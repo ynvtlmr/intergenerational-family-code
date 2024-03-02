@@ -2,14 +2,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,6 +13,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+
+import { signInWithEmailAndPassword, auth } from "@/lib/firebase";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -40,10 +34,19 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values: LoginFormSchema) {
+  function onSubmit({ email, password }: LoginFormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
   }
   return (
     <Form {...form}>
