@@ -4,13 +4,26 @@ import WebCam from "react-webcam";
 
 type WebCamProps = {
   height: number;
-  weight: number;
+  width: number;
+  imageSmoothing: boolean;
+  audio: boolean;
+  mirrored: boolean;
 };
 
-export default function CustomWebcam() {
+export default function CustomWebcam({
+  height,
+  width,
+  imageSmoothing,
+}: WebCamProps) {
   return (
     <div className=" flex justify-center">
-      <WebCam />
+      <WebCam
+        audio={true}
+        height={height}
+        width={width}
+        imageSmoothing={imageSmoothing}
+        mirrored={true}
+      />
     </div>
   );
 }
