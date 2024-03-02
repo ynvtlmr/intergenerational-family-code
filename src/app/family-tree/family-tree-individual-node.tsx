@@ -6,12 +6,6 @@ import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 
 import { useCallback } from "react";
 import type { NodeData } from "./types";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 export default function FamilyTreeIndividualNode({
   id,
@@ -133,133 +127,124 @@ export default function FamilyTreeIndividualNode({
   );
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div
-            style={{ backgroundColor: genderColor[gender] }}
-            className="rounded-lg p-5"
-          >
-            <Handle
-              type="target"
-              id="top"
-              position={Position.Top}
-              isConnectable={isConnectable}
-            />
-            <Handle
-              type="target"
-              id="left"
-              position={Position.Left}
-              isConnectable={true}
-              onConnect={(params) => {
-                const { source, target } = params;
-                if (!source || !target) return;
+    <div
+      style={{ backgroundColor: genderColor[gender] }}
+      className="rounded-lg p-5"
+    >
+      <Handle
+        type="target"
+        id="top"
+        position={Position.Top}
+        isConnectable={isConnectable}
+      />
+      <Handle
+        type="target"
+        id="left"
+        position={Position.Left}
+        isConnectable={true}
+        onConnect={(params) => {
+          const { source, target } = params;
+          if (!source || !target) return;
 
-                const sourceNode = getNode(source);
-                const targetNode = getNode(target);
-                if (!sourceNode || !targetNode) return;
+          const sourceNode = getNode(source);
+          const targetNode = getNode(target);
+          if (!sourceNode || !targetNode) return;
 
-                if (
-                  params.sourceHandle === "right" &&
-                  sourceNode.type !== "customJunction"
-                ) {
-                  const newJunctionPosition = getNewJunctionPosition(
-                    sourceNode,
-                    targetNode,
-                    "leftHandler"
-                  );
-                  if (!newJunctionPosition) return;
-                  connectNodesWithJunction(params, newJunctionPosition);
-                } else if (params.sourceHandle === "right") {
-                  const edge = {
-                    ...params,
-                    type: "straight",
-                    sourceHandle: "right",
-                  };
-                  setEdges((edges) => addEdge(edge, edges));
-                }
-              }}
-            />
+          if (
+            params.sourceHandle === "right" &&
+            sourceNode.type !== "customJunction"
+          ) {
+            const newJunctionPosition = getNewJunctionPosition(
+              sourceNode,
+              targetNode,
+              "leftHandler"
+            );
+            if (!newJunctionPosition) return;
+            connectNodesWithJunction(params, newJunctionPosition);
+          } else if (params.sourceHandle === "right") {
+            const edge = {
+              ...params,
+              type: "straight",
+              sourceHandle: "right",
+            };
+            setEdges((edges) => addEdge(edge, edges));
+          }
+        }}
+      />
 
-            <div className="mb-3 flex items-center justify-center">
-              <FontAwesomeIcon
-                icon={gender === "Male" ? faMars : faVenus}
-                className={`fa-lg cursor-pointer ${gender === "Male" ? "text-[#3daaee] hover:text-[#336889]" : "text-[#f26356] hover:text-[#aa483f]"}`}
-                onClick={handleNodeGender}
-              />
-            </div>
+      <div className="mb-3 flex items-center justify-center">
+        <FontAwesomeIcon
+          icon={gender === "Male" ? faMars : faVenus}
+          className={`fa-lg cursor-pointer ${gender === "Male" ? "text-[#3daaee] hover:text-[#336889]" : "text-[#f26356] hover:text-[#aa483f]"}`}
+          onClick={handleNodeGender}
+        />
+      </div>
 
-            <div className="grid grid-cols-2 gap-5">
-              <input
-                className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
-                name="name"
-                placeholder="Name"
-                defaultValue={name}
-                onChange={onChange}
-              />
-              <input
-                className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
-                name="surname"
-                placeholder="Surname"
-                defaultValue={surname}
-                onChange={onChange}
-              />
-              <input
-                className="min-w-6 bg-transparent text-xs placeholder:text-[#eaf7ff] focus:outline-none"
-                name="dateOfBirth"
-                placeholder="Date of Birth"
-                defaultValue={dateOfBirth}
-                onChange={onChange}
-              />
-              <input
-                className="min-w-6 bg-transparent text-xs placeholder:text-[#eaf7ff] focus:outline-none"
-                name="placeOfBirth"
-                placeholder="Place of Birth"
-                defaultValue={placeOfBirth}
-                onChange={onChange}
-              />
-            </div>
+      <div className="grid grid-cols-2 gap-5">
+        <input
+          className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
+          name="name"
+          placeholder="Name"
+          defaultValue={name}
+          onChange={onChange}
+        />
+        <input
+          className="min-w-6 text-ellipsis rounded bg-transparent font-semibold placeholder:text-[#eaf7ff] focus:outline-none"
+          name="surname"
+          placeholder="Surname"
+          defaultValue={surname}
+          onChange={onChange}
+        />
+        <input
+          className="min-w-6 bg-transparent text-xs placeholder:text-[#eaf7ff] focus:outline-none"
+          name="dateOfBirth"
+          placeholder="Date of Birth"
+          defaultValue={dateOfBirth}
+          onChange={onChange}
+        />
+        <input
+          className="min-w-6 bg-transparent text-xs placeholder:text-[#eaf7ff] focus:outline-none"
+          name="placeOfBirth"
+          placeholder="Place of Birth"
+          defaultValue={placeOfBirth}
+          onChange={onChange}
+        />
+      </div>
 
-            <Handle
-              type="source"
-              id="right"
-              position={Position.Right}
-              isConnectable={true}
-              onConnect={(params) => {
-                const { source, target } = params;
-                if (!source || !target) return;
+      <Handle
+        type="source"
+        id="right"
+        position={Position.Right}
+        isConnectable={true}
+        onConnect={(params) => {
+          const { source, target } = params;
+          if (!source || !target) return;
 
-                const sourceNode = getNode(source);
-                const targetNode = getNode(target);
-                if (!sourceNode || !targetNode) return;
+          const sourceNode = getNode(source);
+          const targetNode = getNode(target);
+          if (!sourceNode || !targetNode) return;
 
-                if (
-                  params.targetHandle === "left" &&
-                  targetNode.type !== "customJunction"
-                ) {
-                  const newJunctionPosition = getNewJunctionPosition(
-                    sourceNode,
-                    targetNode,
-                    "rightHandler"
-                  );
-                  if (!newJunctionPosition) return;
-                  connectNodesWithJunction(params, newJunctionPosition);
-                } else if (params.targetHandle === "left") {
-                  const edge = {
-                    ...params,
-                    type: "straight",
-                    targetHandle: "left",
-                  };
-                  setEdges((edges) => addEdge(edge, edges));
-                }
-              }}
-            />
-          </div>
-        </TooltipTrigger>
-        <TooltipContent onClick={handleNodeGender}>
-          <p>{gender}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+          if (
+            params.targetHandle === "left" &&
+            targetNode.type !== "customJunction"
+          ) {
+            const newJunctionPosition = getNewJunctionPosition(
+              sourceNode,
+              targetNode,
+              "rightHandler"
+            );
+            if (!newJunctionPosition) return;
+            connectNodesWithJunction(params, newJunctionPosition);
+          } else if (params.targetHandle === "left") {
+            const edge = {
+              ...params,
+              type: "straight",
+              targetHandle: "left",
+            };
+            setEdges((edges) => addEdge(edge, edges));
+          }
+        }}
+      />
+    </div>
   );
 }
