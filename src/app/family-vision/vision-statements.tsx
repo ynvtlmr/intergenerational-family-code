@@ -1,9 +1,13 @@
 "use client";
 import FormItem from "@/components/form-item";
-import { useFamilyVision } from "./family-vision-store";
+import { useFamilyVisionStore } from "./family-vision-store";
 
 export default function VisionStatements() {
-  const { visionStatements, deleteVisionStatement } = useFamilyVision();
+  const visionStatements = useFamilyVisionStore((s) => s.visionStatements);
+
+  const deleteVisionStatement = useFamilyVisionStore(
+    (s) => s.deleteVisionStatement
+  );
 
   const handleDelete = (s: string) => {
     deleteVisionStatement(s);
