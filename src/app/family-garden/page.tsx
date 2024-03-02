@@ -4,18 +4,33 @@ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, Card, CardContent, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+const INITIAL_GROWTH_RATE = 0.05;
+const INITIAL_PEOPLE = [
+  { id: 1, name: '', beginAmount: '', beginAge: 30 },
+  { id: 2, name: '', beginAmount: '', beginAge: 40 },
+];
+
 const FamilyGarden = () => {
+  const appInitializedKey = 'appInitialized';
+  const appInitialized = localStorage.getItem(appInitializedKey);
+
   const [growthRate, setGrowthRate] = useState(() => {
+    if (!appInitialized) {
+      localStorage.setItem('growthRate', INITIAL_GROWTH_RATE.toString());
+      localStorage.setItem('people', JSON.stringify(INITIAL_PEOPLE));
+      localStorage.setItem(appInitializedKey, 'true');
+      return INITIAL_GROWTH_RATE;
+    }
     const savedRate = localStorage.getItem('growthRate');
-    return savedRate ? parseFloat(savedRate) : 0.05; 
+    return savedRate ? parseFloat(savedRate) : INITIAL_GROWTH_RATE;
   });
 
   const [people, setPeople] = useState(() => {
+    if (!appInitialized) {
+      return INITIAL_PEOPLE;
+    }
     const savedPeople = localStorage.getItem('people');
-    return savedPeople ? JSON.parse(savedPeople) : [
-      { id: 1, name: '', beginAmount: '', beginAge: 30 },
-      { id: 2, name: '', beginAmount: '', beginAge: 60 },
-    ]; 
+    return savedPeople ? JSON.parse(savedPeople) : INITIAL_PEOPLE;
   });
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -29,7 +44,7 @@ const FamilyGarden = () => {
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
     return () => {
-      document.body.style.backgroundColor = "white";
+      document.body.style.backgroundColor = 'white';
     };
   }, []);
 
