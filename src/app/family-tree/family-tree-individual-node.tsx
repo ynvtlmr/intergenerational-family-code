@@ -1,5 +1,5 @@
 import { Handle, Position, addEdge, useReactFlow } from "reactflow";
-import type { Connection, Node, NodeProps } from "reactflow";
+import type { Connection, Node, NodeProps, XYPosition } from "reactflow";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useCallback } from "react";
@@ -16,7 +16,7 @@ export default function FamilyTreeIndividualNode({
   data,
   isConnectable,
 }: NodeProps<NodeData>) {
-  const { setNodes, setEdges, toObject } = useReactFlow();
+  const { getNode, setNodes, setEdges, toObject } = useReactFlow();
   const { name, surname, dateOfBirth, placeOfBirth, gender, genderColor } =
     data;
 
@@ -62,8 +62,10 @@ export default function FamilyTreeIndividualNode({
   }, [setNodes, id, toObject]);
 
   const connectNodesWithJunction = useCallback(
-    (params: Connection) => {
-      const { source, sourceHandle, target, targetHandle } = params;
+    (
+      { source, sourceHandle, target, targetHandle }: Connection,
+      { x, y }: XYPosition
+    ) => {
       if (!source || !target) return;
 
       const newNodeId = crypto.randomUUID();
@@ -73,8 +75,8 @@ export default function FamilyTreeIndividualNode({
         type: "customJunction",
         data: {},
         position: {
-          x: 100,
-          y: 100,
+          x,
+          y,
         },
       };
 
@@ -100,6 +102,34 @@ export default function FamilyTreeIndividualNode({
     [setNodes, setEdges]
   );
 
+  const getNewJunctionPosition = useCallback(
+    (
+      sourceNode: Node<NodeData>,
+      targetNode: Node<NodeData>,
+      dragFrom: "leftHandler" | "rightHandler"
+    ): XYPosition | undefined => {
+      // x position is the middle of the node
+      const {
+        position: { x: sourceNodeX, y: sourceNodeY },
+        width,
+      } = sourceNode;
+      const {
+        position: { x: targetNodeX, y: targetNodeY },
+      } = targetNode;
+      if (!width) return;
+
+      const widthBetweenSourceAndTargetNodes = Math.abs(
+        sourceNodeX + width - targetNodeX
+      );
+      const newX =
+        sourceNodeX + width / 2 + widthBetweenSourceAndTargetNodes / 2;
+      const newY =
+        dragFrom === "leftHandler" ? targetNodeY + 34 : sourceNodeY + 34;
+      return { x: newX, y: newY };
+    },
+    []
+  );
+
   return (
     <TooltipProvider>
       <Tooltip>
@@ -120,8 +150,31 @@ export default function FamilyTreeIndividualNode({
               position={Position.Left}
               isConnectable={true}
               onConnect={(params) => {
-                if (params.sourceHandle === "right") {
-                  connectNodesWithJunction(params);
+                const { source, target } = params;
+                if (!source || !target) return;
+
+                const sourceNode = getNode(source);
+                const targetNode = getNode(target);
+                if (!sourceNode || !targetNode) return;
+
+                if (
+                  params.sourceHandle === "right" &&
+                  sourceNode.type !== "customJunction"
+                ) {
+                  const newJunctionPosition = getNewJunctionPosition(
+                    sourceNode,
+                    targetNode,
+                    "leftHandler"
+                  );
+                  if (!newJunctionPosition) return;
+                  connectNodesWithJunction(params, newJunctionPosition);
+                } else if (params.sourceHandle === "right") {
+                  const edge = {
+                    ...params,
+                    type: "straight",
+                    sourceHandle: "right",
+                  };
+                  setEdges((edges) => addEdge(edge, edges));
                 }
               }}
             />
@@ -163,8 +216,31 @@ export default function FamilyTreeIndividualNode({
               position={Position.Right}
               isConnectable={true}
               onConnect={(params) => {
-                if (params.targetHandle === "left") {
-                  connectNodesWithJunction(params);
+                const { source, target } = params;
+                if (!source || !target) return;
+
+                const sourceNode = getNode(source);
+                const targetNode = getNode(target);
+                if (!sourceNode || !targetNode) return;
+
+                if (
+                  params.targetHandle === "left" &&
+                  targetNode.type !== "customJunction"
+                ) {
+                  const newJunctionPosition = getNewJunctionPosition(
+                    sourceNode,
+                    targetNode,
+                    "rightHandler"
+                  );
+                  if (!newJunctionPosition) return;
+                  connectNodesWithJunction(params, newJunctionPosition);
+                } else if (params.targetHandle === "left") {
+                  const edge = {
+                    ...params,
+                    type: "straight",
+                    targetHandle: "left",
+                  };
+                  setEdges((edges) => addEdge(edge, edges));
                 }
               }}
             />
