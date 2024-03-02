@@ -102,7 +102,8 @@ export default function FamilyTreeIndividualNode({
     (
       sourceNode: Node<NodeData>,
       targetNode: Node<NodeData>,
-      dragFrom: "leftHandler" | "rightHandler"
+      dragFrom: "leftHandler" | "rightHandler",
+      adjustYPosition: number = 0
     ): XYPosition | undefined => {
       // x position is the middle of the node
       const {
@@ -120,7 +121,9 @@ export default function FamilyTreeIndividualNode({
       const newX =
         sourceNodeX + width / 2 + widthBetweenSourceAndTargetNodes / 2;
       const newY =
-        dragFrom === "leftHandler" ? targetNodeY + 34 : sourceNodeY + 34;
+        dragFrom === "leftHandler"
+          ? targetNodeY + adjustYPosition
+          : sourceNodeY + adjustYPosition;
       return { x: newX, y: newY };
     },
     []
@@ -157,7 +160,8 @@ export default function FamilyTreeIndividualNode({
             const newJunctionPosition = getNewJunctionPosition(
               sourceNode,
               targetNode,
-              "leftHandler"
+              "leftHandler",
+              50
             );
             if (!newJunctionPosition) return;
             connectNodesWithJunction(params, newJunctionPosition);
@@ -231,7 +235,8 @@ export default function FamilyTreeIndividualNode({
             const newJunctionPosition = getNewJunctionPosition(
               sourceNode,
               targetNode,
-              "rightHandler"
+              "rightHandler",
+              50
             );
             if (!newJunctionPosition) return;
             connectNodesWithJunction(params, newJunctionPosition);
