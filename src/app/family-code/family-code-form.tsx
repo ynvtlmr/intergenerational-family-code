@@ -12,7 +12,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useFamilyCode } from "./family-code-store";
+import { useFamilyCodeStore } from "./family-code-store";
 import { Textarea } from "@/components/ui/textarea";
 
 const familyStatementFormSchema = z.object({
@@ -21,14 +21,14 @@ const familyStatementFormSchema = z.object({
     .min(2, {
       message: "Statement must be greater than 2 characters.",
     })
-    .max(50, {
-      message: "Statement must be less than 50 characters.",
+    .max(250, {
+      message: "Statement must be less than 250 characters.",
     }),
 });
 type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;
 
 export default function FamilyCodeForm() {
-  const { addStatement } = useFamilyCode();
+  const addStatement = useFamilyCodeStore((s) => s.addStatement);
 
   const form = useForm<FamilyStatementFormSchema>({
     resolver: zodResolver(familyStatementFormSchema),

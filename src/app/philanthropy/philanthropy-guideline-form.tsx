@@ -12,51 +12,50 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useDecisionTreeStore } from "./family-questions-store";
+import { usePhilanthropyStore } from "./philanthropy-store";
 import { Textarea } from "@/components/ui/textarea";
 
-const familyQuestionFormSchema = z.object({
-  question: z
+const philanthropyGuidelineFormSchema = z.object({
+  guideline: z
     .string()
     .min(2, {
-      message: "Question must be greater than 2 characters.",
+      message: "Guideline must be greater than 2 characters.",
     })
     .max(250, {
-      message: "Question must be less than 250 characters.",
+      message: "Guideline must be less than 250 characters.",
     }),
 });
-type familyQuestionFormSchema = z.infer<typeof familyQuestionFormSchema>;
+type PhilanthropyGuidelineFormSchema = z.infer<
+  typeof philanthropyGuidelineFormSchema
+>;
 
-export default function FamilyQuestionForm() {
-  const addQuestion = useDecisionTreeStore((s) => s.addQuestion);
+export default function PhilanthropyGuidelineForm() {
+  const addGuideline = usePhilanthropyStore((s) => s.addGuideline);
 
-  const form = useForm<familyQuestionFormSchema>({
-    resolver: zodResolver(familyQuestionFormSchema),
+  const form = useForm<PhilanthropyGuidelineFormSchema>({
+    resolver: zodResolver(philanthropyGuidelineFormSchema),
     defaultValues: {
-      question: "",
+      guideline: "",
     },
   });
-  function onSubmit({ question }: familyQuestionFormSchema) {
-    addQuestion(question);
+  function onSubmit({ guideline }: PhilanthropyGuidelineFormSchema) {
+    addGuideline(guideline);
     form.reset();
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        <h1 className="text-2xl font-bold">Decision Tree</h1>
-        <p className="">
-          Add a question to help guide your family decision making.
-        </p>
+        <h2 className="text-lg font-semibold">Guidelines</h2>
         <FormField
           control={form.control}
-          name="question"
+          name="guideline"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Textarea
-                  data-test="question-textarea"
-                  placeholder="Does this align with our family values?"
+                  data-test="guideline-textarea"
+                  placeholder="Write your guideline here"
                   {...field}
                 />
               </FormControl>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useFamilyValues } from "./family-value-store";
+import { useFamilyValueStore } from "./family-value-store";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,8 @@ import {
 } from "@/components/ui/form";
 
 export default function FamilyValueForm() {
-  const { values, addFamilyValue } = useFamilyValues();
+  const values = useFamilyValueStore((s) => s.values);
+  const addFamilyValue = useFamilyValueStore((s) => s.addValue);
   const familyValueFormSchema = z.object({
     value: z
       .string()
@@ -36,8 +37,8 @@ export default function FamilyValueForm() {
       .min(2, {
         message: "Description must be greater than 2 characters.",
       })
-      .max(200, {
-        message: "Description must be less than 200 characters.",
+      .max(250, {
+        message: "Description must be less than 250 characters.",
       }),
   });
   type FamilyValueFormSchema = z.infer<typeof familyValueFormSchema>;

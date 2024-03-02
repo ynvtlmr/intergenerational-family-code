@@ -16,6 +16,7 @@ const links = [
   { href: "/org-chart", label: "Organizational Chart" },
   { href: "/policy-tree", label: "Policy Tree" },
   { href: "/family-tree", label: "Family Tree" },
+  { href: "/philanthropy", label: "Philanthropy" },
 ];
 
 export default function NavBar() {
