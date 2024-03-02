@@ -11,24 +11,12 @@ const INITIAL_PEOPLE = [
 ];
 
 const FamilyGarden = () => {
-  const appInitializedKey = 'appInitialized';
-  const appInitialized = localStorage.getItem(appInitializedKey);
-
   const [growthRate, setGrowthRate] = useState(() => {
-    if (!appInitialized) {
-      localStorage.setItem('growthRate', INITIAL_GROWTH_RATE.toString());
-      localStorage.setItem('people', JSON.stringify(INITIAL_PEOPLE));
-      localStorage.setItem(appInitializedKey, 'true');
-      return INITIAL_GROWTH_RATE;
-    }
     const savedRate = localStorage.getItem('growthRate');
     return savedRate ? parseFloat(savedRate) : INITIAL_GROWTH_RATE;
   });
-
+  
   const [people, setPeople] = useState(() => {
-    if (!appInitialized) {
-      return INITIAL_PEOPLE;
-    }
     const savedPeople = localStorage.getItem('people');
     return savedPeople ? JSON.parse(savedPeople) : INITIAL_PEOPLE;
   });
@@ -37,8 +25,9 @@ const FamilyGarden = () => {
   const [personToDelete, setPersonToDelete] = useState<number | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('growthRate', growthRate.toString());
-    localStorage.setItem('people', JSON.stringify(people));
+    localStorage.clear();
+    window.localStorage.setItem('growthRate', growthRate.toString());
+    window.localStorage.setItem('people', JSON.stringify(people));
   }, [growthRate, people]);
 
   useEffect(() => {
@@ -47,6 +36,13 @@ const FamilyGarden = () => {
       document.body.style.backgroundColor = 'white';
     };
   }, []);
+
+  const resetData = () => {
+    localStorage.removeItem('growthRate');
+    localStorage.removeItem('people');
+    setGrowthRate(INITIAL_GROWTH_RATE);
+    setPeople(INITIAL_PEOPLE);
+  };
 
   const handleGrowthRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rate = parseFloat(e.target.value) / 100;
@@ -140,7 +136,7 @@ const FamilyGarden = () => {
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", "family-garden-data.json");
-    document.body.appendChild(downloadAnchorNode); // required for Firefox
+    document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
   };
@@ -210,9 +206,12 @@ const FamilyGarden = () => {
       <Button variant="contained" color="primary" onClick={addNewPerson} sx={{ mt: 3 }}>
         Add Person
       </Button>
-      <Button variant="contained" color="secondary" onClick={downloadDataAsJson} sx={{ mt: 3 }}>
+      <Button variant="contained" color="secondary" onClick={downloadDataAsJson} sx={{ mt: 3, ml:2 }}>
           Download Data
         </Button>
+        <Button variant="contained" color="success" onClick={resetData} sx={{ mt: 3, ml: 2 }}>
+        Reset Data
+      </Button>
       <Dialog
         open={openDialog}
         onClose={handleDialogClose}
