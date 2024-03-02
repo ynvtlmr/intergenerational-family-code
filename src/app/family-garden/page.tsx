@@ -5,13 +5,26 @@ import { Container, Typography, Box, Card, CardContent, TextField, Button, IconB
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const FamilyGarden = () => {
-  const [growthRate, setGrowthRate] = useState(0.05);
-  const [people, setPeople] = useState([
-    { id: 1, name: '', beginAmount: '', beginAge: 30 },
-    { id: 2, name: '', beginAmount: '', beginAge: 60 },
-  ]);
+  const [growthRate, setGrowthRate] = useState(() => {
+    const savedRate = localStorage.getItem('growthRate');
+    return savedRate ? parseFloat(savedRate) : 0.05; 
+  });
+
+  const [people, setPeople] = useState(() => {
+    const savedPeople = localStorage.getItem('people');
+    return savedPeople ? JSON.parse(savedPeople) : [
+      { id: 1, name: '', beginAmount: '', beginAge: 30 },
+      { id: 2, name: '', beginAmount: '', beginAge: 60 },
+    ]; 
+  });
+  
   const [openDialog, setOpenDialog] = useState(false);
   const [personToDelete, setPersonToDelete] = useState<number | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem('growthRate', growthRate.toString());
+    localStorage.setItem('people', JSON.stringify(people));
+  }, [growthRate, people]);
 
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
@@ -42,21 +55,21 @@ const FamilyGarden = () => {
         maximumFractionDigits: 0,
       }).format(numericValue);
   
-      setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: formattedAmount } : person));
+      setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, beginAmount: formattedAmount } : person));
     } else {
-      setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: '' } : person));
+      setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, beginAmount: '' } : person));
     }
   };
 
   const handleNameChange = (id: number, newName: string) => {
-    setPeople(prev => prev.map(person => person.id === id ? { ...person, name: newName } : person));
+    setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, name: newName } : person));
   };
   
 
   const handleBeginAgeChange = (id:number, newAge:string) => {
     const age = parseInt(newAge, 10);
     const validAge = !isNaN(age) ? age : '';
-    setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAge: parseInt(validAge.toString(), 10) } : person));
+    setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, beginAge: parseInt(validAge.toString(), 10) } : person));
   };
 
 
@@ -77,7 +90,7 @@ const FamilyGarden = () => {
 
   const confirmDelete = () => {
     if (personToDelete !== null) {
-      setPeople(prevPeople => prevPeople.filter(person => person.id !== personToDelete));
+      setPeople((prevPeople: any[]) => prevPeople.filter(person => person.id !== personToDelete));
       handleDialogClose();
     }
   };
@@ -119,7 +132,7 @@ const FamilyGarden = () => {
           margin="normal"
         />
       </Box>
-      {people.map((person, index) => (
+      {people.map((person: any, index: number) => (
         <Card key={person.id} variant="outlined" sx={{ mb: 5, position: 'relative' }}>
           <CardContent>
             <TextField
@@ -148,8 +161,8 @@ const FamilyGarden = () => {
                 margin="normal"
                 InputProps={{
                   style: { textAlign: 'right' },
-                  }}
-                />
+                }}
+            />
             {generateAges(person.beginAge).map(age => (
               <Box key={`${person.id}-${age}`} display="flex" justifyContent="space-between" my={3}>
                 <Typography>Age: {age}</Typography>
