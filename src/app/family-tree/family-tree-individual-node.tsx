@@ -1,6 +1,8 @@
 import { Handle, Position, addEdge, useReactFlow } from "reactflow";
 import type { Connection, Node, NodeProps, XYPosition } from "reactflow";
 import { useDebouncedCallback } from "use-debounce";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 
 import { useCallback } from "react";
 import type { NodeData } from "./types";
@@ -178,6 +180,14 @@ export default function FamilyTreeIndividualNode({
                 }
               }}
             />
+
+            <div className="mb-3 flex items-center justify-center">
+              <FontAwesomeIcon
+                icon={gender === "Male" ? faMars : faVenus}
+                className={`fa-lg cursor-pointer ${gender === "Male" ? "text-[#3daaee] hover:text-[#336889]" : "text-[#f26356] hover:text-[#aa483f]"}`}
+                onClick={handleNodeGender}
+              />
+            </div>
 
             <div className="grid grid-cols-2 gap-5">
               <input
