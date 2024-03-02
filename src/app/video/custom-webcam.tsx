@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useState, useCallback, useRef } from "react";
 import WebCam from "react-webcam";
 
@@ -81,25 +82,32 @@ export default function CustomWebcam({
   }, [recordedChunks]);
 
   return (
-    <div className=" flex justify-center">
-      {!openWebcam ? (
-        <>
-          <button onClick={handleOpenWebcam}>Open Webcam</button>
-        </>
-      ) : (
-        <button onClick={handleCloseWebcam}>Close Webcam</button>
-      )}
+    <div className="">
+      <div className=" - flex h-full flex-col items-center justify-between">
+        {!openWebcam ? (
+          <Button onClick={handleOpenWebcam}> Open Webcam</Button>
+        ) : (
+          <>
+            <div className=" flex-grow">
+              <WebCam
+                audio={true}
+                mirrored={true}
+                height={height}
+                width={width}
+                imageSmoothing={imageSmoothing}
+                ref={webcamRef}
+              />
+            </div>
+            <div className="p-5">
+              <Button onClick={handleCloseWebcam}>Close Webcam</Button>
+            </div>
+          </>
+        )}
+      </div>
 
-      {openWebcam && (
-        <WebCam
-          audio={true}
-          mirrored={true}
-          height={height}
-          width={width}
-          imageSmoothing={imageSmoothing}
-          ref={webcamRef}
-        />
-      )}
+      {/* {openWebcam && (
+        
+      )} */}
 
       {capturing ? (
         <button onClick={handleStopCaptureClick}>Stop Capture</button>
