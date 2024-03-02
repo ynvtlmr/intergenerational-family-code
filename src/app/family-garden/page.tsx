@@ -17,7 +17,7 @@ const FamilyGarden = () => {
       { id: 2, name: '', beginAmount: '', beginAge: 60 },
     ]; 
   });
-  
+
   const [openDialog, setOpenDialog] = useState(false);
   const [personToDelete, setPersonToDelete] = useState<number | null>(null);
 
@@ -116,6 +116,20 @@ const FamilyGarden = () => {
 
   const yearsSinceBegin = (age:number, beginAge:number) => age - beginAge;
 
+  const downloadDataAsJson = () => {
+    const dataToSave = {
+      growthRate: growthRate,
+      people: people,
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToSave));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "family-garden-data.json");
+    document.body.appendChild(downloadAnchorNode); // required for Firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
   return (
     <Container>
       <Typography variant="h4" component="h1" gutterBottom>Family Garden</Typography>
@@ -181,7 +195,9 @@ const FamilyGarden = () => {
       <Button variant="contained" color="primary" onClick={addNewPerson} sx={{ mt: 3 }}>
         Add Person
       </Button>
-
+      <Button variant="contained" color="secondary" onClick={downloadDataAsJson} sx={{ mt: 3 }}>
+          Download Data
+        </Button>
       <Dialog
         open={openDialog}
         onClose={handleDialogClose}
