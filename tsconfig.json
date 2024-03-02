@@ -23,7 +23,9 @@
     },
   },
   "include": [
+    "video.d.ts",
     "next-env.d.ts",
+    "video.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
