@@ -1,5 +1,5 @@
 import { Handle, Position, addEdge, useReactFlow } from "reactflow";
-import type { Node, NodeProps } from "reactflow";
+import type { Connection, Node, NodeProps } from "reactflow";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useCallback } from "react";
@@ -61,6 +61,45 @@ export default function FamilyTreeIndividualNode({
     localStorage.setItem("family-tree", JSON.stringify(flow));
   }, [setNodes, id, toObject]);
 
+  const connectNodesWithJunction = useCallback(
+    (params: Connection) => {
+      const { source, sourceHandle, target, targetHandle } = params;
+      if (!source || !target) return;
+
+      const newNodeId = crypto.randomUUID();
+      // this is the new junction node
+      const newNode = {
+        id: newNodeId,
+        type: "customJunction",
+        data: {},
+        position: {
+          x: 100,
+          y: 100,
+        },
+      };
+
+      // edge between the source to the new node
+      const leftEdge = {
+        id: crypto.randomUUID(),
+        source,
+        target: newNodeId,
+        type: "straight",
+        sourceHandle,
+      };
+      // edge between the new node to the target
+      const rightEdge = {
+        id: crypto.randomUUID(),
+        source: newNodeId,
+        target,
+        type: "straight",
+        targetHandle,
+      };
+      setNodes((nodes) => nodes.concat(newNode));
+      setEdges((edges) => addEdge(leftEdge, addEdge(rightEdge, edges)));
+    },
+    [setNodes, setEdges]
+  );
+
   return (
     <TooltipProvider>
       <Tooltip>
@@ -82,12 +121,7 @@ export default function FamilyTreeIndividualNode({
               isConnectable={true}
               onConnect={(params) => {
                 if (params.sourceHandle === "right") {
-                  const edge = {
-                    ...params,
-                    type: "straight",
-                    sourceHandle: "right",
-                  };
-                  setEdges((edges) => addEdge(edge, edges));
+                  connectNodesWithJunction(params);
                 }
               }}
             />
@@ -124,18 +158,13 @@ export default function FamilyTreeIndividualNode({
             </div>
 
             <Handle
-              type="target"
+              type="source"
               id="right"
               position={Position.Right}
               isConnectable={true}
               onConnect={(params) => {
-                if (params.sourceHandle === "left") {
-                  const edge = {
-                    ...params,
-                    type: "straight",
-                    sourceHandle: "left",
-                  };
-                  setEdges((edges) => addEdge(edge, edges));
+                if (params.targetHandle === "left") {
+                  connectNodesWithJunction(params);
                 }
               }}
             />
