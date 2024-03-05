@@ -10,20 +10,20 @@ type AuthContext = {
 
 const authContext = createContext<AuthContext>({
   user: null,
-  isAuthenticating: false,
+  isAuthenticating: true,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setIsAuthenticating(true);
-
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user ? user : null);
 
       setIsAuthenticating(false);
     });
+
+    return () => unsubscribe();
   }, []);
   return (
     <authContext.Provider value={{ user, isAuthenticating }}>

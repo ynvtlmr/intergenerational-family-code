@@ -5,8 +5,10 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import FileProcess from "@/app/file-process";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { User, auth, onAuthStateChanged, signOut } from "@/lib/firebase";
+import { auth, signOut } from "@/lib/firebase";
+import { useAuth } from "./providers/auth-provider";
+import Loading from "./loading";
+import { Loader2 } from "lucide-react";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -23,32 +25,23 @@ const links = [
 
 export default function NavBar() {
   const pathname = usePathname();
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isAuthenticating } = useAuth();
   const { push } = useRouter();
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
-        console.log(user);
-        setUser(user);
-        // ...
-      } else {
-        // User is signed out
-        setUser(null);
-      }
-    });
-  }, []);
 
   return (
     <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10">
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
-      {user ? (
+      {isAuthenticating ? (
+        <div className="flex gap-2 py-6 text-sm">
+          <Loader2 className="animate-spin" />
+          <span>Loading...</span>
+        </div>
+      ) : user ? (
         <div className="flex flex-col items-center gap-2">
           <span>{user.email}</span>
           <Button
             variant="secondary"
+            className="cursor-pointer"
             onClick={async () => {
               await signOut(auth);
               push("/login");
@@ -58,7 +51,7 @@ export default function NavBar() {
           </Button>
         </div>
       ) : (
-        <Link className="mb-4 w-full" href="/login">
+        <Link className="mb-4 w-full cursor-pointer" href="/login">
           <Button variant="secondary" className="w-full">
             Login
           </Button>
@@ -67,7 +60,11 @@ export default function NavBar() {
       <Separator className="my-4" />
       <nav className="flex flex-col justify-center gap-2">
         {links.map((link) => (
-          <Link key={link.label} className="w-full" href={link.href}>
+          <Link
+            key={link.label}
+            className="w-full cursor-pointer"
+            href={link.href}
+          >
             <Button
               variant={pathname === link.href ? "default" : "ghost"}
               className="w-full"
