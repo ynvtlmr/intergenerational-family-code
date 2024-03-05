@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/navbar";
 import Providers from "@/components/Providers";
+import AuthenticatedRoute from "./(auth)/AuthenticatedRoute";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
         <Providers>
           <div className="flex">
             <NavBar />
-            <div className="flex-1">{children}</div>
+            <div className="flex-1">
+              <AuthenticatedRoute>{children}</AuthenticatedRoute>
+            </div>
           </div>
         </Providers>
         <Toaster richColors />

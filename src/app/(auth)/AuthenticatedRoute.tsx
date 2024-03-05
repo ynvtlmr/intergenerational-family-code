@@ -1,6 +1,7 @@
+"use client";
 import Loading from "@/components/loading";
 import { useAuth } from "@/components/providers/auth-provider";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
 type AuthenticatedRouteProps = {
@@ -11,14 +12,19 @@ export default function AuthenticatedRoute({
   children,
 }: AuthenticatedRouteProps) {
   const { isAuthenticating, user } = useAuth();
+  const pathname = usePathname();
   const { push } = useRouter();
+
+  if (pathname === "/login") {
+    return <>{children}</>;
+  }
 
   if (isAuthenticating) {
     return <Loading />;
   }
 
   if (!user) {
-    push("/login");
+    return push("/login");
   }
 
   return <>{children}</>;
