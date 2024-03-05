@@ -10,7 +10,6 @@ export default function VideoPage() {
         height={1000}
         width={1000}
         imageSmoothing={true}
-        audio={false}
         mirrored={true}
       />
       {/* <Video {...getStarted} /> */}

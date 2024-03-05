@@ -8,7 +8,6 @@ type WebCamProps = {
   height: number;
   width: number;
   imageSmoothing: boolean;
-  audio: boolean;
   mirrored: boolean;
 };
 
@@ -20,7 +19,7 @@ export default function CustomWebcam({
   // record a video
   const webcamRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const [recordedChunks, setRecordedChunks] = useState([]);
+  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [capturing, setCapturing] = useState(false);
   const [openWebcam, setOpenWebcam] = useState(false);
 
@@ -35,9 +34,9 @@ export default function CustomWebcam({
   }, [setOpenWebcam]);
 
   const handleDataAvailable = useCallback(
-    ({ data }) => {
-      if (data.size > 0) {
-        setRecordedChunks((prev) => prev.concat(data));
+    (event: BlobEvent) => {
+      if (event.data.size > 0) {
+        setRecordedChunks((prev) => prev.concat(event.data));
       }
     },
     [setRecordedChunks]
@@ -46,16 +45,23 @@ export default function CustomWebcam({
   // start recording
   const handleStartCaptureClick = useCallback(() => {
     setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-      mimeType: "video/webm",
-    });
-    mediaRecorderRef.current.addEventListener(
-      "dataavailable",
-      handleDataAvailable
-    );
-    mediaRecorderRef.current.start();
-  }, [webcamRef, setCapturing, mediaRecorderRef, handleDataAvailable]);
 
+    const stream = webcamRef.current.stream;
+
+    if (!stream) {
+      console.log("No stream found.");
+      return;
+    }
+
+    const options = { mimeType: "video/webm" };
+    const mediaRecorder = new MediaRecorder(stream, options);
+
+    mediaRecorderRef.current = mediaRecorder;
+    mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
+    mediaRecorder.start();
+  }, [handleDataAvailable, webcamRef]);
+
+  // stop recording
   const handleStopCaptureClick = useCallback(() => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
@@ -65,27 +71,37 @@ export default function CustomWebcam({
 
   // download the video file
   const handleDownload = useCallback(() => {
-    if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, {
-        type: "video/webm",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      document.body.appendChild(a);
-      a.setAttribute("style", "display: none");
-      a.href = url;
-      a.download = "react-webcam-stream-capture.webm";
-      a.click();
-      window.URL.revokeObjectURL(url);
-      setRecordedChunks([]);
-    }
+    if (recordedChunks.length === 0) return;
+
+    const blob = new Blob(recordedChunks, {
+      type: "video/webm",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+
+    // Set attributes and initiate download
+    downloadLink.href = url;
+    downloadLink.download = "react-webcam-stream-capture.webm";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    // Cleanup: remove the anchor tag and revoke blob URL
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+
+    // Reset the recordedChunks
+    setRecordedChunks([]);
   }, [recordedChunks]);
 
   return (
-    <div className="">
-      <div className=" - flex h-full flex-col items-center justify-between">
+    <div>
+      <div className=" flex h-full flex-col items-center justify-between">
         {!openWebcam ? (
-          <Button onClick={handleOpenWebcam}> Open Webcam</Button>
+          <Button onClick={handleOpenWebcam} className="h-full">
+            {" "}
+            Open Webcam
+          </Button>
         ) : (
           <>
             <div className=" flex-grow">
@@ -98,25 +114,22 @@ export default function CustomWebcam({
                 ref={webcamRef}
               />
             </div>
+
             <div className="p-5">
               <Button onClick={handleCloseWebcam}>Close Webcam</Button>
             </div>
+
+            {capturing ? (
+              <Button onClick={handleStopCaptureClick}>Stop Capture</Button>
+            ) : (
+              <Button onClick={handleStartCaptureClick}>Start Recording</Button>
+            )}
+            {recordedChunks.length > 0 && (
+              <Button onClick={handleDownload}>Download</Button>
+            )}
           </>
         )}
       </div>
-
-      {/* {openWebcam && (
-        
-      )} */}
-
-      {capturing ? (
-        <button onClick={handleStopCaptureClick}>Stop Capture</button>
-      ) : (
-        <button onClick={handleStartCaptureClick}>Start Capture</button>
-      )}
-      {recordedChunks.length > 0 && (
-        <button onClick={handleDownload}>Download</button>
-      )}
     </div>
   );
 }
