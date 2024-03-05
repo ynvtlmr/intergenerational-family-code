@@ -6,7 +6,7 @@ import { Separator } from "./ui/separator";
 import FileProcess from "@/app/file-process";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { User, auth, onAuthStateChanged } from "@/lib/firebase";
+import { User, auth, onAuthStateChanged, signOut } from "@/lib/firebase";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -35,7 +35,7 @@ export default function NavBar() {
         // ...
       } else {
         // User is signed out
-        // ...
+        setUser(null);
       }
     });
   }, []);
@@ -46,6 +46,13 @@ export default function NavBar() {
       {user && (
         <div className="mb-8 flex flex-col items-center gap-2">
           <span>{user.email}</span>
+          <Button
+            onClick={async () => {
+              await signOut(auth);
+            }}
+          >
+            Logout
+          </Button>
         </div>
       )}
       <nav className="flex flex-col justify-center gap-2">
