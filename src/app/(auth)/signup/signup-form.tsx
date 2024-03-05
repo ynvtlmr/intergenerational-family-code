@@ -1,6 +1,5 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,9 +13,9 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import FormSubmitButton from "@/components/form-submit-button";
-import { auth, createUserWithEmailAndPassword } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { signupEmailPassword } from "@/lib/auth";
 
 const signupFormSchema = z
   .object({
@@ -51,7 +50,7 @@ export default function SignupForm() {
   async function onSubmit({ email, password }: SignupFormSchema) {
     try {
       setIsSubmitting(true);
-      await createUserWithEmailAndPassword(auth, email, password);
+      signupEmailPassword(email, password);
       replace("/decision-tree");
     } catch (error) {
       if (error instanceof Error) {

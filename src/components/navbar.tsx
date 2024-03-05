@@ -5,10 +5,10 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import FileProcess from "@/app/file-process";
 import { usePathname, useRouter } from "next/navigation";
-import { auth, signOut } from "@/lib/firebase";
+
 import { useAuth } from "./providers/auth-provider";
-import Loading from "./loading";
 import { Loader2 } from "lucide-react";
+import { logout } from "@/lib/auth";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -43,7 +43,7 @@ export default function NavBar() {
             variant="secondary"
             className="cursor-pointer"
             onClick={async () => {
-              await signOut(auth);
+              await logout();
               push("/login");
             }}
           >
