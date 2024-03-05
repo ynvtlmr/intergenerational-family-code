@@ -51,7 +51,7 @@ export default function SignupForm() {
     try {
       setIsSubmitting(true);
       signupEmailPassword(email, password);
-      replace("/decision-tree");
+      replace("/verify-email");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

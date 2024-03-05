@@ -46,7 +46,11 @@ export default function LoginForm() {
   async function onSubmit({ email, password }: LoginFormSchema) {
     try {
       setIsSubmitting(true);
-      loginEmailPassword(email, password);
+      const user = await loginEmailPassword(email, password);
+      if (user.emailVerified === false) {
+        replace("/verify-email");
+        return;
+      }
       replace("/decision-tree");
     } catch (error) {
       if (error instanceof Error) {
