@@ -34,19 +34,15 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit({ email, password }: LoginFormSchema) {
+  async function onSubmit({ email, password }: LoginFormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    console.log(userCredential.user);
   }
   return (
     <Form {...form}>
