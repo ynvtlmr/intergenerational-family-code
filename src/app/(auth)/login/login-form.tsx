@@ -39,7 +39,11 @@ export default function LoginForm() {
   async function onSubmit({ email, password }: LoginFormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredentials = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     replace("/decision-tree");
   }
   return (
