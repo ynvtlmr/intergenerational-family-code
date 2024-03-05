@@ -51,11 +51,18 @@ export default function NavBar() {
           </Button>
         </div>
       ) : (
-        <Link className="mb-4 w-full cursor-pointer" href="/login">
-          <Button variant="secondary" className="w-full">
-            Login
-          </Button>
-        </Link>
+        <div className="flex w-full flex-col gap-2">
+          <Link className="w-full cursor-pointer" href="/login">
+            <Button variant="secondary" className="w-full">
+              Login
+            </Button>
+          </Link>
+          <Link className="w-full cursor-pointer" href="/signup">
+            <Button variant="secondary" className="w-full">
+              Signup
+            </Button>
+          </Link>
+        </div>
       )}
       <Separator className="my-4" />
       <nav className="flex flex-col justify-center gap-2">

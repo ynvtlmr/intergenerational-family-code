@@ -1,7 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -13,41 +12,46 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-
-import { signInWithEmailAndPassword, auth } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/components/providers/auth-provider";
-import Loading from "@/components/loading";
 import { useState } from "react";
 import FormSubmitButton from "@/components/form-submit-button";
+import { auth, createUserWithEmailAndPassword } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const loginFormSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
-});
+const signupFormSchema = z
+  .object({
+    email: z.string().email({ message: "Please enter a valid email address." }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" }),
+    confirmPassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-type LoginFormSchema = z.infer<typeof loginFormSchema>;
+type SignupFormSchema = z.infer<typeof signupFormSchema>;
 
-export default function LoginForm() {
+export default function SignupForm() {
+  const { replace } = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const form = useForm<LoginFormSchema>({
-    resolver: zodResolver(loginFormSchema),
+  const form = useForm<SignupFormSchema>({
+    resolver: zodResolver(signupFormSchema),
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
-  const { isAuthenticating, user } = useAuth();
-  const { replace, back } = useRouter();
 
-  async function onSubmit({ email, password }: LoginFormSchema) {
+  async function onSubmit({ email, password }: SignupFormSchema) {
     try {
       setIsSubmitting(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       replace("/decision-tree");
     } catch (error) {
       if (error instanceof Error) {
@@ -57,23 +61,16 @@ export default function LoginForm() {
       setIsSubmitting(false);
     }
   }
-  if (isAuthenticating) {
-    return <Loading />;
-  }
-  if (user) {
-    back();
-    return;
-  }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="mx-auto grid w-full max-w-lg items-center gap-4"
       >
-        <h1 className="mb-4 text-center text-3xl font-bold">Login</h1>
+        <h1 className="mb-4 text-center text-3xl font-bold">Signup</h1>
         {error && (
           <p className="text-center text-destructive">
-            You entered the wrong email or password.
+            There was an error creating your account.
           </p>
         )}
         <FormField
@@ -100,15 +97,31 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Confirm Your Password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormSubmitButton
           disabled={isSubmitting}
-          defaultText="Login"
-          loadingText="Logging in..."
+          defaultText="Create Account"
+          loadingText="Please Wait..."
         />
         <div className="mt-4 flex gap-2">
-          <p>Need to create an account?</p>
-          <Link className="text-blue-500 hover:underline" href="/signup">
-            Sign up
+          <p>Already have an account?</p>
+          <Link className="text-blue-500 hover:underline" href="/login">
+            Login
           </Link>
         </div>
       </form>
