@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import FileProcess from "@/app/file-process";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { User, auth, onAuthStateChanged, signOut } from "@/lib/firebase";
 
@@ -24,6 +24,7 @@ const links = [
 export default function NavBar() {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
+  const { push } = useRouter();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -50,6 +51,7 @@ export default function NavBar() {
             variant="secondary"
             onClick={async () => {
               await signOut(auth);
+              push("/login");
             }}
           >
             Logout

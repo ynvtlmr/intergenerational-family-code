@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 
 import { signInWithEmailAndPassword, auth } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -33,16 +34,13 @@ export default function LoginForm() {
       password: "",
     },
   });
+  const { replace } = useRouter();
 
   async function onSubmit({ email, password }: LoginFormSchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    console.log(userCredential.user);
+    await signInWithEmailAndPassword(auth, email, password);
+    replace("/decision-tree");
   }
   return (
     <Form {...form}>
