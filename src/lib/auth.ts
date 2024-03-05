@@ -1,5 +1,38 @@
-"use server";
+import { auth } from "@/lib/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
-import { auth, signInWithEmailAndPassword } from "@/lib/firebase";
+export async function loginEmailPassword(email: string, password: string) {
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  return userCredential.user;
+}
 
-export async function login(email: string, password: string) {}
+export async function logout() {
+  await signOut(auth);
+}
+
+export async function signupEmailPassword(email: string, password: string) {
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  await sendEmailVerification(userCredential.user);
+  return userCredential.user;
+}
+
+export async function resendEmailVerification() {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user found");
+  }
+  await sendEmailVerification(user);
+}

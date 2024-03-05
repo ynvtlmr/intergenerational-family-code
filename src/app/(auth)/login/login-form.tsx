@@ -1,6 +1,5 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,13 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { signInWithEmailAndPassword, auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import Loading from "@/components/loading";
 import { useState } from "react";
 import FormSubmitButton from "@/components/form-submit-button";
 import Link from "next/link";
+import { loginEmailPassword } from "@/lib/auth";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -47,7 +46,11 @@ export default function LoginForm() {
   async function onSubmit({ email, password }: LoginFormSchema) {
     try {
       setIsSubmitting(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      const user = await loginEmailPassword(email, password);
+      if (user.emailVerified === false) {
+        replace("/verify-email");
+        return;
+      }
       replace("/decision-tree");
     } catch (error) {
       if (error instanceof Error) {

@@ -15,7 +15,11 @@ export default function AuthenticatedRoute({
   const pathname = usePathname();
   const { push } = useRouter();
 
-  if (pathname === "/login" || pathname === "/signup") {
+  if (
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/verify-email"
+  ) {
     return <>{children}</>;
   }
 
@@ -25,6 +29,11 @@ export default function AuthenticatedRoute({
 
   if (!user) {
     push("/login");
+    return;
+  }
+
+  if (user.emailVerified === false) {
+    push("/verify-email");
     return;
   }
 

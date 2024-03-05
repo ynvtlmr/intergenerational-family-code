@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/navbar";
 import Providers from "@/components/Providers";
-import AuthenticatedRoute from "./(auth)/AuthenticatedRoute";
+import AuthenticatedRoute from "./(auth)/authenticated-route";
 
 const inter = Inter({ subsets: ["latin"] });
 
