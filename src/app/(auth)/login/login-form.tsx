@@ -16,6 +16,8 @@ import {
 
 import { signInWithEmailAndPassword, auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/providers/auth-provider";
+import Loading from "@/components/loading";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -34,7 +36,8 @@ export default function LoginForm() {
       password: "",
     },
   });
-  const { replace } = useRouter();
+  const { isAuthenticating, user } = useAuth();
+  const { replace, back } = useRouter();
 
   async function onSubmit({ email, password }: LoginFormSchema) {
     // Do something with the form values.
@@ -45,6 +48,12 @@ export default function LoginForm() {
       password
     );
     replace("/decision-tree");
+  }
+  if (isAuthenticating) {
+    return <Loading />;
+  }
+  if (user) {
+    return back();
   }
   return (
     <Form {...form}>
