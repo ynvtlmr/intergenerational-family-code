@@ -18,6 +18,8 @@ import { signInWithEmailAndPassword, auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import Loading from "@/components/loading";
+import { useState } from "react";
+import FormSubmitButton from "@/components/form-submit-button";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -29,6 +31,8 @@ const loginFormSchema = z.object({
 type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
 export default function LoginForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const form = useForm<LoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -40,14 +44,17 @@ export default function LoginForm() {
   const { replace, back } = useRouter();
 
   async function onSubmit({ email, password }: LoginFormSchema) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    const userCredentials = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    replace("/decision-tree");
+    try {
+      setIsSubmitting(true);
+      await signInWithEmailAndPassword(auth, email, password);
+      replace("/decision-tree");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   }
   if (isAuthenticating) {
     return <Loading />;
@@ -62,6 +69,11 @@ export default function LoginForm() {
         className="mx-auto grid w-full max-w-lg items-center gap-4"
       >
         <h1 className="mb-4 text-center text-3xl font-bold">Login</h1>
+        {error && (
+          <span className="text-center text-destructive">
+            You entered the wrong email or password.
+          </span>
+        )}
         <FormField
           control={form.control}
           name="email"
@@ -86,7 +98,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button>Login</Button>
+        <FormSubmitButton defaultText="Login" loadingText="Logging in..." />
       </form>
     </Form>
   );
