@@ -44,9 +44,10 @@ export default function NavBar() {
     <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10">
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
       {user ? (
-        <div className="mb-8 flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <span>{user.email}</span>
           <Button
+            variant="secondary"
             onClick={async () => {
               await signOut(auth);
             }}
