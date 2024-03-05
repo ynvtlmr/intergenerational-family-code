@@ -60,7 +60,8 @@ export default function LoginForm() {
     return <Loading />;
   }
   if (user) {
-    return back();
+    back();
+    return;
   }
   return (
     <Form {...form}>
@@ -98,7 +99,11 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <FormSubmitButton defaultText="Login" loadingText="Logging in..." />
+        <FormSubmitButton
+          disabled={isSubmitting}
+          defaultText="Login"
+          loadingText="Logging in..."
+        />
       </form>
     </Form>
   );

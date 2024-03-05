@@ -24,7 +24,8 @@ export default function AuthenticatedRoute({
   }
 
   if (!user) {
-    return push("/login");
+    push("/login");
+    return;
   }
 
   return <>{children}</>;
