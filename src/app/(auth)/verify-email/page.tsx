@@ -1,8 +1,19 @@
 "use client";
 
+import Loading from "@/components/loading";
+import { useAuth } from "@/components/providers/auth-provider";
 import { resendEmailVerification } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 export default function VerifyEmailPage() {
+  const { back } = useRouter();
+  const { isAuthenticating, user } = useAuth();
+  if (isAuthenticating) {
+    return <Loading />;
+  }
+  if (user && user.emailVerified === true) {
+    back();
+  }
   return (
     <main className="flex h-full w-full items-center justify-center bg-secondary">
       <div className="rounded-lg border bg-background p-10 text-center">
