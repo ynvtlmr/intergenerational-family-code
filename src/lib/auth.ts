@@ -28,3 +28,11 @@ export async function signupEmailPassword(email: string, password: string) {
   await sendEmailVerification(userCredential.user);
   return userCredential.user;
 }
+
+export async function resendEmailVerification() {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user found");
+  }
+  await sendEmailVerification(user);
+}
