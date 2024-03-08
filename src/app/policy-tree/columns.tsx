@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
@@ -94,4 +93,3 @@ export const columns: ColumnDef<User>[] = [
 ];
 
 export { TableActionsProvider };
-
