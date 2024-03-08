@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, Card, CardContent, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,24 +10,32 @@ const INITIAL_PEOPLE = [
 ];
 
 const FamilyGarden = () => {
-  const [growthRate, setGrowthRate] = useState(() => {
-    const savedRate = localStorage.getItem('growthRate');
-    return savedRate ? parseFloat(savedRate) : INITIAL_GROWTH_RATE;
-  });
-  
-  const [people, setPeople] = useState(() => {
-    const savedPeople = localStorage.getItem('people');
-    return savedPeople ? JSON.parse(savedPeople) : INITIAL_PEOPLE;
-  });
+  const [growthRate, setGrowthRate] = useState(INITIAL_GROWTH_RATE);
+  const [people, setPeople] = useState(INITIAL_PEOPLE);
+  const [isClient, setIsClient] = useState(false); // Add a state to track client-side rendering
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [personToDelete, setPersonToDelete] = useState<number | null>(null);
-
+  // Load data from localStorage once component mounts on the client
   useEffect(() => {
-    localStorage.clear();
-    window.localStorage.setItem('growthRate', growthRate.toString());
-    window.localStorage.setItem('people', JSON.stringify(people));
-  }, [growthRate, people]);
+    setIsClient(true); // Indicate that we are now on the client
+    const savedRate = localStorage.getItem('growthRate');
+    if (savedRate) {
+      setGrowthRate(parseFloat(savedRate));
+    }
+    const savedPeople = localStorage.getItem('people');
+    if (savedPeople) {
+      setPeople(JSON.parse(savedPeople));
+    }
+  }, []);
+
+  // Persist data to localStorage on updates
+  useEffect(() => {
+    if (!isClient) return; // Only run on the client
+    localStorage.setItem('growthRate', growthRate.toString());
+    localStorage.setItem('people', JSON.stringify(people));
+  }, [growthRate, people, isClient]);
+
+const [openDialog, setOpenDialog] = useState(false);
+const [personToDelete, setPersonToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
@@ -108,7 +115,7 @@ const FamilyGarden = () => {
 
   const calculateGrowth = (initialAmount:string, years:number) => {
     const amount = parseFloat(initialAmount.replace(/[$,]/g, '')) || 0;
-    return `$${(amount * Math.pow(1 + growthRate, years)).toFixed(2)}`;
+    return `$${(amount * Math.pow(1 + (growthRate ? growthRate : INITIAL_GROWTH_RATE), years)).toFixed(2)}`;
   };
 
   const calculateTaxCoverage = (growthAmount:string) => {
@@ -152,12 +159,12 @@ const FamilyGarden = () => {
           type="number"
           variant="outlined"
           fullWidth
-          value={(growthRate * 100).toString()}
+          value={((growthRate ? growthRate : INITIAL_GROWTH_RATE) * 100).toString()}
           onChange={handleGrowthRateChange}
           margin="normal"
         />
       </Box>
-      {people.map((person: any, index: number) => (
+      {people && people.map((person: any, index: number) => (
         <Card key={person.id} variant="outlined" sx={{ mb: 5, position: 'relative' }}>
           <CardContent>
             <TextField
