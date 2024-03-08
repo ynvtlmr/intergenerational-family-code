@@ -23,11 +23,3 @@ export const useFamilyCodeStore = create<FamilyCodeState>()(
     }
   )
 );
-
-export const useFamilyCode = () => {
-  return {
-    statements: useFamilyCodeStore((s) => s.statements),
-    addStatement: useFamilyCodeStore((s) => s.addStatement),
-    deleteStatement: useFamilyCodeStore((s) => s.deleteStatement),
-  };
-};

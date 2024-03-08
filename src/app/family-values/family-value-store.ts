@@ -34,11 +34,3 @@ export const useFamilyValueStore = create<FamilyValueState>()(
     }
   )
 );
-
-export const useFamilyValues = () => {
-  return {
-    values: useFamilyValueStore((s) => s.values),
-    addFamilyValue: useFamilyValueStore((s) => s.addValue),
-    deleteFamilyValue: useFamilyValueStore((s) => s.deleteValue),
-  };
-};

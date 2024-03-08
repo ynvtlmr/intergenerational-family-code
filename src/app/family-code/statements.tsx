@@ -1,9 +1,10 @@
 "use client";
-import { useFamilyCode } from "./family-code-store";
+import { useFamilyCodeStore } from "./family-code-store";
 import FormItem from "@/components/form-item";
 
 export default function Statements() {
-  const { statements, deleteStatement } = useFamilyCode();
+  const statements = useFamilyCodeStore((s) => s.statements);
+  const deleteStatement = useFamilyCodeStore((s) => s.deleteStatement);
 
   const handleDelete = (s: string) => {
     deleteStatement(s);

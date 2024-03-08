@@ -1,24 +1,55 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, Card, CardContent, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+const INITIAL_GROWTH_RATE = 0.05;
+const INITIAL_PEOPLE = [
+  { id: 1, name: '', beginAmount: '', beginAge: 30 },
+  { id: 2, name: '', beginAmount: '', beginAge: 40 },
+];
+
 const FamilyGarden = () => {
-  const [growthRate, setGrowthRate] = useState(0.05);
-  const [people, setPeople] = useState([
-    { id: 1, name: '', beginAmount: '', beginAge: 30 },
-    { id: 2, name: '', beginAmount: '', beginAge: 60 },
-  ]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [personToDelete, setPersonToDelete] = useState<number | null>(null);
+  const [growthRate, setGrowthRate] = useState(INITIAL_GROWTH_RATE);
+  const [people, setPeople] = useState(INITIAL_PEOPLE);
+  const [isClient, setIsClient] = useState(false); // Add a state to track client-side rendering
+
+  // Load data from localStorage once component mounts on the client
+  useEffect(() => {
+    setIsClient(true); // Indicate that we are now on the client
+    const savedRate = localStorage.getItem('growthRate');
+    if (savedRate) {
+      setGrowthRate(parseFloat(savedRate));
+    }
+    const savedPeople = localStorage.getItem('people');
+    if (savedPeople) {
+      setPeople(JSON.parse(savedPeople));
+    }
+  }, []);
+
+  // Persist data to localStorage on updates
+  useEffect(() => {
+    if (!isClient) return; // Only run on the client
+    localStorage.setItem('growthRate', growthRate.toString());
+    localStorage.setItem('people', JSON.stringify(people));
+  }, [growthRate, people, isClient]);
+
+const [openDialog, setOpenDialog] = useState(false);
+const [personToDelete, setPersonToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
     return () => {
-      document.body.style.backgroundColor = "white";
+      document.body.style.backgroundColor = 'white';
     };
   }, []);
+
+  const resetData = () => {
+    localStorage.removeItem('growthRate');
+    localStorage.removeItem('people');
+    setGrowthRate(INITIAL_GROWTH_RATE);
+    setPeople(INITIAL_PEOPLE);
+  };
 
   const handleGrowthRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rate = parseFloat(e.target.value) / 100;
@@ -42,21 +73,21 @@ const FamilyGarden = () => {
         maximumFractionDigits: 0,
       }).format(numericValue);
   
-      setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: formattedAmount } : person));
+      setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, beginAmount: formattedAmount } : person));
     } else {
-      setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAmount: '' } : person));
+      setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, beginAmount: '' } : person));
     }
   };
 
   const handleNameChange = (id: number, newName: string) => {
-    setPeople(prev => prev.map(person => person.id === id ? { ...person, name: newName } : person));
+    setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, name: newName } : person));
   };
   
 
   const handleBeginAgeChange = (id:number, newAge:string) => {
     const age = parseInt(newAge, 10);
     const validAge = !isNaN(age) ? age : '';
-    setPeople(prev => prev.map(person => person.id === id ? { ...person, beginAge: parseInt(validAge.toString(), 10) } : person));
+    setPeople((prev: any[]) => prev.map(person => person.id === id ? { ...person, beginAge: parseInt(validAge.toString(), 10) } : person));
   };
 
 
@@ -77,14 +108,14 @@ const FamilyGarden = () => {
 
   const confirmDelete = () => {
     if (personToDelete !== null) {
-      setPeople(prevPeople => prevPeople.filter(person => person.id !== personToDelete));
+      setPeople((prevPeople: any[]) => prevPeople.filter(person => person.id !== personToDelete));
       handleDialogClose();
     }
   };
 
   const calculateGrowth = (initialAmount:string, years:number) => {
     const amount = parseFloat(initialAmount.replace(/[$,]/g, '')) || 0;
-    return `$${(amount * Math.pow(1 + growthRate, years)).toFixed(2)}`;
+    return `$${(amount * Math.pow(1 + (growthRate ? growthRate : INITIAL_GROWTH_RATE), years)).toFixed(2)}`;
   };
 
   const calculateTaxCoverage = (growthAmount:string) => {
@@ -103,6 +134,20 @@ const FamilyGarden = () => {
 
   const yearsSinceBegin = (age:number, beginAge:number) => age - beginAge;
 
+  const downloadDataAsJson = () => {
+    const dataToSave = {
+      growthRate: growthRate,
+      people: people,
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToSave));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "family-garden-data.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
   return (
     <Container>
       <Typography variant="h4" component="h1" gutterBottom>Family Garden</Typography>
@@ -114,12 +159,12 @@ const FamilyGarden = () => {
           type="number"
           variant="outlined"
           fullWidth
-          value={(growthRate * 100).toString()}
+          value={((growthRate ? growthRate : INITIAL_GROWTH_RATE) * 100).toString()}
           onChange={handleGrowthRateChange}
           margin="normal"
         />
       </Box>
-      {people.map((person, index) => (
+      {people && people.map((person: any, index: number) => (
         <Card key={person.id} variant="outlined" sx={{ mb: 5, position: 'relative' }}>
           <CardContent>
             <TextField
@@ -148,8 +193,8 @@ const FamilyGarden = () => {
                 margin="normal"
                 InputProps={{
                   style: { textAlign: 'right' },
-                  }}
-                />
+                }}
+            />
             {generateAges(person.beginAge).map(age => (
               <Box key={`${person.id}-${age}`} display="flex" justifyContent="space-between" my={3}>
                 <Typography>Age: {age}</Typography>
@@ -168,7 +213,12 @@ const FamilyGarden = () => {
       <Button variant="contained" color="primary" onClick={addNewPerson} sx={{ mt: 3 }}>
         Add Person
       </Button>
-
+      <Button variant="contained" color="secondary" onClick={downloadDataAsJson} sx={{ mt: 3, ml:2 }}>
+          Download Data
+        </Button>
+        <Button variant="contained" color="success" onClick={resetData} sx={{ mt: 3, ml: 2 }}>
+        Reset Data
+      </Button>
       <Dialog
         open={openDialog}
         onClose={handleDialogClose}
