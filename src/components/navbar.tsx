@@ -21,6 +21,7 @@ const links = [
   { href: "/policy-tree", label: "Policy Tree" },
   { href: "/family-tree", label: "Family Tree" },
   { href: "/philanthropy", label: "Philanthropy" },
+  { href: "/video", label: "Videos" },
 ];
 
 export default function NavBar() {
