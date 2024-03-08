@@ -16,6 +16,7 @@ export default function CustomWebcam({
   width,
   imageSmoothing,
 }: WebCamProps) {
+  
   // record a video
   const webcamRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);

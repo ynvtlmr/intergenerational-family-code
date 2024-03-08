@@ -1,6 +1,6 @@
-import Video from "next-video";
-// import getStarted from "../../videos/get-started.mp4.json";
 import CustomWebcam from "./custom-webcam";
+import Video from "next-video";
+import getStarted from "/videos/get-started.mp4";
 
 export default function VideoPage() {
   return (
@@ -12,7 +12,7 @@ export default function VideoPage() {
         imageSmoothing={true}
         mirrored={true}
       />
-      {/* <Video {...getStarted} /> */}
+      <Video src={getStarted} />
     </div>
   );
 }
