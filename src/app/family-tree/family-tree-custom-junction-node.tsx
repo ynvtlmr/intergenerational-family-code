@@ -9,12 +9,12 @@ export default function FamilyTreeCustomJunctionNode({
   return (
     <div className="rounded-lg border-foreground bg-foreground p-4">
       <Handle
-        type="source"
+        type="target"
         id="left"
         position={Position.Left}
         isConnectable={isConnectable}
         onConnect={(params) => {
-          if (params.targetHandle === "right") {
+          if (params.sourceHandle === "right") {
             const edge = {
               ...params,
               type: "straight",
