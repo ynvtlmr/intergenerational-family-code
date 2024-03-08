@@ -9,7 +9,7 @@ import ReactFlow, {
   useReactFlow,
   getConnectedEdges,
 } from "reactflow";
-import type { NodeDragHandler } from "reactflow";
+import type { NodeDragHandler, Node } from "reactflow";
 import "reactflow/dist/style.css";
 
 import { useCallback, useRef } from "react";
@@ -106,6 +106,24 @@ export default function FamilyTreeFlow() {
     setNodes
   );
 
+  const syncNodePositions = useCallback(
+    (
+      mainNode: Node<NodeData>,
+      followerNode: Node<NodeData>,
+      adjustYPosition: number = 0
+    ) => {
+      const newY = mainNode.position.y - adjustYPosition;
+      const updatedNode = {
+        ...followerNode,
+        position: { ...followerNode.position, y: newY },
+      };
+      setNodes((prevNodes) =>
+        prevNodes.map((n) => (n.id === updatedNode.id ? updatedNode : n))
+      );
+    },
+    [setNodes]
+  );
+
   /**
    * Handles the drag event for a node in the family tree.
    * If the dragged node is of type "customJunction", it updates the positions of the connected nodes.
@@ -125,7 +143,7 @@ export default function FamilyTreeFlow() {
       // Get the node IDs of the left and right connected nodes
       const leftAndRightNodeIds = connectedEdges
         .filter((edge) => edge.type === "straight")
-        .map((edge) => edge.target);
+        .map((edge) => (edge.source === node.id ? edge.target : edge.source));
 
       // Get the node objects of the left and right connected nodes
       const [nodeOneId, nodeTwoId] = leftAndRightNodeIds;
@@ -134,33 +152,15 @@ export default function FamilyTreeFlow() {
 
       // Update the position of the first connected node
       if (nodeOne) {
-        const newY = node.position.y - 34;
-        const updatedNodeOne = {
-          ...nodeOne,
-          position: { ...nodeOne.position, y: newY },
-        };
-        setNodes((prevNodes) =>
-          prevNodes.map((n) =>
-            n.id === updatedNodeOne.id ? updatedNodeOne : n
-          )
-        );
+        syncNodePositions(node, nodeOne, 50);
       }
 
       // Update the position of the second connected node
       if (nodeTwo) {
-        const newY = node.position.y - 34;
-        const updatedNodeTwo = {
-          ...nodeTwo,
-          position: { ...nodeTwo.position, y: newY },
-        };
-        setNodes((prevNodes) =>
-          prevNodes.map((n) =>
-            n.id === updatedNodeTwo.id ? updatedNodeTwo : n
-          )
-        );
+        syncNodePositions(node, nodeTwo, 50);
       }
     },
-    [getNode, edges, setNodes]
+    [edges, getNode, syncNodePositions]
   );
 
   return (
