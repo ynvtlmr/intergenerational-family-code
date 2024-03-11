@@ -53,7 +53,7 @@
     "@tanstack/react-query-devtools": "^5.20.5",
     "@tanstack/react-table": "^8.11.7",
     "@testing-library/user-event": "^14.5.2",
-    "chart.js": "^4.4.1",
+    "chart.js": "^4.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
