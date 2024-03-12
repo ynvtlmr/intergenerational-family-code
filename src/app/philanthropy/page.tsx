@@ -11,7 +11,6 @@ export default function DecisionTreePage() {
   const editImpactStatement = usePhilanthropyStore(
     (s) => s.editImpactStatement
   );
-  console.log(impactStatement);
   return (
     <main className="mx-auto mt-20 max-w-xl px-2">
       <h1 className="mb-4 text-2xl font-bold">Philanthropy</h1>

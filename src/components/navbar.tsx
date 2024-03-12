@@ -22,6 +22,7 @@ const links = [
   { href: "/family-tree", label: "Family Tree" },
   { href: "/philanthropy", label: "Philanthropy" },
   { href: "/video", label: "Videos" },
+  { href: "/pdf", label: "Print PDF" },
 ];
 
 export default function NavBar() {
