@@ -31,7 +31,7 @@ export default function NavBar() {
   const { push } = useRouter();
 
   return (
-    <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10">
+    <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden">
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
       {isAuthenticating ? (
         <div className="flex gap-2 py-6 text-sm">
