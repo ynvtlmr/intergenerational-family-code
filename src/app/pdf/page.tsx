@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { Button } from "@/components/ui/button";
 import { useDecisionTreeStore } from "../decision-tree/family-questions-store";
 import { useFamilyCodeStore } from "../family-code/family-code-store";
 import { useFamilyValueStore } from "../family-values/family-value-store";
@@ -18,78 +18,87 @@ export default function PDFPage() {
   const guidelines = usePhilanthropyStore((s) => s.guidelines);
   const impactStatement = usePhilanthropyStore((s) => s.impactStatement);
 
-  const printRef = useRef<HTMLElement>(null);
-
   const handleClick = () => {
-    if (printRef.current) {
-    }
+    window.print();
   };
   return (
-    <main ref={printRef} onClick={handleClick} className="space-y-2">
-      <Page title="Decision Tree">
-        <ul>
-          {questions.length ? (
-            questions.map((question) => <li key={question}>{question}</li>)
-          ) : (
-            <li>No questions yet.</li>
-          )}
-        </ul>
-      </Page>
-      <Page title="Family Values">
-        <ul>
-          {familyValues.length ? (
-            Object.keys(familyValues).map((value) => (
-              <li key={value}>{value}</li>
-            ))
-          ) : (
-            <li>No values yet.</li>
-          )}
-        </ul>
-      </Page>
-      <Page title="Family Code">
-        {
+    <main className="w-full p-5  print:p-0">
+      <h1 className="mb-5 text-4xl font-bold print:hidden">
+        Intergenerational Family Code Report
+      </h1>
+      <Button
+        className="mb-5 print:hidden"
+        onClick={handleClick}
+        aria-label="Print PDF"
+      >
+        Print PDF
+      </Button>
+      <div className="space-y-10 print:space-y-0">
+        <Page title="Decision Tree">
           <ul>
-            {familyCodeStatements.length ? (
-              familyCodeStatements.map((statement) => (
-                <li key={statement}>{statement}</li>
-              ))
+            {questions.length ? (
+              questions.map((question) => <li key={question}>{question}</li>)
             ) : (
-              <li>No statements yet.</li>
+              <li>No questions yet.</li>
             )}
           </ul>
-        }
-      </Page>
-      <Page title="Family Vision">
-        {
+        </Page>
+        <Page title="Family Values">
           <ul>
-            {familyVisionStatements.length ? (
-              familyVisionStatements.map((statement) => (
-                <li key={statement}>{statement}</li>
+            {familyValues.length ? (
+              Object.keys(familyValues).map((value) => (
+                <li key={value}>{value}</li>
               ))
             ) : (
-              <li>No statements yet.</li>
+              <li>No values yet.</li>
             )}
           </ul>
-        }
-      </Page>
-      <Page title="Philanthropy">
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold">Impact Statement</h2>
-          <p>{impactStatement}</p>
-          <h2 className="text-xl font-bold">Guidelines</h2>
+        </Page>
+        <Page title="Family Code">
           {
             <ul>
-              {guidelines.length ? (
-                guidelines.map((guideline) => (
-                  <li key={guideline}>{guideline}</li>
+              {familyCodeStatements.length ? (
+                familyCodeStatements.map((statement) => (
+                  <li key={statement}>{statement}</li>
                 ))
               ) : (
-                <li>No guidelines yet.</li>
+                <li>No statements yet.</li>
               )}
             </ul>
           }
-        </div>
-      </Page>
+        </Page>
+        <Page title="Family Vision">
+          {
+            <ul>
+              {familyVisionStatements.length ? (
+                familyVisionStatements.map((statement) => (
+                  <li key={statement}>{statement}</li>
+                ))
+              ) : (
+                <li>No statements yet.</li>
+              )}
+            </ul>
+          }
+        </Page>
+        <Page title="Philanthropy">
+          <div>
+            <h2>Impact Statement</h2>
+            <p>{impactStatement}</p>
+            <h2>Guidelines</h2>
+            {
+              <ul>
+                {guidelines.length ? (
+                  guidelines.map((guideline) => (
+                    <li key={guideline}>{guideline}</li>
+                  ))
+                ) : (
+                  <li>No guidelines yet.</li>
+                )}
+              </ul>
+            }
+          </div>
+        </Page>
+      </div>
     </main>
   );
 }
@@ -102,8 +111,8 @@ function Page({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto min-h-dvh max-w-7xl border p-5">
-      <h1 className="mb-3 text-3xl font-bold">{title}</h1>
+    <div className="prose min-h-dvh max-w-full border p-5 print:border-none">
+      <h1>{title}</h1>
       {children}
     </div>
   );
