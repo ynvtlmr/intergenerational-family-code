@@ -15,6 +15,7 @@ const links = [
   { href: "/family-values", label: "Family Values" },
   { href: "/family-code", label: "Family Code" },
   { href: "/family-vision", label: "Family Vision" },
+  { href: "/contacts", label: "Contacts" },
   { href: "/family-crest", label: "Family Crest" },
   { href: "/family-garden", label: "Family Garden" },
   { href: "/org-chart", label: "Organizational Chart" },
