@@ -16,7 +16,6 @@ export default function CustomWebcam({
   width,
   imageSmoothing,
 }: WebCamProps) {
-  
   // record a video
   const webcamRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -50,7 +49,7 @@ export default function CustomWebcam({
     const stream = webcamRef.current.stream;
 
     if (!stream) {
-      console.log("No stream found.");
+      console.error("No stream found.");
       return;
     }
 

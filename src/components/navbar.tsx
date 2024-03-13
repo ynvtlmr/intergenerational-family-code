@@ -15,6 +15,7 @@ const links = [
   { href: "/family-values", label: "Family Values" },
   { href: "/family-code", label: "Family Code" },
   { href: "/family-vision", label: "Family Vision" },
+  { href: "/contacts", label: "Contacts" },
   { href: "/family-crest", label: "Family Crest" },
   { href: "/family-garden", label: "Family Garden" },
   { href: "/org-chart", label: "Organizational Chart" },
@@ -22,6 +23,7 @@ const links = [
   { href: "/family-tree", label: "Family Tree" },
   { href: "/philanthropy", label: "Philanthropy" },
   { href: "/video", label: "Videos" },
+  { href: "/pdf", label: "Print PDF" },
 ];
 
 export default function NavBar() {
@@ -30,7 +32,7 @@ export default function NavBar() {
   const { push } = useRouter();
 
   return (
-    <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10">
+    <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden">
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
       {isAuthenticating ? (
         <div className="flex gap-2 py-6 text-sm">
