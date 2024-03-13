@@ -6,6 +6,7 @@ import { useFamilyCodeStore } from "../family-code/family-code-store";
 import { useFamilyValueStore } from "../family-values/family-value-store";
 import { useFamilyVisionStore } from "../family-vision/family-vision-store";
 import { usePhilanthropyStore } from "../philanthropy/philanthropy-store";
+import { useContactStore } from "../contacts/contact-store";
 
 export default function PDFPage() {
   const questions = useDecisionTreeStore((s) => s.questions);
@@ -17,7 +18,7 @@ export default function PDFPage() {
 
   const values = Object.keys(familyValues);
 
-  console.log();
+  const contacts = useContactStore((s) => s.contacts);
 
   const guidelines = usePhilanthropyStore((s) => s.guidelines);
   const impactStatement = usePhilanthropyStore((s) => s.impactStatement);
@@ -76,6 +77,23 @@ export default function PDFPage() {
               )}
             </ul>
           }
+        </Page>
+        <Page>
+          <h1>Contacts</h1>
+          <div>
+            {contacts.length ? (
+              contacts.map((contact) => (
+                <div key={contact.email}>
+                  <h2>{contact.name}</h2>
+                  <p>{contact.title}</p>
+                  <p>Email: {contact.email}</p>
+                  <p>Phone: {contact.phone}</p>
+                </div>
+              ))
+            ) : (
+              <p>No contacts yet.</p>
+            )}
+          </div>
         </Page>
         <Page>
           <h1>Family Vision</h1>
