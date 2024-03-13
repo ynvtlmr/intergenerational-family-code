@@ -73,7 +73,7 @@ export default function PDFPage() {
                   <li key={statement}>{statement}</li>
                 ))
               ) : (
-                <li>No statements yet.</li>
+                <li>No statements yet. </li>
               )}
             </ul>
           }
