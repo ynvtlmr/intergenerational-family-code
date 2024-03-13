@@ -15,6 +15,10 @@ export default function PDFPage() {
     (s) => s.visionStatements
   );
 
+  const values = Object.keys(familyValues);
+
+  console.log();
+
   const guidelines = usePhilanthropyStore((s) => s.guidelines);
   const impactStatement = usePhilanthropyStore((s) => s.impactStatement);
 
@@ -34,7 +38,8 @@ export default function PDFPage() {
         Print PDF
       </Button>
       <div className="space-y-10 print:space-y-0">
-        <Page title="Decision Tree">
+        <Page>
+          <h1>Decision Tree</h1>
           <ul>
             {questions.length ? (
               questions.map((question) => <li key={question}>{question}</li>)
@@ -43,18 +48,23 @@ export default function PDFPage() {
             )}
           </ul>
         </Page>
-        <Page title="Family Values">
-          <ul>
-            {familyValues.length ? (
-              Object.keys(familyValues).map((value) => (
-                <li key={value}>{value}</li>
+        <Page>
+          <h1>Family Values</h1>
+          <div>
+            {values.length ? (
+              values.map((value) => (
+                <p key={value}>
+                  <span className="font-semibold">{value}: </span>{" "}
+                  {familyValues[value]}
+                </p>
               ))
             ) : (
               <li>No values yet.</li>
             )}
-          </ul>
+          </div>
         </Page>
-        <Page title="Family Code">
+        <Page>
+          <h1>Family Code</h1>
           {
             <ul>
               {familyCodeStatements.length ? (
@@ -67,7 +77,8 @@ export default function PDFPage() {
             </ul>
           }
         </Page>
-        <Page title="Family Vision">
+        <Page>
+          <h1>Family Vision</h1>
           {
             <ul>
               {familyVisionStatements.length ? (
@@ -80,7 +91,8 @@ export default function PDFPage() {
             </ul>
           }
         </Page>
-        <Page title="Philanthropy">
+        <Page>
+          <h1>Philanthropy</h1>
           <div>
             <h2>Impact Statement</h2>
             <p>{impactStatement}</p>
@@ -103,16 +115,9 @@ export default function PDFPage() {
   );
 }
 
-function Page({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function Page({ children }: { children: React.ReactNode }) {
   return (
     <div className="prose min-h-dvh max-w-full border p-5 print:border-none">
-      <h1>{title}</h1>
       {children}
     </div>
   );
