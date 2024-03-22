@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useFamilyCrest } from "./family-crest-store";
+import { useFamilyCrestStore } from "./family-crest-store";
 import { ImageIcon } from "lucide-react";
 
 export default function FamilyCrestPreview() {
-  const { crest } = useFamilyCrest();
+  const crest = useFamilyCrestStore((s) => s.crest);
 
   if (!crest) {
     return (
@@ -19,10 +19,10 @@ export default function FamilyCrestPreview() {
 
   return (
     <div>
-      <a href={crest} target="_blank">
+      <a href={crest} target="_blank" rel="noopener noreferrer">
         <img src={crest} alt="Family Crest" className="mb-4 w-[448px]" />
       </a>
-      <a href={crest} target="_blank">
+      <a href={crest} target="_blank" rel="noopener noreferrer">
         <Button className="w-full">Download</Button>
       </a>
     </div>

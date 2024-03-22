@@ -21,11 +21,3 @@ export const useDecisionTreeStore = create<DecisionTreeState>()(
     { name: "decision-tree" }
   )
 );
-
-export const useDecisionTree = () => {
-  return {
-    questions: useDecisionTreeStore((s) => s.questions),
-    addQuestion: useDecisionTreeStore((s) => s.addQuestion),
-    deleteQuestion: useDecisionTreeStore((s) => s.deleteQuestion),
-  };
-};

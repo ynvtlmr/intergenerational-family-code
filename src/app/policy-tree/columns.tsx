@@ -93,3 +93,4 @@ export const columns: ColumnDef<User>[] = [
 ];
 
 export { TableActionsProvider };
+

@@ -4,6 +4,9 @@ import { FormSchema } from "./family-crest-form";
 import OpenAI from "openai";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+// Set the runtime to edge for best performance
+export const runtime = "edge";
+
 export async function generateCrest(family: FormSchema) {
   let prompt =
     ` A family crest for the ${family.name}. ` +

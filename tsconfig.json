@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "types": ["vitest/globals"],
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -24,7 +23,9 @@
     },
   },
   "include": [
+    "video.d.ts",
     "next-env.d.ts",
+    "video.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
@@ -32,5 +33,5 @@
     "jest.setup.ts",
     "vitest.config.mjs",
   ],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "video.d.ts"],
 }

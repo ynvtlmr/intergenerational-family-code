@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { useFamilyVision } from "./family-vision-store";
+import { useFamilyVisionStore } from "./family-vision-store";
 
 const familyStatementFormSchema = z.object({
   statement: z
@@ -21,14 +21,14 @@ const familyStatementFormSchema = z.object({
     .min(2, {
       message: "Statement must be greater than 2 characters.",
     })
-    .max(50, {
-      message: "Statement must be less than 50 characters.",
+    .max(250, {
+      message: "Statement must be less than 250 characters.",
     }),
 });
 type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;
 
 export default function FamilyVisionForm() {
-  const { addVisionStatement } = useFamilyVision();
+  const addVisionStatement = useFamilyVisionStore((s) => s.addVisionStatement);
 
   const form = useForm<FamilyStatementFormSchema>({
     resolver: zodResolver(familyStatementFormSchema),
@@ -53,6 +53,7 @@ export default function FamilyVisionForm() {
             <FormItem>
               <FormControl>
                 <Textarea
+                  data-test="statement-textarea"
                   placeholder="To be a family that is very deeply connected by love and meaning."
                   {...field}
                 />
@@ -61,7 +62,12 @@ export default function FamilyVisionForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" size="lg" className="w-full">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          data-test="add-button"
+        >
           Add
         </Button>
       </form>
