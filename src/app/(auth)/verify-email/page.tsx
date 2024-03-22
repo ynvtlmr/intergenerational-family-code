@@ -4,16 +4,25 @@ import Loading from "@/components/loading";
 import { useAuth } from "@/components/providers/auth-provider";
 import { resendEmailVerification } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function VerifyEmailPage() {
-  const { back } = useRouter();
+  const { replace } = useRouter();
   const { isAuthenticating, user } = useAuth();
+  useEffect(() => {
+    if (user?.emailVerified === true) {
+      replace("/");
+    }
+  }, [user, replace]);
   if (isAuthenticating) {
     return <Loading />;
   }
+
   if (user && user.emailVerified === true) {
-    back();
+    replace("/");
+    return;
   }
+
   return (
     <main className="flex h-full w-full items-center justify-center bg-secondary">
       <div className="rounded-lg border bg-background p-10 text-center">
