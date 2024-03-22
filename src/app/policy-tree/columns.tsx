@@ -9,6 +9,7 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
+import { PolicyTreeTableRow } from "./policy-tree-store";
 
 // Define your context
 const TableActionsContext = createContext<any>(null);
@@ -28,69 +29,56 @@ const TableActionsProvider: React.FC<{ children: ReactNode }> = ({
 // Define a hook to use the context
 const useTableActions = () => useContext(TableActionsContext);
 
-export type User = {
-  id: string;
-  Carrier: string;
-  Type: string;
-  Amount: number;
-  Owner: string;
-  Beneficiary: string;
-  Payor: string;
-  Anniversary: string;
-  Insured: string;
-};
-
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<PolicyTreeTableRow>[] = [
+  // {
+  //   accessorKey: "id",
+  //   header: "ID",
+  // },
   {
-    accessorKey: "id",
-    header: "ID",
-  },
-  {
-    accessorKey: "Carrier",
+    accessorKey: "carrier",
     header: "Carrier",
   },
   {
-    accessorKey: "Type",
+    accessorKey: "type",
     header: "Type",
   },
   {
-    accessorKey: "Amount",
-    header: () => <div>Amount</div>,
-    cell: ({ row }) => {
-      const amountValue = row.getValue("Amount") as number;
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amountValue);
-      return <div className="text-left font-medium">{formatted}</div>;
-    },
+    accessorKey: "amount",
+    header: "Amount",
+    // cell: ({ row }) => {
+    //   const amountValue = row.getValue("Amount") as number;
+    //   const formatted = new Intl.NumberFormat("en-US", {
+    //     style: "currency",
+    //     currency: "USD",
+    //   }).format(amountValue);
+    //   return <div className="text-left font-medium">{formatted}</div>;
+    // },
   },
   {
-    accessorKey: "Owner",
+    accessorKey: "owner",
     header: "Owner",
   },
   {
-    accessorKey: "Beneficiary",
+    accessorKey: "beneficiary",
     header: "Beneficiary",
   },
   {
-    accessorKey: "Payor",
+    accessorKey: "payor",
     header: "Payor",
   },
   {
-    accessorKey: "Anniversary",
+    accessorKey: "anniversary",
     header: "Anniversary",
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("Anniversary"));
-      const formatted = date.toLocaleDateString("en-US");
-      return <div className="text-left font-medium">{formatted}</div>;
-    },
+    // cell: ({ row }) => {
+    //   const date = new Date(row.getValue("1"));
+    //   const formatted = date.toLocaleDateString("en-US");
+    //   return <div className="text-left font-medium">{formatted}</div>;
+    // },
   },
   {
-    accessorKey: "Insured",
+    accessorKey: "insured",
     header: "Insured",
   },
 ];
 
 export { TableActionsProvider };
-
