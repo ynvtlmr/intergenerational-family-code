@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "./providers/auth-provider";
 import { Loader2 } from "lucide-react";
 import { logout } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -26,13 +27,22 @@ const links = [
   { href: "/pdf", label: "Print PDF" },
 ];
 
-export default function NavBar() {
+type NavBarProps = {
+  className?: string;
+};
+
+export default function NavBar({ className }: NavBarProps) {
   const pathname = usePathname();
   const { user, isAuthenticating } = useAuth();
   const { push } = useRouter();
 
   return (
-    <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden">
+    <header
+      className={cn(
+        "flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden",
+        className
+      )}
+    >
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
       {isAuthenticating ? (
         <div className="flex gap-2 py-6 text-sm">
