@@ -15,6 +15,7 @@ export type PolicyTreeTableRow = {
 interface PolicyTreeState {
   data: PolicyTreeTableRow[];
   addRow: (row: PolicyTreeTableRow) => void;
+  deleteRow: (id: string) => void;
 }
 
 export const usePolicyTreeStore = create<PolicyTreeState>()(
@@ -22,6 +23,10 @@ export const usePolicyTreeStore = create<PolicyTreeState>()(
     (set) => ({
       data: [],
       addRow: (row) => set((state) => ({ data: [...state.data, row] })),
+      deleteRow: (owner) =>
+        set((state) => ({
+          data: state.data.filter((row) => row.owner !== owner),
+        })),
     }),
     {
       name: "family-value",
