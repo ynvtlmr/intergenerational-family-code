@@ -6,6 +6,7 @@ import "./globals.css";
 import NavBar from "@/components/navbar";
 import Providers from "@/components/Providers";
 import AuthenticatedRoute from "./(auth)/authenticated-route";
+import MobileHeader from "@/components/mobile-header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
+          <MobileHeader />
           <div className="flex">
-            <NavBar />
+            <NavBar className="hidden lg:flex" />
             <div className="flex-1">
               <AuthenticatedRoute>{children}</AuthenticatedRoute>
             </div>
