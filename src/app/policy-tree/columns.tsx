@@ -45,14 +45,14 @@ export const columns: ColumnDef<PolicyTreeTableRow>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    // cell: ({ row }) => {
-    //   const amountValue = row.getValue("Amount") as number;
-    //   const formatted = new Intl.NumberFormat("en-US", {
-    //     style: "currency",
-    //     currency: "USD",
-    //   }).format(amountValue);
-    //   return <div className="text-left font-medium">{formatted}</div>;
-    // },
+    cell: ({ row }) => {
+      const amountValue = row.original.amount;
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amountValue);
+      return <div className="text-left font-medium">{formatted}</div>;
+    },
   },
   {
     accessorKey: "owner",
@@ -69,11 +69,11 @@ export const columns: ColumnDef<PolicyTreeTableRow>[] = [
   {
     accessorKey: "anniversary",
     header: "Anniversary",
-    // cell: ({ row }) => {
-    //   const date = new Date(row.getValue("1"));
-    //   const formatted = date.toLocaleDateString("en-US");
-    //   return <div className="text-left font-medium">{formatted}</div>;
-    // },
+    cell: ({ row }) => {
+      const date = new Date(row.original.anniversary);
+      const formatted = date.toLocaleDateString();
+      return <div className="text-left font-medium">{formatted}</div>;
+    },
   },
   {
     accessorKey: "insured",

@@ -130,11 +130,7 @@ export default function PolicyTreeForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  type="datetime-local"
-                  placeholder="Anniversary"
-                  {...field}
-                />
+                <Input type="date" placeholder="Anniversary" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
