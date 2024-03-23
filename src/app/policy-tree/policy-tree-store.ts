@@ -29,7 +29,7 @@ export const usePolicyTreeStore = create<PolicyTreeState>()(
         })),
     }),
     {
-      name: "family-value",
+      name: "policy-tree",
     }
   )
 );
