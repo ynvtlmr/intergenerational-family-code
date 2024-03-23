@@ -4,13 +4,10 @@ import React from "react";
 import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
 import { TableActionsProvider, columns } from "./columns";
-import { PolicyTreeTableRow, usePolicyTreeStore } from "./policy-tree-store";
+import { usePolicyTreeStore } from "./policy-tree-store";
 import PolicyTreeForm from "./policy-tree-form";
-import { Row } from "@tanstack/react-table";
 
 export default function PolicyComponent() {
-  // const [policyData, setPolicyData] = useState<User[]>(initialPolicyData);
-  // const [editingId, setEditingId] = useState<string | null>(null);
   const data = usePolicyTreeStore((s) => s.data);
   const deleteRow = usePolicyTreeStore((s) => s.deleteRow);
 
