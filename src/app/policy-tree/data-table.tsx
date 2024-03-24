@@ -29,8 +29,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -63,22 +63,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      {/*table*/}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center py-4">
-          {/* <Input
-          placeholder="Filter owner..."
-          value={(table.getColumn("Owner")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("Owner")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
-        </div>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center py-4"></div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns
+              Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -152,7 +142,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {/*pagination*/}
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"

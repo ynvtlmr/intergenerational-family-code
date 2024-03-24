@@ -1,16 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { policyTreeFormSchema } from "./policy-tree-form";
 
-export type PolicyTreeTableRow = {
-  carrier: string;
-  type: string;
-  amount: number;
-  owner: string;
-  beneficiary: string;
-  payor: string;
-  anniversary: string;
-  insured: string;
-};
+export interface PolicyTreeTableRow extends policyTreeFormSchema {
+  id: string;
+}
 
 interface PolicyTreeState {
   data: PolicyTreeTableRow[];
@@ -23,9 +17,9 @@ export const usePolicyTreeStore = create<PolicyTreeState>()(
     (set) => ({
       data: [],
       addRow: (row) => set((state) => ({ data: [...state.data, row] })),
-      deleteRow: (owner) =>
+      deleteRow: (id) =>
         set((state) => ({
-          data: state.data.filter((row) => row.owner !== owner),
+          data: state.data.filter((row) => row.id !== id),
         })),
     }),
     {
