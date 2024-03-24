@@ -63,8 +63,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between print:hidden">
-        <div className="flex items-center py-4"></div>
+      <div className="mb-4 flex items-center justify-end print:hidden">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -142,7 +141,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      {/* <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
@@ -159,7 +158,7 @@ export function DataTable<TData, TValue>({
         >
           Next
         </Button>
-      </div>
+      </div> */}
     </>
   );
 }
