@@ -19,7 +19,7 @@
     "@fortawesome/react-fontawesome": "latest",
     "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^3.3.4",
-    "@mui/icons-material": "^5.15.10",
+    "@mui/icons-material": "^5.15.13",
     "@mui/material": "^5.15.9",
     "@nivo/pie": "^0.84.0",
     "@radix-ui/react-accordion": "^1.1.2",
