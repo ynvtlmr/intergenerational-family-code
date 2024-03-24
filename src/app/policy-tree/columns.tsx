@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { PolicyTreeTableRow } from "./policy-tree-store";
+import DeleteRowButton from "./delete-row-button";
 
 export const columns: ColumnDef<PolicyTreeTableRow>[] = [
   {
@@ -48,5 +49,14 @@ export const columns: ColumnDef<PolicyTreeTableRow>[] = [
   {
     accessorKey: "insured",
     header: "Insured",
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <div>
+        <DeleteRowButton id={row.original.id} />
+      </div>
+    ),
   },
 ];
