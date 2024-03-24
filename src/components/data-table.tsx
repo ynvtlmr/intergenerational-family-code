@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between print:hidden">
         <div className="flex items-center py-4"></div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

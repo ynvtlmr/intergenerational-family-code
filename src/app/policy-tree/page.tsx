@@ -2,8 +2,8 @@
 import React from "react";
 import { usePolicyTreeStore } from "./policy-tree-store";
 import PolicyTreeForm from "./policy-tree-form";
-import { DataTable } from "@/app/policy-tree/data-table";
-import { columns } from "./columns";
+import { policyTreeColumnsWithDelete } from "./columns";
+import { DataTable } from "@/components/data-table";
 
 export default function PolicyPage() {
   const data = usePolicyTreeStore((s) => s.data);
@@ -14,7 +14,7 @@ export default function PolicyPage() {
         <div className="space-y-10">
           <PolicyTreeForm />
           <div>
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={policyTreeColumnsWithDelete} data={data} />
           </div>
         </div>
       </div>
