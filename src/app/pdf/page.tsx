@@ -7,6 +7,7 @@ import { useFamilyValueStore } from "../family-values/family-value-store";
 import { useFamilyVisionStore } from "../family-vision/family-vision-store";
 import { usePhilanthropyStore } from "../philanthropy/philanthropy-store";
 import { useContactStore } from "../contacts/contact-store";
+import { useFamilyGardenStore } from "../family-garden/family-garden-store";
 
 export default function PDFPage() {
   const questions = useDecisionTreeStore((s) => s.questions);
@@ -22,6 +23,12 @@ export default function PDFPage() {
 
   const guidelines = usePhilanthropyStore((s) => s.guidelines);
   const impactStatement = usePhilanthropyStore((s) => s.impactStatement);
+
+  const { growthRate, people } = useFamilyGardenStore(state => ({ 
+    growthRate: state.growthRate, 
+    people: state.people
+   }));
+
 
   const handleClick = () => {
     window.print();
@@ -127,6 +134,21 @@ export default function PDFPage() {
               </ul>
             }
           </div>
+        </Page>
+        <Page>
+          <h1>Family Garden</h1>
+          <p>Growth Rate: {(growthRate * 100).toFixed(2)}%</p>
+          {people.length > 0 ? (
+            people.map((person) => (
+              <div key={person.id}>
+                <h2>{person.name || `Person ${person.id}`}</h2>
+                <p>Begin Age: {person.beginAge}</p>
+                <p>Begin Amount: {person.beginAmount}</p>
+              </div>
+            ))
+          ) : (
+            <p>No people added yet.</p>
+          )}
         </Page>
       </div>
     </main>
