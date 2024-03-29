@@ -24,11 +24,10 @@ export default function PDFPage() {
   const guidelines = usePhilanthropyStore((s) => s.guidelines);
   const impactStatement = usePhilanthropyStore((s) => s.impactStatement);
 
-  const { growthRate, people } = useFamilyGardenStore(state => ({ 
-    growthRate: state.growthRate, 
-    people: state.people
-   }));
-
+  const { growthRate, people } = useFamilyGardenStore((state) => ({
+    growthRate: state.growthRate,
+    people: state.people,
+  }));
 
   const handleClick = () => {
     window.print();

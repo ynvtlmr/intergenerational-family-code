@@ -1,10 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface Person {
-  id: number;
+export interface Person {
   name: string;
-  beginAmount: string;
+  beginAmount: number;
   beginAge: number;
 }
 
@@ -12,27 +11,24 @@ interface FamilyGardenState {
   growthRate: number;
   people: Person[];
   setGrowthRate: (rate: number) => void;
-  addPerson: (person: Omit<Person, 'id'>) => void;
-  deletePerson: (personId: number) => void;
-  updatePerson: (personId: number, person: Partial<Omit<Person, 'id'>>) => void;
-  resetData: () => void;
+  addPerson: (person: Person) => void;
+  deletePerson: (name: string) => void;
 }
 
 export const useFamilyGardenStore = create<FamilyGardenState>()(
   persist(
     (set) => ({
-      growthRate: 0.05,
-      people: [{ id: 1, name: '', beginAmount: '', beginAge: 30 }, { id: 2, name: '', beginAmount: '', beginAge: 40 }],
+      growthRate: 5,
+      people: [],
       setGrowthRate: (rate) => set({ growthRate: rate }),
-      addPerson: (person) => set((state) => ({ people: [...state.people, { ...person, id: Math.max(...state.people.map(p => p.id)) + 1 }] })),
-      deletePerson: (personId) => set((state) => ({ people: state.people.filter(person => person.id !== personId) })),
-      updatePerson: (personId, updates) => set((state) => ({
-        people: state.people.map(person => person.id === personId ? { ...person, ...updates } : person),
-      })),
-      resetData: () => set(() => ({
-        growthRate: 0.05,
-        people: [{ id: 1, name: '', beginAmount: '', beginAge: 30 }, { id: 2, name: '', beginAmount: '', beginAge: 40 }],
-      })),
+      addPerson: (person) =>
+        set((state) => ({
+          people: [...state.people, person],
+        })),
+      deletePerson: (name) =>
+        set((state) => ({
+          people: state.people.filter((person) => person.name !== name),
+        })),
     }),
     { name: "family-garden" }
   )
