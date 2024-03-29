@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form"; // Shadcn UI import
 import { Input } from "@/components/ui/input"; // Shandcn UI Input
 import { UseFormReturn } from "react-hook-form";
-import { moneyFormatter } from "./page";
+import { moneyFormatter } from "./person-table";
 
 type TextInputProps = {
   form: UseFormReturn<any>;
