@@ -23,7 +23,7 @@ export default function FamilyGarden() {
   const people = useFamilyGardenStore((state) => state.people);
 
   return (
-    <main className="container mt-6">
+    <main className="mt-6 p-10">
       <h1 className="mb-2 text-3xl font-bold">Family Garden</h1>
       <Label className="mb-2">Growth Rate</Label>
       <div className="flex items-center gap-2">
@@ -38,210 +38,77 @@ export default function FamilyGarden() {
         <span>%</span>
       </div>
       <PersonForm />
+      <div className="mt-10 space-y-10">
+        {people.map((person) => (
+          <PersonTable key={person.name} person={person} />
+        ))}
+      </div>
     </main>
   );
-  // };
-
-  // const calculateGrowth = (initialAmount: string, years: number) => {
-  //   const amount = parseFloat(initialAmount.replace(/[$,]/g, "")) || 0;
-  //   return `$${(amount * Math.pow(1 + (growthRate ? growthRate : INITIAL_GROWTH_RATE), years)).toFixed(2)}`;
-  // };
-
-  // const calculateTaxCoverage = (growthAmount: string) => {
-  //   const amount = parseFloat(growthAmount.replace(/[$,]/g, ""));
-  //   const tax = amount * 0.25;
-  //   return `$${tax.toFixed(2)}`;
-  // };
-
-  // const generateAges = (beginAge: number) => {
-  //   const ages: number[] = [];
-  //   for (let age = beginAge; age <= 110; age += 10) {
-  //     ages.push(age);
-  //   }
-  //   return ages;
-  // };
-
-  // const yearsSinceBegin = (age: number, beginAge: number) => age - beginAge;
-
-  // return (
-  //   <Container>
-  //     <Typography variant="h4" component="h1" gutterBottom>
-  //       Family Garden
-  //     </Typography>
-  //     <Typography variant="subtitle1" gutterBottom>
-  //       The more powerful the seed the longer it takes to germinate
-  //     </Typography>
-  //     <Box my={4}>
-  //       <TextField
-  //         id="growthRate"
-  //         label="Growth Rate (%)"
-  //         type="number"
-  //         variant="outlined"
-  //         fullWidth
-  //         value={(
-  //           (growthRate ? growthRate : INITIAL_GROWTH_RATE) * 100
-  //         ).toString()}
-  //         onChange={handleGrowthRateChange}
-  //         margin="normal"
-  //       />
-  //     </Box>
-  //     {people &&
-  //       people.map((person: any, index: number) => (
-  //         <Card
-  //           key={person.id}
-  //           variant="outlined"
-  //           sx={{ mb: 5, position: "relative" }}
-  //         >
-  //           <CardContent>
-  //             <TextField
-  //               label={`Person ${index + 1}'s Name`}
-  //               variant="outlined"
-  //               fullWidth
-  //               value={person.name}
-  //               onChange={(e) => handleNameChange(person.id, e.target.value)}
-  //               margin="normal"
-  //             />
-  //             <TextField
-  //               label={`Person ${index + 1}'s Begin Age`}
-  //               type="number"
-  //               variant="outlined"
-  //               fullWidth
-  //               value={person.beginAge.toString()}
-  //               onChange={(e) =>
-  //                 handleBeginAgeChange(person.id, e.target.value)
-  //               }
-  //               margin="normal"
-  //             />
-  //             <TextField
-  //               label="Begin Amount"
-  //               variant="outlined"
-  //               fullWidth
-  //               value={person.beginAmount}
-  //               onChange={(e) =>
-  //                 handleBeginAmountChange(person.id, e.target.value)
-  //               }
-  //               margin="normal"
-  //               InputProps={{
-  //                 style: { textAlign: "right" },
-  //               }}
-  //             />
-  //             {generateAges(person.beginAge).map((age) => (
-  //               <Box
-  //                 key={`${person.id}-${age}`}
-  //                 display="flex"
-  //                 justifyContent="space-between"
-  //                 my={3}
-  //               >
-  //                 <Typography>Age: {age}</Typography>
-  //                 <Typography>
-  //                   Net Worth Growth:{" "}
-  //                   {calculateGrowth(
-  //                     person.beginAmount,
-  //                     yearsSinceBegin(age, person.beginAge)
-  //                   )}
-  //                 </Typography>
-  //                 <Typography>
-  //                   Target Tax (25%):{" "}
-  //                   {calculateTaxCoverage(
-  //                     calculateGrowth(
-  //                       person.beginAmount,
-  //                       yearsSinceBegin(age, person.beginAge)
-  //                     )
-  //                   )}
-  //                 </Typography>
-  //               </Box>
-  //             ))}
-  //           </CardContent>
-  //           <Box sx={{ position: "absolute", top: -5, right: -5 }}>
-  //             <IconButton
-  //               onClick={() => handleDialogOpen(person.id)}
-  //               aria-label="delete"
-  //             >
-  //               <DeleteIcon />
-  //             </IconButton>
-  //           </Box>
-  //         </Card>
-  //       ))}
-  //     <Button
-  //       variant="contained"
-  //       color="primary"
-  //       onClick={addNewPerson}
-  //       sx={{ mt: 3 }}
-  //     >
-  //       Add Person
-  //     </Button>
-
-  //     <Button
-  //       variant="contained"
-  //       color="success"
-  //       onClick={resetData}
-  //       sx={{ mt: 3, ml: 2 }}
-  //     >
-  //       Reset Data
-  //     </Button>
-  //     <Dialog
-  //       open={openDialog}
-  //       onClose={handleDialogClose}
-  //       aria-labelledby="alert-dialog-title"
-  //       aria-describedby="alert-dialog-description"
-  //     >
-  //       <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
-  //       <DialogContent>
-  //         <DialogContentText id="alert-dialog-description">
-  //           Are you sure you want to delete this person? This action cannot be
-  //           undone.
-  //         </DialogContentText>
-  //       </DialogContent>
-  //       <DialogActions>
-  //         <Button onClick={handleDialogClose}>Cancel</Button>
-  //         <Button onClick={confirmDelete} color="error">
-  //           Delete
-  //         </Button>
-  //       </DialogActions>
-  //     </Dialog>
-  //   </Container>
-  // );
 }
+
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
+interface Data {
+  age: number;
+  netWorthGrowth: string;
+  targetTax: string;
+}
+
+const moneyFormatter = Intl.NumberFormat("en-CA", {
+  currency: "CAD",
+  currencyDisplay: "symbol",
+  currencySign: "standard",
+  style: "currency",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 function PersonTable({ person }: { person: Person }) {
+  const growthRate = useFamilyGardenStore((s) => s.growthRate);
   const deletePerson = useFamilyGardenStore((s) => s.deletePerson);
+  const data: Data[] = [];
+  for (let age = person.beginAge; age <= 110; age += 10) {
+    const netWorthGrowth =
+      person.beginAmount *
+      Math.pow(1 + growthRate / 100, age - person.beginAge);
+    const targetTax = netWorthGrowth * 0.25;
+    data.push({
+      age,
+      netWorthGrowth: `${moneyFormatter.format(netWorthGrowth)}`,
+      targetTax: `${moneyFormatter.format(targetTax)}`,
+    });
+  }
+
   return (
-    <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {/* {people.map((person) => (
-          <TableRow key={person.name}>
-            <TableCell className="font-medium">{person.name}</TableCell>
-            <TableCell>{person.beginAge}</TableCell>
-            <TableCell>{person.beginAmount}</TableCell>
+    <div className="rounded-lg border p-10">
+      <h2 className="mb-2 text-2xl font-semibold">{person.name}</h2>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Age</TableHead>
+            <TableHead>Net Worth Growth</TableHead>
+            <TableHead>Target Tax (25%)</TableHead>
           </TableRow>
-        ))} */}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {data.map((person, i) => (
+            <TableRow key={i}>
+              <TableCell className="font-medium">{person.age}</TableCell>
+              <TableCell>{person.netWorthGrowth}</TableCell>
+              <TableCell>{person.targetTax}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
 
@@ -265,6 +132,7 @@ function PersonForm() {
   const addPerson = useFamilyGardenStore((s) => s.addPerson);
   function onSubmit(values: PersonFormSchema) {
     addPerson(values);
+    form.reset();
   }
   return (
     <Form {...form}>
