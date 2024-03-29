@@ -16,7 +16,7 @@ export function PersonTable({ person }: { person: Person }) {
   }
 
   return (
-    <>
+    <div className="prose-table:my-0">
       <Table>
         <TableHeader>
           <TableRow>
@@ -35,7 +35,7 @@ export function PersonTable({ person }: { person: Person }) {
           ))}
         </TableBody>
       </Table>
-    </>
+    </div>
   );
 }
 
