@@ -68,6 +68,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
+import MoneyInput from "./money-input";
 
 interface Data {
   age: number;
@@ -75,7 +76,7 @@ interface Data {
   targetTax: string;
 }
 
-const moneyFormatter = Intl.NumberFormat("en-CA", {
+export const moneyFormatter = Intl.NumberFormat("en-CA", {
   currency: "CAD",
   currencyDisplay: "symbol",
   currencySign: "standard",
@@ -159,7 +160,7 @@ function PersonTable({ person }: { person: Person }) {
 const personFormSchema = z.object({
   name: z.string().min(2).max(50),
   beginAge: z.coerce.number().min(0).max(100),
-  beginAmount: z.coerce.number().min(0),
+  beginAmount: z.coerce.number().min(0.01, "Must be greater than 0"),
 });
 
 type PersonFormSchema = z.infer<typeof personFormSchema>;
@@ -216,21 +217,11 @@ function PersonForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
+        <MoneyInput
+          form={form}
+          label="Begin Amount"
           name="beginAmount"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Begin Amount</FormLabel>
-              <FormControl>
-                <div className="flex items-center gap-2">
-                  <span>$</span>
-                  <Input type="number" placeholder="0" {...field} />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          placeholder="$0.00"
         />
         <Button type="submit">Add Person</Button>
       </form>
