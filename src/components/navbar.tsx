@@ -27,6 +27,8 @@ const links = [
   { href: "/pdf", label: "Print PDF" },
 ];
 // flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden
+
+// flex max-h-fit max-w-xs flex-col items-center justify-center overflow-y-auto border-r  lg:h-auto lg:p-10 print:hidden
 type NavBarProps = {
   className?: string;
 };
@@ -39,11 +41,11 @@ export default function NavBar({ className }: NavBarProps) {
   return (
     <header
       className={cn(
-        " flex max-h-min max-w-xs flex-col items-center justify-center overflow-y-auto border-r lg:h-auto lg:p-10 print:hidden",
+        "flex max-h-screen max-w-xs flex-col items-center border-r p-5 md:overflow-y-auto md:p-10 md:pb-16 lg:overflow-y-hidden print:hidden",
         className
       )}
     >
-      <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
+      <h1 className="mb-5 min-w-0 text-4xl font-bold md:mb-8">IFC</h1>
       {isAuthenticating ? (
         <div className="flex gap-2 py-6 text-sm">
           <Loader2 className="animate-spin" />
@@ -78,7 +80,7 @@ export default function NavBar({ className }: NavBarProps) {
         </div>
       )}
       <Separator className="my-4" />
-      <nav className="flex flex-col justify-center gap-2">
+      <nav className="flex-grow overflow-hidden">
         {links.map((link) => (
           <Link
             key={link.label}
