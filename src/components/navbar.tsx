@@ -4,11 +4,10 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import FileProcess from "@/app/file-process";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-import { useAuth } from "./providers/auth-provider";
-import { Loader2 } from "lucide-react";
-import { logout } from "@/lib/auth";
+import { User } from "@supabase/supabase-js";
+import { signout } from "@/app/(auth)/actions";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -26,29 +25,18 @@ const links = [
   { href: "/pdf", label: "Print PDF" },
 ];
 
-export default function NavBar() {
+export default function NavBar({ user }: { user: User | null }) {
   const pathname = usePathname();
-  const { user, isAuthenticating } = useAuth();
-  const { push } = useRouter();
-
   return (
     <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden">
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
-      {isAuthenticating ? (
-        <div className="flex gap-2 py-6 text-sm">
-          <Loader2 className="animate-spin" />
-          <span>Loading...</span>
-        </div>
-      ) : user ? (
+      {user ? (
         <div className="flex flex-col items-center gap-2">
           <span>{user.email}</span>
           <Button
             variant="secondary"
             className="cursor-pointer"
-            onClick={async () => {
-              await logout();
-              push("/login");
-            }}
+            onClick={async () => await signout()}
           >
             Logout
           </Button>
