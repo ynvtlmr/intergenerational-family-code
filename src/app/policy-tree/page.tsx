@@ -1,15 +1,22 @@
+"use client";
 import React from "react";
-import { DataTable } from "@/components/ui/data-table";
-import { User, columns } from "./columns";
+import { usePolicyTreeStore } from "./policy-tree-store";
+import PolicyTreeForm from "./policy-tree-form";
+import { policyTreeColumnsWithDelete } from "./columns";
+import { DataTable } from "@/components/data-table";
 
-const policyData: User[] = [];
-
-export default function PolicyComponent() {
+export default function PolicyPage() {
+  const data = usePolicyTreeStore((s) => s.data);
   return (
-    <section className="py-24">
+    <section className="pt-10">
       <div className="container">
         <h1 className="mb-8 text-center text-5xl font-bold">Policy Tree</h1>
-        <DataTable columns={columns} data={policyData} />
+        <div className="space-y-10">
+          <PolicyTreeForm />
+          <div>
+            <DataTable columns={policyTreeColumnsWithDelete} data={data} />
+          </div>
+        </div>
       </div>
     </section>
   );
