@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { useFamilyCodeStore } from "./family-code-store";
 import { Textarea } from "@/components/ui/textarea";
+import { addStatement } from "./actions";
 
 const familyStatementFormSchema = z.object({
   statement: z
@@ -25,19 +26,17 @@ const familyStatementFormSchema = z.object({
       message: "Statement must be less than 250 characters.",
     }),
 });
-type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;
+export type InsertFamilyStatement = z.infer<typeof familyStatementFormSchema>;
 
 export default function FamilyCodeForm() {
-  const addStatement = useFamilyCodeStore((s) => s.addStatement);
-
-  const form = useForm<FamilyStatementFormSchema>({
+  const form = useForm<InsertFamilyStatement>({
     resolver: zodResolver(familyStatementFormSchema),
     defaultValues: {
       statement: "",
     },
   });
-  function onSubmit({ statement }: FamilyStatementFormSchema) {
-    addStatement(statement);
+  async function onSubmit(formData: InsertFamilyStatement) {
+    await addStatement(formData);
     form.reset();
   }
 
