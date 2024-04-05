@@ -1,7 +1,5 @@
 "use client";
 
-import { useFamilyValueStore } from "./family-value-store";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,43 +14,45 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { addFamilyValue } from "./actions";
+import { useState } from "react";
+import FormSubmitButton from "@/components/form-submit-button";
+
+const familyValueFormSchema = z.object({
+  title: z
+    .string()
+    .min(2, {
+      message: "Value must be greater than 2 characters.",
+    })
+    .max(50, {
+      message: "Value must be less than 50 characters.",
+    }),
+  description: z
+    .string()
+    .min(2, {
+      message: "Description must be greater than 2 characters.",
+    })
+    .max(250, {
+      message: "Description must be less than 250 characters.",
+    }),
+});
+export type InsertFamilyValue = z.infer<typeof familyValueFormSchema>;
 
 export default function FamilyValueForm() {
-  const values = useFamilyValueStore((s) => s.values);
-  const addFamilyValue = useFamilyValueStore((s) => s.addValue);
-  const familyValueFormSchema = z.object({
-    value: z
-      .string()
-      .min(2, {
-        message: "Value must be greater than 2 characters.",
-      })
-      .max(50, {
-        message: "Value must be less than 50 characters.",
-      })
-      .refine((v) => !values[v], {
-        message: "Value already exists.",
-      }),
-    description: z
-      .string()
-      .min(2, {
-        message: "Description must be greater than 2 characters.",
-      })
-      .max(250, {
-        message: "Description must be less than 250 characters.",
-      }),
-  });
-  type FamilyValueFormSchema = z.infer<typeof familyValueFormSchema>;
-  const form = useForm<FamilyValueFormSchema>({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<InsertFamilyValue>({
     resolver: zodResolver(familyValueFormSchema),
     defaultValues: {
-      value: "",
+      title: "",
       description: "",
     },
   });
 
-  function onSubmit(formData: FamilyValueFormSchema) {
-    addFamilyValue(formData);
+  async function onSubmit(formData: InsertFamilyValue) {
+    setIsSubmitting(true);
+    await addFamilyValue(formData);
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
@@ -61,7 +61,7 @@ export default function FamilyValueForm() {
         <h1 className="text-2xl font-bold">What are your family values?</h1>
         <FormField
           control={form.control}
-          name="value"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -91,15 +91,11 @@ export default function FamilyValueForm() {
             </FormItem>
           )}
         />
-
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          data-test="add-button"
-        >
-          Add
-        </Button>
+        <FormSubmitButton
+          loadingText="Adding..."
+          defaultText="Add Family Value"
+          disabled={isSubmitting}
+        />
       </form>
     </Form>
   );

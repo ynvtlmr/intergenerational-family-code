@@ -2,33 +2,40 @@
 
 import { Loader2, Trash2Icon } from "lucide-react";
 import { Button } from "./ui/button";
-import { deleteQuestion } from "@/app/decision-tree/actions";
 import { useState } from "react";
 
 type FormItemProps = {
-  id: number;
-  title: string;
-  desc?: string;
+  item: {
+    id: number;
+    title: string;
+    description?: string;
+  };
+  deleteItem: (id: number) => Promise<
+    | {
+        message: string;
+      }
+    | undefined
+  >;
 };
 
-export default function FormItem({ id, title, desc }: FormItemProps) {
+export default function FormItem({ item, deleteItem }: FormItemProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const handleDelete = async () => {
     setIsDeleting(true);
-    await deleteQuestion(id);
+    await deleteItem(item.id);
     setIsDeleting(false);
   };
   return (
     <li className="rounded-lg border p-5" data-test="form-item">
       <h2 className="text-xl" data-test="form-item-heading">
-        {title}
+        {item.title}
       </h2>
-      {desc && (
+      {item.description && (
         <p
           data-test="form-item-description"
           className="text-gray-500 dark:text-gray-400"
         >
-          {desc}
+          {item.description}
         </p>
       )}
       <div className="mt-5 flex justify-end">

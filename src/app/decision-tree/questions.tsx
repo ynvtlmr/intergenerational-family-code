@@ -1,9 +1,10 @@
 import FormItem from "@/components/form-item";
 import { createClient } from "@/lib/supabase/server";
+import { deleteQuestion } from "./actions";
 
 export default async function Questions() {
   const supabase = createClient();
-  let { data: questions, error } = await supabase
+  const { data: questions, error } = await supabase
     .from("decision_tree")
     .select("*");
 
@@ -14,8 +15,15 @@ export default async function Questions() {
   return (
     <ul className="mb-10 mt-5 space-y-5">
       {questions ? (
-        questions.map(({ id, question }) => (
-          <FormItem key={id} title={question} id={id} />
+        questions.map((question) => (
+          <FormItem
+            key={question.id}
+            item={{
+              id: question.id,
+              title: question.question,
+            }}
+            deleteItem={deleteQuestion}
+          />
         ))
       ) : (
         <div>No questions added yet.</div>
