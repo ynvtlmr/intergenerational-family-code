@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,8 +10,10 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useDecisionTreeStore } from "./family-questions-store";
 import { Textarea } from "@/components/ui/textarea";
+import { addQuestion } from "./actions";
+import { useState } from "react";
+import FormSubmitButton from "@/components/form-submit-button";
 
 const familyQuestionFormSchema = z.object({
   question: z
@@ -28,17 +28,18 @@ const familyQuestionFormSchema = z.object({
 type familyQuestionFormSchema = z.infer<typeof familyQuestionFormSchema>;
 
 export default function FamilyQuestionForm() {
-  const addQuestion = useDecisionTreeStore((s) => s.addQuestion);
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<familyQuestionFormSchema>({
     resolver: zodResolver(familyQuestionFormSchema),
     defaultValues: {
       question: "",
     },
   });
-  function onSubmit({ question }: familyQuestionFormSchema) {
-    addQuestion(question);
+  async function onSubmit({ question }: familyQuestionFormSchema) {
+    setIsSubmitting(true);
+    await addQuestion(question);
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
@@ -64,14 +65,11 @@ export default function FamilyQuestionForm() {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          data-test="add-button"
-        >
-          Add
-        </Button>
+        <FormSubmitButton
+          disabled={isSubmitting}
+          loadingText="Adding..."
+          defaultText="Add Question"
+        />
       </form>
     </Form>
   );

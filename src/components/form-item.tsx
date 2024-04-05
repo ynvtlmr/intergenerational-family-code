@@ -1,13 +1,23 @@
-import { Trash2Icon } from "lucide-react";
+"use client";
+
+import { Loader2, Trash2Icon } from "lucide-react";
 import { Button } from "./ui/button";
+import { deleteQuestion } from "@/app/decision-tree/actions";
+import { useState } from "react";
 
 type FormItemProps = {
+  id: number;
   title: string;
   desc?: string;
-  handleDelete: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export default function FormItem({ title, desc, handleDelete }: FormItemProps) {
+export default function FormItem({ id, title, desc }: FormItemProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    await deleteQuestion(id);
+    setIsDeleting(false);
+  };
   return (
     <li className="rounded-lg border p-5" data-test="form-item">
       <h2 className="text-xl" data-test="form-item-heading">
@@ -27,9 +37,15 @@ export default function FormItem({ title, desc, handleDelete }: FormItemProps) {
           onClick={handleDelete}
           data-test="delete-button"
         >
-          <Trash2Icon size={24}>
-            <title className="sr-only">Delete</title>
-          </Trash2Icon>
+          {isDeleting ? (
+            <Loader2 className="animate-spin" size={24}>
+              <title className="sr-only">Delete</title>
+            </Loader2>
+          ) : (
+            <Trash2Icon size={24}>
+              <title className="sr-only">Delete</title>
+            </Trash2Icon>
+          )}
         </Button>
       </div>
     </li>
