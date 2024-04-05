@@ -5,8 +5,10 @@ import { useDecisionTreeStore } from "../decision-tree/family-questions-store";
 import { useFamilyCodeStore } from "../family-code/family-code-store";
 import { useFamilyValueStore } from "../family-values/family-value-store";
 import { useFamilyVisionStore } from "../family-vision/family-vision-store";
+import { useFamilyTreeImageStore } from "../family-tree/family-tree-store";
 import { usePhilanthropyStore } from "../philanthropy/philanthropy-store";
 import { useContactStore } from "../contacts/contact-store";
+import Image from "next/image";
 
 export default function PDFPage() {
   const questions = useDecisionTreeStore((s) => s.questions);
@@ -15,6 +17,7 @@ export default function PDFPage() {
   const familyVisionStatements = useFamilyVisionStore(
     (s) => s.visionStatements
   );
+  const familyTreeImage = useFamilyTreeImageStore((s) => s.imgString);
 
   const values = Object.keys(familyValues);
 
@@ -108,6 +111,16 @@ export default function PDFPage() {
               )}
             </ul>
           }
+        </Page>
+        <Page>
+          <h1>Family Tree</h1>
+          <Image
+            src={familyTreeImage}
+            alt="Family Tree"
+            layout="responsive"
+            width={1024}
+            height={768}
+          />
         </Page>
         <Page>
           <h1>Philanthropy</h1>

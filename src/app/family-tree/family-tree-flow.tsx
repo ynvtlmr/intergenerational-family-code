@@ -8,9 +8,12 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
   getConnectedEdges,
+  getNodesBounds,
+  getViewportForBounds,
 } from "reactflow";
 import type { NodeDragHandler, Node } from "reactflow";
 import "reactflow/dist/style.css";
+import { toPng } from "html-to-image";
 
 import { useCallback, useEffect, useRef } from "react";
 import {
@@ -21,6 +24,7 @@ import {
 import FamilyTreeIndividualNode from "./family-tree-individual-node";
 import FamilyTreeCustomJunctionNode from "./family-tree-custom-junction-node";
 import type { IndividualNode, NodeData, NodeTypes } from "./types";
+import { useFamilyTreeImageStore } from "./family-tree-store";
 
 const nodeData: NodeData = {
   name: "",
@@ -53,7 +57,7 @@ export default function FamilyTreeFlow() {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { getNode } = useReactFlow();
+  const { getNode, getNodes } = useReactFlow();
 
   // there are also onConnectStart and onConnectEnd for adding node on edge drop
   const { onConnect } = useAddNodeOnEdgeDrop(setEdges, setNodes);
@@ -167,6 +171,41 @@ export default function FamilyTreeFlow() {
   useEffect(() => {
     onRestore();
   }, [onRestore]);
+
+  // Save the flow image url to local storage on component unmount
+  const saveImgString = useFamilyTreeImageStore((s) => s.saveImgString);
+  useEffect(() => {
+    function storeFamilyTreeImageString() {
+      const imageWidth = 1024;
+      const imageHeight = 768;
+
+      const nodesBounds = getNodesBounds(getNodes());
+      const transform = getViewportForBounds(
+        nodesBounds,
+        imageWidth,
+        imageHeight,
+        0.1,
+        2
+      );
+
+      const familyTree = document.querySelector(".react-flow__viewport");
+      if (!familyTree) return;
+      toPng(familyTree as HTMLElement, {
+        backgroundColor: "#f8f8f8",
+        width: imageWidth,
+        height: imageHeight,
+        style: {
+          width: `${imageWidth}px`,
+          height: `${imageHeight}px`,
+          transform: `translate(${transform.x}px, ${transform.y}px scale(${transform.zoom}))`,
+        },
+      }).then((dataUrl) => saveImgString(dataUrl));
+    }
+
+    return () => {
+      storeFamilyTreeImageString();
+    };
+  }, [getNodes, saveImgString]);
 
   return (
     <div
