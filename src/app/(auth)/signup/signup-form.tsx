@@ -18,6 +18,7 @@ import Link from "next/link";
 import { signupEmailPassword } from "@/lib/auth";
 import { useAuth } from "@/components/providers/auth-provider";
 import Loading from "@/components/loading";
+import { signup } from "../actions";
 
 const signupFormSchema = z
   .object({
@@ -51,26 +52,12 @@ export default function SignupForm() {
   });
 
   async function onSubmit({ email, password }: SignupFormSchema) {
-    try {
-      setIsSubmitting(true);
-      signupEmailPassword(email, password);
-      replace("/verify-email");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
-    } finally {
-      setIsSubmitting(false);
+    setIsSubmitting(true);
+    const { error } = await signup(email, password);
+    if (error) {
+      setError(error);
     }
-  }
-
-  if (isAuthenticating) {
-    return <Loading />;
-  }
-
-  if (user) {
-    replace("/");
-    return;
+    setIsSubmitting(false);
   }
   return (
     <Form {...form}>

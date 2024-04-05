@@ -13,13 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { redirect, useRouter } from "next/navigation";
-import { useAuth } from "@/components/providers/auth-provider";
-import Loading from "@/components/loading";
 import { useState } from "react";
 import FormSubmitButton from "@/components/form-submit-button";
 import Link from "next/link";
-import { loginEmailPassword } from "@/lib/auth";
+import { login } from "../actions";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -40,33 +37,19 @@ export default function LoginForm() {
       password: "",
     },
   });
-  const { isAuthenticating, user } = useAuth();
-  const { replace } = useRouter();
 
   async function onSubmit({ email, password }: LoginFormSchema) {
-    try {
-      setIsSubmitting(true);
-      const user = await loginEmailPassword(email, password);
-      if (user.emailVerified === false) {
-        replace("/verify-email");
-        return;
-      }
-      replace("/decision-tree");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
-    } finally {
-      setIsSubmitting(false);
+    setIsSubmitting(true);
+
+    const { error } = await login(email, password);
+
+    if (error) {
+      setError(error);
     }
+
+    setIsSubmitting(false);
   }
-  if (isAuthenticating) {
-    return <Loading />;
-  }
-  if (user) {
-    replace("/");
-    return;
-  }
+
   return (
     <Form {...form}>
       <form
