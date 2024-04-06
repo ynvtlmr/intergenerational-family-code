@@ -42,6 +42,7 @@ export default function FormItem({ item, deleteItem }: FormItemProps) {
         <Button
           variant="destructive"
           onClick={handleDelete}
+          disabled={isDeleting}
           data-test="delete-button"
         >
           {isDeleting ? (

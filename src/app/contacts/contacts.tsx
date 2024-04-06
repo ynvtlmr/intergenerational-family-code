@@ -5,7 +5,7 @@ export default async function Contacts() {
   const supabase = createClient();
   const { data: contacts, error } = await supabase.from("contacts").select("*");
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>{error.message}</div>;
   }
   return (
     <div>
