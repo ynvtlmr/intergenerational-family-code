@@ -12,7 +12,7 @@ import ReactFlow, {
 import type { NodeDragHandler, Node } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   useAddNewNode,
   useAddNodeOnEdgeDrop,
@@ -163,6 +163,11 @@ export default function FamilyTreeFlow() {
     [edges, getNode, syncNodePositions]
   );
 
+  // Restore the flow from local storage on component mount
+  useEffect(() => {
+    onRestore();
+  }, [onRestore]);
+
   return (
     <div
       className="h-full grow"
@@ -188,9 +193,6 @@ export default function FamilyTreeFlow() {
         >
           <button className="px-3" onClick={onSave}>
             save
-          </button>
-          <button className="px-3" onClick={onRestore}>
-            restore
           </button>
           <button className="px-3" onClick={onAdd}>
             add node

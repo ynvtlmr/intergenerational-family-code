@@ -59,10 +59,10 @@ export default function FileProcess() {
 
   return (
     <div className="mx-auto mt-2 flex w-full max-w-xl flex-col justify-center gap-2">
-      <Button onClick={jsonFileDownload}>Download JSON</Button>
+      <Button onClick={jsonFileDownload}>Download</Button>
       <Button>
         <Label htmlFor="upload-json" className="cursor-pointer">
-          Upload JSON
+          Upload
         </Label>
         <Input
           id="upload-json"

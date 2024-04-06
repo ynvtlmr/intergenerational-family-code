@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import Loading from "@/components/loading";
 import { useState } from "react";
@@ -41,7 +41,7 @@ export default function LoginForm() {
     },
   });
   const { isAuthenticating, user } = useAuth();
-  const { replace, back } = useRouter();
+  const { replace } = useRouter();
 
   async function onSubmit({ email, password }: LoginFormSchema) {
     try {
@@ -64,7 +64,7 @@ export default function LoginForm() {
     return <Loading />;
   }
   if (user) {
-    back();
+    replace("/");
     return;
   }
   return (
