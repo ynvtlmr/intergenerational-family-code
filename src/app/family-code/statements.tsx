@@ -19,7 +19,7 @@ export default async function Statements() {
           key={statement.id}
           item={{
             id: statement.id,
-            title: statement.name,
+            title: statement.statement,
           }}
           deleteItem={deleteStatement}
         />
