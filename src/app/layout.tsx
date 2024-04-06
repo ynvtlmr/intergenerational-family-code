@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import MobileHeader from "@/components/mobile-header";
 import NavbarWrapper from "@/components/NavbarWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,6 +22,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
+          <MobileHeader />
           <div className="flex">
             <NavbarWrapper />
             <div className="flex-1">{children}</div>

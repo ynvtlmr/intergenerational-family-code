@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -37,10 +38,3 @@ next-env.d.ts
 
 bun.lockb
 package-lock.json
-
-# next-video
-videos/*
-!videos/*.json
-!videos/*.js
-!videos/*.ts
-public/_next-video
