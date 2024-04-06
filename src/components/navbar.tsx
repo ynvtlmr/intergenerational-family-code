@@ -26,9 +26,7 @@ const links = [
   { href: "/video", label: "Videos" },
   { href: "/pdf", label: "Print PDF" },
 ];
-// flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden
 
-// flex max-h-fit max-w-xs flex-col items-center justify-center overflow-y-auto border-r  lg:h-auto lg:p-10 print:hidden
 type NavBarProps = {
   className?: string;
 };
