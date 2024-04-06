@@ -4,7 +4,7 @@ import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 
 import { Button } from "@/components/ui/button";
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import WebCam from "react-webcam";
 
 type WebCamProps = {
