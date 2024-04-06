@@ -1,5 +1,8 @@
 "use client";
 
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL } from "firebase/storage";
+
 import { Button } from "@/components/ui/button";
 import { useState, useCallback, useRef } from "react";
 import WebCam from "react-webcam";
@@ -16,19 +19,16 @@ export default function CustomWebcam({
   width,
   imageSmoothing,
 }: WebCamProps) {
-  // record a video
   const webcamRef = useRef<any>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [capturing, setCapturing] = useState(false);
   const [openWebcam, setOpenWebcam] = useState(false);
 
-  // open the webcam
   const handleOpenWebcam = useCallback(() => {
     setOpenWebcam(true);
   }, [setOpenWebcam]);
 
-  // close the webcam
   const handleCloseWebcam = useCallback(() => {
     setOpenWebcam(false);
   }, [setOpenWebcam]);
@@ -42,7 +42,6 @@ export default function CustomWebcam({
     [setRecordedChunks]
   );
 
-  // start recording
   const handleStartCaptureClick = useCallback(() => {
     setCapturing(true);
 
@@ -70,25 +69,102 @@ export default function CustomWebcam({
   }, [mediaRecorderRef, setCapturing]);
 
   // download the video file
+  // const handleDownload = useCallback(() => {
+  //   const storage = getStorage();
+  //   const videoRef = ref(storage, "videos/react-webcam-stream-capture.webm");
+
+  //   if (recordedChunks.length === 0) return;
+
+  //   const blob = new Blob(recordedChunks, {
+  //     type: "video/webm",
+  //   });
+
+  //   // create the upload task
+  //   const uploadTask = uploadBytesResumable(videoRef, blob);
+
+  //   // listen for state changes, errors, and completion of the upload.
+  //   uploadTask.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       const progress =
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100; //
+
+  //       console.log("Upload is " + progress + "% done");
+  //     },
+  //     (error) => {
+  //       // Handle unsuccessful uploads
+  //       console.error(error);
+  //     },
+  //     () => {
+  //       // Handle successful uploads on complete
+  //       console.log("Upload is complete");
+  //     }
+  //   );
+
+  //   // const url = URL.createObjectURL(blob);
+  //   // const downloadLink = document.createElement("a");
+
+  //   // // Set attributes and initiate download
+  //   // downloadLink.href = url;
+  //   // downloadLink.download = "react-webcam-stream-capture.webm";
+  //   // document.body.appendChild(downloadLink);
+  //   // downloadLink.click();
+
+  //   // // Cleanup: remove the anchor tag and revoke blob URL
+  //   // document.body.removeChild(downloadLink);
+  //   // URL.revokeObjectURL(url);
+
+  //   // Reset the recordedChunks
+  //   setRecordedChunks([]);
+  // }, [recordedChunks]);
+
   const handleDownload = useCallback(() => {
+    const storage = getStorage();
+    const videoRef = ref(
+      storage,
+      process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    );
+
     if (recordedChunks.length === 0) return;
 
     const blob = new Blob(recordedChunks, {
       type: "video/webm",
     });
 
-    const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement("a");
+    // Create the upload task
+    const uploadTask = uploadBytesResumable(videoRef, blob);
 
-    // Set attributes and initiate download
-    downloadLink.href = url;
-    downloadLink.download = "react-webcam-stream-capture.webm";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
+        // Update your UI with the progress (e.g., a progress bar)
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        console.error("Upload error:", error);
+        // Display an error message to the user
+      },
+      () => {
+        // Handle successful uploads on complete
+        console.log("Upload is complete");
 
-    // Cleanup: remove the anchor tag and revoke blob URL
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(url);
+        // Get the download URL for the uploaded video
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL) => {
+            console.log("Video download URL:", downloadURL);
+
+            // Store the download URL in your Firebase Realtime Database
+            // along with other video metadata (title, description, etc.)
+          })
+          .catch((error) => {
+            console.error("Error getting download URL:", error);
+          });
+      }
+    );
 
     // Reset the recordedChunks
     setRecordedChunks([]);
