@@ -1,32 +1,31 @@
 "use server";
 
-import { FormSchema } from "./family-crest-form";
-import OpenAI from "openai";
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { createClient } from "@/lib/supabase/server";
+import { InsertFamilyCrest } from "./family-crest-form";
+import { revalidatePath } from "next/cache";
 
-// Set the runtime to edge for best performance
-export const runtime = "edge";
-
-export async function generateCrest(family: FormSchema) {
-  let prompt =
-    ` A family crest for the ${family.name}. ` +
-    ` Please do not generate text of any kind, Instead add a place for text to be inserted.` +
-    ` The symbol for the family crest: ${family.symbol}.` +
-    ` The colors that I want on the crest are ${family.color}.`;
-
-  if (family.motto) {
-    prompt += ` The family motto is: ${family.motto}.`;
+export async function addFamilyCrest(familyCrest: InsertFamilyCrest) {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+  const { data: existingFamilyCrest } = await supabase
+    .from("family_crest")
+    .select("*")
+    .eq("id", data.user?.id)
+    .maybeSingle();
+  if (existingFamilyCrest) {
+    await supabase
+      .from("family_crest")
+      .update(familyCrest)
+      .eq("user_id", data.user?.id)
+      .eq("id", existingFamilyCrest.id);
+  } else {
+    await supabase.from("family_crest").insert([familyCrest]);
   }
-  if (family.animal) {
-    prompt += ` The crest also features the following animals: ${family.animal}.`;
-  }
-  if (family.details) {
-    prompt += ` The crest also has these details: ${family.details}.`;
-  }
-  const res = await openai.images.generate({
-    prompt,
-    model: "dall-e-3",
-  });
+  revalidatePath("/family-crest");
+}
 
-  return res.data[0].url;
+export async function deleteFamilyCrest() {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+  await supabase.from("family_crest").delete().eq("id", data.user?.id);
 }

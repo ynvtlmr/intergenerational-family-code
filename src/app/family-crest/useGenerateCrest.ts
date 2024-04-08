@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { FormSchema as familyCrestFormSchema } from "./family-crest-form";
+import { InsertFamilyCrest as familyCrestFormSchema } from "./family-crest-form";
 import { useFamilyCrestStore } from "./family-crest-store";
 
 export default function useGenerateCrest() {
