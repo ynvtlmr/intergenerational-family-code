@@ -6,15 +6,8 @@ import { Separator } from "./ui/separator";
 import FileProcess from "@/app/file-process";
 import { usePathname } from "next/navigation";
 
-<<<<<<< HEAD
 import { User } from "@supabase/supabase-js";
 import { signout } from "@/app/(auth)/actions";
-=======
-import { useAuth } from "./providers/auth-provider";
-import { Loader2 } from "lucide-react";
-import { logout } from "@/lib/auth";
-import { cn } from "@/lib/utils";
->>>>>>> df5dac427df444b58792de279b8f3ed96d97a2d8
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -32,36 +25,12 @@ const links = [
   { href: "/pdf", label: "Print PDF" },
 ];
 
-<<<<<<< HEAD
 export default function NavBar({ user }: { user: User | null }) {
-=======
-type NavBarProps = {
-  className?: string;
-};
-
-export default function NavBar({ className }: NavBarProps) {
->>>>>>> df5dac427df444b58792de279b8f3ed96d97a2d8
   const pathname = usePathname();
   return (
-<<<<<<< HEAD
-    <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden">
+    <header className="flex h-dvh max-w-xs flex-col items-center justify-center p-10 md:border-r print:hidden">
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
       {user ? (
-=======
-    <header
-      className={cn(
-        "flex max-h-screen max-w-xs flex-col items-center border-r p-5 md:overflow-y-auto md:p-10 md:pb-16 lg:overflow-y-hidden print:hidden",
-        className
-      )}
-    >
-      <h1 className="mb-5 min-w-0 text-4xl font-bold md:mb-8">IFC</h1>
-      {isAuthenticating ? (
-        <div className="flex gap-2 py-6 text-sm">
-          <Loader2 className="animate-spin" />
-          <span>Loading...</span>
-        </div>
-      ) : user ? (
->>>>>>> df5dac427df444b58792de279b8f3ed96d97a2d8
         <div className="flex flex-col items-center gap-2">
           <span>{user.email}</span>
           <Button
@@ -87,7 +56,7 @@ export default function NavBar({ className }: NavBarProps) {
         </div>
       )}
       <Separator className="my-4" />
-      <nav className="flex-grow overflow-hidden">
+      <nav className="flex-grow overflow-hidden overflow-y-auto">
         {links.map((link) => (
           <Link
             key={link.label}

@@ -7,7 +7,11 @@ export default async function NavbarWrapper() {
   const { data, error } = await supabase.auth.getUser();
 
   if (error) {
-    // Handler error
+    // Handle error
   }
-  return <NavBar user={data.user} />;
+  return (
+    <div className="hidden md:flex">
+      <NavBar user={data.user} />
+    </div>
+  );
 }
