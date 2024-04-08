@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "./providers/auth-provider";
 import { Loader2 } from "lucide-react";
 import { logout } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -26,14 +27,23 @@ const links = [
   { href: "/pdf", label: "Print PDF" },
 ];
 
-export default function NavBar() {
+type NavBarProps = {
+  className?: string;
+};
+
+export default function NavBar({ className }: NavBarProps) {
   const pathname = usePathname();
   const { user, isAuthenticating } = useAuth();
   const { push } = useRouter();
 
   return (
-    <header className="flex h-dvh max-w-xs flex-col items-center justify-center border-r p-10 print:hidden">
-      <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
+    <header
+      className={cn(
+        "flex max-h-screen max-w-xs flex-col items-center border-r p-5 md:overflow-y-auto md:p-10 md:pb-16 lg:overflow-y-hidden print:hidden",
+        className
+      )}
+    >
+      <h1 className="mb-5 min-w-0 text-4xl font-bold md:mb-8">IFC</h1>
       {isAuthenticating ? (
         <div className="flex gap-2 py-6 text-sm">
           <Loader2 className="animate-spin" />
@@ -68,7 +78,7 @@ export default function NavBar() {
         </div>
       )}
       <Separator className="my-4" />
-      <nav className="flex flex-col justify-center gap-2">
+      <nav className="flex-grow overflow-hidden">
         {links.map((link) => (
           <Link
             key={link.label}
