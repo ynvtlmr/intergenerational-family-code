@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { usePolicyTreeStore } from "./policy-tree-store";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,9 +11,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { deletePolicy } from "./actions";
 
 export default function DeleteRowButton({ id }: { id: string }) {
-  const deleteRow = usePolicyTreeStore((s) => s.deleteRow);
+  const handleDeleteRow = async () => {
+    await deletePolicy(id);
+  };
 
   return (
     <AlertDialog>
@@ -33,7 +35,7 @@ export default function DeleteRowButton({ id }: { id: string }) {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"
-            onClick={() => deleteRow(id)}
+            onClick={handleDeleteRow}
           >
             Continue
           </AlertDialogAction>
