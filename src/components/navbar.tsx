@@ -28,7 +28,7 @@ const links = [
 export default function NavBar({ user }: { user: User | null }) {
   const pathname = usePathname();
   return (
-    <header className="flex h-dvh max-w-xs flex-col items-center justify-center p-10 md:border-r print:hidden">
+    <header className="flex h-dvh flex-col items-center justify-center p-10 md:max-w-xs md:border-r print:hidden">
       <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
       {user ? (
         <div className="flex flex-col items-center gap-2">
