@@ -11,13 +11,13 @@ export default async function People() {
   return (
     <div className="mt-10 space-y-10">
       {people?.map((person) => (
-        <>
+        <div key={person.id}>
           <div className="mb-4 flex items-center justify-between gap-2">
             <h2 className="text-2xl font-semibold">{person.name}</h2>
             <DeletePersonTableButton id={person.id} />
           </div>
-          <PersonTable key={person.id} person={person} />
-        </>
+          <PersonTable person={person} />
+        </div>
       ))}
     </div>
   );
