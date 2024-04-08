@@ -1,12 +1,13 @@
+"use client";
 import { Person, useFamilyGardenStore } from "./family-garden-store";
 
 export function PersonTable({ person }: { person: Person }) {
   const growthRate = useFamilyGardenStore((s) => s.growthRate);
   const data: Data[] = [];
-  for (let age = person.beginAge; age <= 110; age += 10) {
+  for (let age = person.begin_age; age <= 110; age += 10) {
     const netWorthGrowth =
-      person.beginAmount *
-      Math.pow(1 + growthRate / 100, age - person.beginAge);
+      person.begin_amount *
+      Math.pow(1 + growthRate / 100, age - person.begin_age);
     const targetTax = netWorthGrowth * 0.25;
     data.push({
       age,
@@ -61,6 +62,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { deletePerson } from "./actions";
 
 interface Data {
   age: number;
@@ -77,8 +79,10 @@ export const moneyFormatter = Intl.NumberFormat("en-CA", {
   maximumFractionDigits: 2,
 });
 
-export function DeletePersonTableButton({ name }: { name: string }) {
-  const deletePerson = useFamilyGardenStore((s) => s.deletePerson);
+export function DeletePersonTableButton({ id }: { id: number }) {
+  const handleDelete = async () => {
+    await deletePerson(id);
+  };
 
   return (
     <AlertDialog>
@@ -97,9 +101,7 @@ export function DeletePersonTableButton({ name }: { name: string }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => deletePerson(name)}>
-            Continue
-          </AlertDialogAction>
+          <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
