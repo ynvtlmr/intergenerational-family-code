@@ -6,7 +6,7 @@ export default async function Policies() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
   const { data: policies, error } = await supabase
-    .from("policy_trees")
+    .from("policy_tree")
     .select("*")
     .eq("user_id", data.user?.id);
   if (error) {

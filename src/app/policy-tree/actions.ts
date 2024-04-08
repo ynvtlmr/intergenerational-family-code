@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function addPolicy(policy: InsertPolicyTree) {
   const supabase = createClient();
-  const { error } = await supabase.from("policy_trees").insert(policy);
+  const { error } = await supabase.from("policy_tree").insert([policy]);
   if (error) {
     return { message: error.message };
   }
@@ -15,7 +15,7 @@ export async function addPolicy(policy: InsertPolicyTree) {
 
 export async function deletePolicy(id: string) {
   const supabase = createClient();
-  const { error } = await supabase.from("policy_trees").delete().eq("id", id);
+  const { error } = await supabase.from("policy_tree").delete().eq("id", id);
   if (error) {
     return { message: error.message };
   }
