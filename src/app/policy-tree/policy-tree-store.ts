@@ -3,13 +3,13 @@ import { persist } from "zustand/middleware";
 import { InsertPolicyTree } from "./policy-tree-form";
 
 export interface PolicyTreeTableRow extends InsertPolicyTree {
-  id: string;
+  id: number;
 }
 
 interface PolicyTreeState {
   data: PolicyTreeTableRow[];
   addRow: (row: PolicyTreeTableRow) => void;
-  deleteRow: (id: string) => void;
+  deleteRow: (id: number) => void;
 }
 
 export const usePolicyTreeStore = create<PolicyTreeState>()(

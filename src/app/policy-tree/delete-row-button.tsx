@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deletePolicy } from "./actions";
 
-export default function DeleteRowButton({ id }: { id: string }) {
+export default function DeleteRowButton({ id }: { id: number }) {
   const handleDeleteRow = async () => {
     await deletePolicy(id);
   };

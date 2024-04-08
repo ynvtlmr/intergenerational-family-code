@@ -13,7 +13,7 @@ export async function addPolicy(policy: InsertPolicyTree) {
   revalidatePath("/policy-tree");
 }
 
-export async function deletePolicy(id: string) {
+export async function deletePolicy(id: number) {
   const supabase = createClient();
   const { error } = await supabase.from("policy_tree").delete().eq("id", id);
   if (error) {
