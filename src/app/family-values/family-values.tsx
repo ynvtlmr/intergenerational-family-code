@@ -1,35 +1,34 @@
 import FormItem from "@/components/form-item";
 import { createClient } from "@/lib/supabase/server";
-import { deleteQuestion } from "./actions";
+import { deleteFamilyValue } from "./actions";
 
-export default async function Questions() {
+export default async function FamilyValues() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
-
-  const { data: questions, error } = await supabase
-    .from("decision_tree")
+  const { data: familyValues, error } = await supabase
+    .from("family_values")
     .select("*")
     .eq("user_id", data.user?.id);
 
   if (error) {
     return <div>{error.message}</div>;
   }
-
   return (
     <ul className="mb-10 mt-5 space-y-5">
-      {questions ? (
-        questions.map((question) => (
+      {familyValues ? (
+        familyValues.map((value) => (
           <FormItem
-            key={question.id}
+            key={value.id}
             item={{
-              id: question.id,
-              title: question.question,
+              id: value.id,
+              title: value.title,
+              description: value.description,
             }}
-            deleteItem={deleteQuestion}
+            deleteItem={deleteFamilyValue}
           />
         ))
       ) : (
-        <div>No questions added yet.</div>
+        <div>No family values added yet.</div>
       )}
     </ul>
   );

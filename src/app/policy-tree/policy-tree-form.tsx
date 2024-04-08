@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,7 +11,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { usePolicyTreeStore } from "./policy-tree-store";
+import { addPolicy } from "./actions";
+import { useState } from "react";
+import FormSubmitButton from "@/components/form-submit-button";
 
 const policyTreeFormSchema = z.object({
   carrier: z.string(),
@@ -25,11 +25,11 @@ const policyTreeFormSchema = z.object({
   anniversary: z.string(),
   insured: z.string(),
 });
-export type policyTreeFormSchema = z.infer<typeof policyTreeFormSchema>;
+export type InsertPolicyTree = z.infer<typeof policyTreeFormSchema>;
 
 export default function PolicyTreeForm() {
-  const addPolicy = usePolicyTreeStore((s) => s.addRow);
-  const form = useForm<policyTreeFormSchema>({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<InsertPolicyTree>({
     resolver: zodResolver(policyTreeFormSchema),
     defaultValues: {
       carrier: "",
@@ -42,15 +42,11 @@ export default function PolicyTreeForm() {
       insured: "",
     },
   });
-  function onSubmit(values: policyTreeFormSchema) {
-    // generate a random id
-    const newPolicy = {
-      ...values,
-      amount: values.amount,
-      id: crypto.randomUUID(),
-    };
-    addPolicy(newPolicy);
+  async function onSubmit(values: InsertPolicyTree) {
+    setIsSubmitting(true);
+    await addPolicy(values);
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
@@ -153,15 +149,11 @@ export default function PolicyTreeForm() {
             </FormItem>
           )}
         />
-
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          data-test="add-button"
-        >
-          Add
-        </Button>
+        <FormSubmitButton
+          disabled={isSubmitting}
+          defaultText="Add Policy"
+          loadingText="Adding..."
+        />
       </form>
     </Form>
   );

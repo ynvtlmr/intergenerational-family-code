@@ -1,22 +1,31 @@
-"use client";
 import FormItem from "@/components/form-item";
-import { useFamilyVisionStore } from "./family-vision-store";
+import { createClient } from "@/lib/supabase/server";
+import { deleteStatement } from "./actions";
 
-export default function VisionStatements() {
-  const visionStatements = useFamilyVisionStore((s) => s.visionStatements);
+export default async function VisionStatements() {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
 
-  const deleteVisionStatement = useFamilyVisionStore(
-    (s) => s.deleteVisionStatement
-  );
+  const { data: statements, error } = await supabase
+    .from("family_vision")
+    .select("*")
+    .eq("user_id", data.user?.id);
 
-  const handleDelete = (s: string) => {
-    deleteVisionStatement(s);
-  };
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <ul className="mb-10 mt-5 space-y-5">
-      {visionStatements.map((s) => (
-        <FormItem key={s} title={s} handleDelete={() => handleDelete(s)} />
+      {statements.map((statement) => (
+        <FormItem
+          key={statement.id}
+          item={{
+            id: statement.id,
+            title: statement.statement,
+          }}
+          deleteItem={deleteStatement}
+        />
       ))}
     </ul>
   );

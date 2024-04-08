@@ -1,19 +1,31 @@
-"use client";
-
 import FormItem from "@/components/form-item";
-import { usePhilanthropyStore } from "./philanthropy-store";
+import { createClient } from "@/lib/supabase/server";
+import { deleteGuideline } from "./actions";
 
-export default function Guidelines() {
-  const guidelines = usePhilanthropyStore((s) => s.guidelines);
-  const deleteGuideline = usePhilanthropyStore((s) => s.deleteGuideline);
-  const handleDelete = (g: string) => {
-    deleteGuideline(g);
-  };
+export default async function Guidelines() {
+  const supabase = createClient();
+
+  const { data } = await supabase.auth.getUser();
+  const { data: guidelines, error } = await supabase
+    .from("philanthropy_guidelines")
+    .select("*")
+    .eq("user_id", data.user?.id);
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
 
   return (
     <ul className="mb-10 mt-5 space-y-5">
-      {guidelines.map((g) => (
-        <FormItem key={g} title={g} handleDelete={() => handleDelete(g)} />
+      {guidelines.map((guideline) => (
+        <FormItem
+          key={guideline}
+          item={{
+            id: guideline.id,
+            title: guideline.guideline,
+          }}
+          deleteItem={deleteGuideline}
+        />
       ))}
     </ul>
   );

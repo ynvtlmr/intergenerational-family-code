@@ -11,9 +11,9 @@ type AuthenticatedRouteProps = {
 export default function AuthenticatedRoute({
   children,
 }: AuthenticatedRouteProps) {
-  const { isAuthenticating, user } = useAuth();
+  // const { isAuthenticating, user } = useAuth();
   const pathname = usePathname();
-  const { push } = useRouter();
+  // const { push } = useRouter();
 
   if (
     pathname === "/login" ||
@@ -23,19 +23,19 @@ export default function AuthenticatedRoute({
     return <>{children}</>;
   }
 
-  if (isAuthenticating) {
-    return <Loading />;
-  }
+  // if (isAuthenticating) {
+  //   return <Loading />;
+  // }
 
-  if (!user) {
-    push("/login");
-    return;
-  }
+  // if (!user) {
+  //   push("/login");
+  //   return;
+  // }
 
-  if (user.emailVerified === false) {
-    push("/verify-email");
-    return;
-  }
+  // if (user.emailVerified === false) {
+  //   push("/verify-email");
+  //   return;
+  // }
 
   return <>{children}</>;
 }
