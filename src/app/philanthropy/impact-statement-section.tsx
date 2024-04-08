@@ -4,9 +4,11 @@ import ImpactStatement from "./impact-statement";
 
 export default async function ImpactStatementSection() {
   const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
   let { data: impactStatement, error } = await supabase
     .from("philanthropy_impact_statements")
     .select("*")
+    .eq("user_id", data.user?.id)
     .limit(1)
     .maybeSingle();
 

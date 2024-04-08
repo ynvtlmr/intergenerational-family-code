@@ -4,9 +4,11 @@ import { deleteFamilyValue } from "./actions";
 
 export default async function FamilyValues() {
   const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
   const { data: familyValues, error } = await supabase
     .from("family_values")
-    .select("*");
+    .select("*")
+    .eq("user_id", data.user?.id);
 
   if (error) {
     return <div>{error.message}</div>;

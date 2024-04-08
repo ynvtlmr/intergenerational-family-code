@@ -4,9 +4,12 @@ import { deleteQuestion } from "./actions";
 
 export default async function Questions() {
   const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+
   const { data: questions, error } = await supabase
     .from("decision_tree")
-    .select("*");
+    .select("*")
+    .eq("user_id", data.user?.id);
 
   if (error) {
     return <div>{error.message}</div>;

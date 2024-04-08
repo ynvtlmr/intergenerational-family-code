@@ -4,9 +4,11 @@ import { deleteStatement } from "./actions";
 
 export default async function Statements() {
   const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
   const { data: statements, error } = await supabase
     .from("family_code")
-    .select("*");
+    .select("*")
+    .eq("user_id", data.user?.id);
 
   if (error) {
     return <div>Error: {error.message}</div>;
