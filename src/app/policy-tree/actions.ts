@@ -1,3 +1,5 @@
+"use server";
+
 import { InsertPolicyTree } from "./policy-tree-form";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
