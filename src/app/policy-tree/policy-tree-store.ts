@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { policyTreeFormSchema } from "./policy-tree-form";
+import { InsertPolicyTree } from "./policy-tree-form";
 
-export interface PolicyTreeTableRow extends policyTreeFormSchema {
+export interface PolicyTreeTableRow extends InsertPolicyTree {
   id: string;
 }
 

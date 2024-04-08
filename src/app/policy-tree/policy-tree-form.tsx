@@ -25,11 +25,11 @@ const policyTreeFormSchema = z.object({
   anniversary: z.string(),
   insured: z.string(),
 });
-export type policyTreeFormSchema = z.infer<typeof policyTreeFormSchema>;
+export type InsertPolicyTree = z.infer<typeof policyTreeFormSchema>;
 
 export default function PolicyTreeForm() {
   const addPolicy = usePolicyTreeStore((s) => s.addRow);
-  const form = useForm<policyTreeFormSchema>({
+  const form = useForm<InsertPolicyTree>({
     resolver: zodResolver(policyTreeFormSchema),
     defaultValues: {
       carrier: "",
@@ -42,7 +42,7 @@ export default function PolicyTreeForm() {
       insured: "",
     },
   });
-  function onSubmit(values: policyTreeFormSchema) {
+  function onSubmit(values: InsertPolicyTree) {
     // generate a random id
     const newPolicy = {
       ...values,
