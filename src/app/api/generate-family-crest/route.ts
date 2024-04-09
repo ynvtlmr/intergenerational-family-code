@@ -34,6 +34,7 @@ export async function POST(request: Request) {
   const res = await openai.images.generate({
     prompt,
     model: "dall-e-3",
+    response_format: "url",
   });
 
   return NextResponse.json({ url: res.data[0].url });
