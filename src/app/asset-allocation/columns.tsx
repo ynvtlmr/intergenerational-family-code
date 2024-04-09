@@ -1,68 +1,55 @@
 // "use client";
 
-// import { ColumnDef } from "@tanstack/react-table";
-// import { PolicyTreeTableRow } from "./policy-tree-store";
-// import DeleteRowButton from "./delete-row-button";
+import { ColumnDef } from "@tanstack/react-table";
+import DeleteRowButton from "@/components/delete-row-button";
+import { deleteAssetAllocation } from "./actions";
 
-// interface AssetAllocationTableRow {}
+interface AssetAllocationTableRow {
+  id: number;
+  type: string;
+  band: string;
+  target_allocation: number;
+  target_net_return: number;
+  sharpe_ratio_target: number;
+}
 
-// export const assetAllocationColumns: ColumnDef<AssetAllocationTableRow>[] = [
-//   {
-//     accessorKey: "carrier",
-//     header: "Carrier",
-//   },
-//   {
-//     accessorKey: "type",
-//     header: "Type",
-//   },
-//   {
-//     accessorKey: "amount",
-//     header: "Amount",
-//     cell: ({ row }) => {
-//       const amountValue = row.original.amount;
-//       const formatted = new Intl.NumberFormat("en-US", {
-//         style: "currency",
-//         currency: "USD",
-//       }).format(+amountValue);
-//       return <div className="text-left font-medium">{formatted}</div>;
-//     },
-//   },
-//   {
-//     accessorKey: "owner",
-//     header: "Owner",
-//   },
-//   {
-//     accessorKey: "beneficiary",
-//     header: "Beneficiary",
-//   },
-//   {
-//     accessorKey: "payor",
-//     header: "Payor",
-//   },
-//   {
-//     accessorKey: "anniversary",
-//     header: "Anniversary",
-//     cell: ({ row }) => {
-//       const date = new Date(row.original.anniversary);
-//       const formatted = date.toLocaleDateString();
-//       return <div className="text-left font-medium">{formatted}</div>;
-//     },
-//   },
-//   {
-//     accessorKey: "insured",
-//     header: "Insured",
-//   },
-// ];
+export const assetAllocationColumns: ColumnDef<AssetAllocationTableRow>[] = [
+  {
+    accessorKey: "type",
+    header: "Type",
+  },
+  {
+    accessorKey: "band",
+    header: "Band",
+  },
+  {
+    accessorKey: "target_allocation",
+    header: "Target Allocation",
+  },
+  {
+    accessorKey: "target_net_return",
+    header: "Target Net Return",
+  },
+  {
+    accessorKey: "sharpe_ratio_target",
+    header: "Sharpe Ratio Target",
+  },
+];
 
-// export const policyTreeColumnsWithDelete: ColumnDef<PolicyTreeTableRow>[] = [
-//   ...policyTreeColumns,
-//   {
-//     id: "actions",
-//     header: "Actions",
-//     cell: ({ row }) => (
-//       <div>
-//         <DeleteRowButton id={row.original.id} />
-//       </div>
-//     ),
-//   },
-// ];
+export const assetAllocationColumnsWithDelete: ColumnDef<AssetAllocationTableRow>[] =
+  [
+    ...assetAllocationColumns,
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div>
+          <DeleteRowButton
+            handleDeleteRow={async () => {
+              await deleteAssetAllocation(row.original.id);
+            }}
+          />
+        </div>
+      ),
+    },
+  ];

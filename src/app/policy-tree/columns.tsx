@@ -2,7 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { PolicyTreeTableRow } from "./policy-tree-store";
-import DeleteRowButton from "./delete-row-button";
+import DeleteRowButton from "../../components/delete-row-button";
+import { deletePolicy } from "./actions";
 
 export const policyTreeColumns: ColumnDef<PolicyTreeTableRow>[] = [
   {
@@ -59,7 +60,11 @@ export const policyTreeColumnsWithDelete: ColumnDef<PolicyTreeTableRow>[] = [
     header: "Actions",
     cell: ({ row }) => (
       <div>
-        <DeleteRowButton id={row.original.id} />
+        <DeleteRowButton
+          handleDeleteRow={async () => {
+            await deletePolicy(row.original.id);
+          }}
+        />
       </div>
     ),
   },
