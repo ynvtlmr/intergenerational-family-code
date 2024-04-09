@@ -6,10 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "test": "cypress run",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "lint": "next lint"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
