@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import AssetAllocationForm from "./asset-allocation-form";
 import { DataTable } from "@/components/data-table";
 import { assetAllocationColumnsWithDelete } from "./columns";
+import AssetPieChart from "./asset-pie-chart";
 
 export default async function AssetAllocation() {
   const supabase = createClient();
@@ -28,6 +29,9 @@ export default async function AssetAllocation() {
           columns={assetAllocationColumnsWithDelete}
           data={assetAllocations}
         />
+      </div>
+      <div className="mx-auto mt-20 h-96 w-96">
+        <AssetPieChart assetAllocations={assetAllocations} />
       </div>
     </main>
   );
