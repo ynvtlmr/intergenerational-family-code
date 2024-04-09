@@ -15,14 +15,16 @@ const links = [
   { href: "/family-code", label: "Family Code" },
   { href: "/family-vision", label: "Family Vision" },
   { href: "/contacts", label: "Contacts" },
-  { href: "/family-crest", label: "Family Crest" },
-  { href: "/family-garden", label: "Family Garden" },
-  { href: "/org-chart", label: "Organizational Chart" },
-  { href: "/policy-tree", label: "Policy Tree" },
-  { href: "/family-tree", label: "Family Tree" },
   { href: "/philanthropy", label: "Philanthropy" },
-  { href: "/video", label: "Videos" },
+  { href: "/policy-tree", label: "Policy Tree" },
+  { href: "/family-garden", label: "Family Garden" },
+  { href: "/wealth-forest", label: "Wealth Forest" },
+  { href: "/asset-allocation", label: "Asset Allocation" },
+  { href: "/family-tree", label: "Family Tree" },
+  { href: "/org-chart", label: "Organizational Chart" },
+  { href: "/family-crest", label: "Family Crest" },
   { href: "/pdf", label: "Print PDF" },
+  { href: "/video", label: "Videos" },
 ];
 
 export default function NavBar({ user }: { user: User | null }) {
