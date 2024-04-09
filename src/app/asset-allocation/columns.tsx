@@ -3,14 +3,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import DeleteRowButton from "@/components/delete-row-button";
 import { deleteAssetAllocation } from "./actions";
+import { InsertAssetAllocation } from "./asset-allocation-form";
 
-interface AssetAllocationTableRow {
+interface AssetAllocationTableRow extends InsertAssetAllocation {
   id: number;
-  type: string;
-  band: string;
-  target_allocation: number;
-  target_net_return: number;
-  sharpe_ratio_target: number;
 }
 
 export const assetAllocationColumns: ColumnDef<AssetAllocationTableRow>[] = [
