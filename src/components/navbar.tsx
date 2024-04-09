@@ -74,8 +74,6 @@ export default function NavBar({ user }: { user: User | null }) {
           </Link>
         ))}
       </nav>
-      <Separator className="my-4" />
-      <FileProcess />
     </header>
   );
 }
