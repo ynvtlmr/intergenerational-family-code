@@ -13,7 +13,7 @@ import ReactFlow, {
 } from "reactflow";
 import type { NodeDragHandler, Node } from "reactflow";
 import "reactflow/dist/style.css";
-import { toPng } from "html-to-image";
+import { toSvg } from "html-to-image";
 
 import { useCallback, useEffect, useRef } from "react";
 import {
@@ -174,38 +174,33 @@ export default function FamilyTreeFlow() {
 
   // Save the flow image url to local storage on component unmount
   const saveImgString = useFamilyTreeImageStore((s) => s.saveImgString);
-  useEffect(() => {
-    function storeFamilyTreeImageString() {
-      const imageWidth = 1024;
-      const imageHeight = 768;
+  function storeFamilyTreeImageString() {
+    const imageWidth = 1024;
+    const imageHeight = 768;
 
-      const nodesBounds = getNodesBounds(getNodes());
-      const transform = getViewportForBounds(
-        nodesBounds,
-        imageWidth,
-        imageHeight,
-        0.1,
-        2
-      );
+    const nodesBounds = getNodesBounds(getNodes());
+    const transform = getViewportForBounds(
+      nodesBounds,
+      imageWidth,
+      imageHeight,
+      0.1,
+      2
+    );
 
-      const familyTree = document.querySelector(".react-flow__viewport");
-      if (!familyTree) return;
-      toPng(familyTree as HTMLElement, {
-        backgroundColor: "#f8f8f8",
-        width: imageWidth,
-        height: imageHeight,
-        style: {
-          width: `${imageWidth}px`,
-          height: `${imageHeight}px`,
-          transform: `translate(${transform.x}px, ${transform.y}px scale(${transform.zoom}))`,
-        },
-      }).then((dataUrl) => saveImgString(dataUrl));
+    const familyTree = document.querySelector(".react-flow__viewport");
+    if (!familyTree) return;
+    function filter(node: HTMLElement) {
+      return node.tagName !== "i";
     }
-
-    return () => {
-      storeFamilyTreeImageString();
-    };
-  }, [getNodes, saveImgString]);
+    toSvg(familyTree as HTMLElement, {
+      filter,
+      style: {
+        transform: `translate(${transform.x}px, ${transform.y}px scale(${transform.zoom}))`,
+      },
+    }).then((dataUrl) => {
+      saveImgString(dataUrl);
+    });
+  }
 
   return (
     <div
@@ -230,7 +225,13 @@ export default function FamilyTreeFlow() {
           className="divide-x rounded border bg-background py-1 shadow-xl"
           position="top-right"
         >
-          <button className="px-3" onClick={onSave}>
+          <button
+            className="px-3"
+            onClick={() => {
+              onSave();
+              storeFamilyTreeImageString();
+            }}
+          >
             save
           </button>
           <button className="px-3" onClick={onAdd}>
