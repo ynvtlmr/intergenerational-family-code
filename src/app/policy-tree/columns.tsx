@@ -1,9 +1,12 @@
 "use client";
-
 import { ColumnDef } from "@tanstack/react-table";
-import { PolicyTreeTableRow } from "./policy-tree-store";
 import DeleteRowButton from "../../components/delete-row-button";
 import { deletePolicy } from "./actions";
+import { InsertPolicyTree } from "./policy-tree-form";
+
+interface PolicyTreeTableRow extends InsertPolicyTree {
+  id: number;
+}
 
 export const policyTreeColumns: ColumnDef<PolicyTreeTableRow>[] = [
   {

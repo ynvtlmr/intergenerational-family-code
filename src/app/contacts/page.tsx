@@ -1,7 +1,7 @@
-import { ContactForm } from "./contact-form";
 import { Suspense } from "react";
-import Contacts from "./contacts";
 import Loading from "@/components/loading";
+import Contacts from "./contacts";
+import { ContactForm } from "./contact-form";
 
 export default function ContactPage() {
   return (

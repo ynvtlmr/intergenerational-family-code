@@ -1,7 +1,7 @@
 "use client";
-import { Loader2, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { deleteContact } from "./actions";
+import { Loader2, Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Contact({ contact }: { contact: any }) {

@@ -1,6 +1,6 @@
-import FormItem from "@/components/form-item";
 import { createClient } from "@/lib/supabase/server";
 import { deleteGuideline } from "./actions";
+import FormItem from "@/components/form-item";
 
 export default async function Guidelines() {
   const supabase = createClient();

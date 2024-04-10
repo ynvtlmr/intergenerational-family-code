@@ -1,8 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { deleteImpactStatement } from "./actions";
 import { Loader2, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function ImpactStatement({
   impactStatement,
