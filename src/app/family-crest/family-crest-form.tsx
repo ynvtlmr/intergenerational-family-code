@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import FormSubmitButton from "../../components/form-submit-button";
+import FormSubmitButton from "@/components/form-submit-button";
 import {
   Form,
   FormControl,
@@ -26,23 +26,20 @@ const formSchema = z.object({
   details: z.string().optional(),
 });
 
-export type FormSchema = z.infer<typeof formSchema>;
+export type InsertFamilyCrest = z.infer<typeof formSchema>;
 
-export default function FamilyCrestForm() {
+export default function FamilyCrestForm({
+  initialValues,
+}: {
+  initialValues: InsertFamilyCrest;
+}) {
   const { generateFamilyCrest, isPending } = useGenerateCrest();
-  const form = useForm<FormSchema>({
+  const form = useForm<InsertFamilyCrest>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      symbol: "",
-      color: "",
-      animal: "",
-      motto: "",
-      details: "",
-    },
+    defaultValues: initialValues,
   });
 
-  async function onSubmit(values: FormSchema) {
+  async function onSubmit(values: InsertFamilyCrest) {
     generateFamilyCrest(values);
   }
   return (

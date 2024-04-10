@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
-import FormItem from "@/components/form-item";
+
 import { deleteStatement } from "./actions";
+import FormItem from "@/components/form-item";
 
 export default async function Statements() {
   const supabase = createClient();

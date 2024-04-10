@@ -6,10 +6,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"; // Shadcn UI import
-import { Input } from "@/components/ui/input"; // Shandcn UI Input
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
-import { moneyFormatter } from "./person-table";
+import { moneyFormatter } from "@/lib/utils";
 
 type TextInputProps = {
   form: UseFormReturn<any>;

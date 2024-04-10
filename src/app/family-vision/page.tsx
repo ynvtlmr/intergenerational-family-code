@@ -1,7 +1,7 @@
 import { Suspense } from "react";
+import Loading from "@/components/loading";
 import FamilyVisionForm from "./family-vision-form";
 import VisionStatements from "./vision-statements";
-import Loading from "@/components/loading";
 
 export default function FamilyVisionPage() {
   return (

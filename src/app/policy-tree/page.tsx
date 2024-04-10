@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import PolicyTreeForm from "./policy-tree-form";
-
 import Policies from "./policies";
 import Loading from "@/components/loading";
 

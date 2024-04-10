@@ -63,21 +63,13 @@ import {
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deletePerson } from "./actions";
+import { moneyFormatter } from "@/lib/utils";
 
 interface Data {
   age: number;
   netWorthGrowth: string;
   targetTax: string;
 }
-
-export const moneyFormatter = Intl.NumberFormat("en-CA", {
-  currency: "CAD",
-  currencyDisplay: "symbol",
-  currencySign: "standard",
-  style: "currency",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
 
 export function DeletePersonTableButton({ id }: { id: number }) {
   const handleDelete = async () => {

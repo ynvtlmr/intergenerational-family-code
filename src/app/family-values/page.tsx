@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import FamilyValueForm from "./family-value-form";
 import Loading from "@/components/loading";
+import FamilyValueForm from "./family-value-form";
 import FamilyValues from "./family-values";
 
 export default function FamilyValuesPage() {

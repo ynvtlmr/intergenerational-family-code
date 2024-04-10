@@ -1,6 +1,6 @@
 "use client";
 
-import MoneyInput from "./money-input";
+import MoneyInput from "../../components/money-input";
 import {
   Form,
   FormControl,
