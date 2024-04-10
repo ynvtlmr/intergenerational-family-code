@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { policyTreeColumns } from "../policy-tree/columns";
 import { DataTable } from "@/components/data-table";
 import { PersonTable } from "../family-garden/person-table";
+import FamilyTreePDF from "./family-tree-pdf";
 
 export default async function PDFPages() {
   const supabase = createClient();
@@ -133,16 +134,7 @@ export default async function PDFPages() {
           </ul>
         }
       </PDFPage>
-      <PDFPage>
-        <h1>Family Tree</h1>
-        {/* <Image
-          src={familyTreeImage}
-          alt="Family Tree"
-          layout="responsive"
-          width={1024}
-          height={768}
-        /> */}
-      </PDFPage>
+      <FamilyTreePDF />
       <PDFPage>
         <h1>Philanthropy</h1>
         <div>
