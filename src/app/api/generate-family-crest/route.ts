@@ -17,25 +17,24 @@ export const runtime = "edge";
 export async function POST(request: Request) {
   const family: Family = await request.json();
   let prompt =
-    ` A family crest for the ${family.name}. ` +
-    ` Please do not generate text of any kind, Instead add a place for text to be inserted.` +
-    ` The symbol for the family crest: ${family.symbol}.` +
-    ` The colors that I want on the crest are ${family.color}.`;
+    ` A unique family crest for the ${family.name} family. ` +
+    ` Please do not generate text of any kind.` +
+    ` Use the following symbol for the family crest: ${family.symbol}.` +
+    ` Use the following colors for the family crest: ${family.color}.`;
 
   if (family.motto) {
-    prompt += ` The family motto is: ${family.motto}.`;
+    prompt += ` Their family motto is: ${family.motto}.`;
   }
   if (family.animal) {
-    prompt += ` The crest also features the following animals: ${family.animal}.`;
+    prompt += ` Please use the following animal for the family crest: ${family.animal}.`;
   }
   if (family.details) {
-    prompt += ` The crest also has these details: ${family.details}.`;
+    prompt += ` Please add the following details to the family crest: ${family.details}.`;
   }
   const res = await openai.images.generate({
     prompt,
     model: "dall-e-3",
-    response_format: "url",
+    response_format: "b64_json",
   });
-
-  return NextResponse.json({ url: res.data[0].url });
+  return NextResponse.json(res.data[0].b64_json);
 }

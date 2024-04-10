@@ -28,18 +28,15 @@ const formSchema = z.object({
 
 export type InsertFamilyCrest = z.infer<typeof formSchema>;
 
-export default function FamilyCrestForm() {
+export default function FamilyCrestForm({
+  initialValues,
+}: {
+  initialValues: InsertFamilyCrest;
+}) {
   const { generateFamilyCrest, isPending } = useGenerateCrest();
   const form = useForm<InsertFamilyCrest>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      symbol: "",
-      color: "",
-      animal: "",
-      motto: "",
-      details: "",
-    },
+    defaultValues: initialValues,
   });
 
   async function onSubmit(values: InsertFamilyCrest) {

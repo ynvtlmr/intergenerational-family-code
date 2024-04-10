@@ -1,13 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { InsertFamilyCrest as familyCrestFormSchema } from "./family-crest-form";
-import { useFamilyCrestStore } from "./family-crest-store";
 import { createClient } from "@/lib/supabase/client";
+import { addFamilyCrest } from "./actions";
 
 const randomString = (length: number) =>
   crypto.getRandomValues(new Uint8Array(length)).join("");
 
 export default function useGenerateCrest() {
-  const updateCrest = useFamilyCrestStore((s) => s.updateCrest);
   const { mutate, isPending, error } = useMutation({
     mutationFn: async (family: familyCrestFormSchema) => {
       const response = await fetch("/api/generate-family-crest", {
@@ -17,33 +16,35 @@ export default function useGenerateCrest() {
         },
         body: JSON.stringify(family),
       });
-      const resData: { url: string } = await response.json();
-      // Check if a family crest was generated
-      // If there is one then delete it from supabase and add a new one to the bucket
-      // else add a new one to the bucket
-      // create a new database entry for the family crest
-
-      const imageFile = await fetch(resData.url).then((res) => res.blob());
-
+      const resData = await response.json();
+      // Decode the base64 string
+      const imageFile = Buffer.from(resData, "base64");
       const bucket = "family_crest";
 
-      const imageFilePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/`;
-
       const supabase = createClient();
-      const { data: imageData, error } = await supabase.storage
+
+      const imageName = randomString(8);
+      const { data } = await supabase.auth.getUser();
+
+      const { error } = await supabase.storage
         .from(bucket)
-        .upload(randomString(8), imageFile, {
-          contentType: imageFile.type,
+        .upload(imageName, imageFile, {
+          contentType: "image/png",
         });
 
       if (error) {
         console.log(error);
       }
-      console.log(imageData);
-      return resData.url;
-    },
-    onSuccess(data) {
-      updateCrest(data);
+      const imageFilePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${imageName}`;
+      await addFamilyCrest({
+        name: family.name,
+        symbol: family.symbol,
+        color: family.color,
+        motto: family.motto,
+        animal: family.animal,
+        details: family.details,
+        image_url: imageFilePath,
+      });
     },
   });
   return { generateFamilyCrest: mutate, isPending, error };
