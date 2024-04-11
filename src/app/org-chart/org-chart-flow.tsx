@@ -22,7 +22,6 @@ import {
   useSaveAndRestore,
 } from "./hooks";
 import OrgChartIndividualNode from "./org-chart-individual-node";
-import OrgChartCustomJunctionNode from "./org-chart-custom-junction-node";
 import type { IndividualNode, NodeData, NodeTypes } from "./types";
 import { useOrgChartImageStore } from "./org-chart-store";
 
@@ -50,7 +49,6 @@ const initialNodes: IndividualNode[] = [
 
 const nodeTypes: NodeTypes = {
   customNode: OrgChartIndividualNode,
-  customJunction: OrgChartCustomJunctionNode,
 };
 
 export default function OrgChartFlow() {
@@ -88,24 +86,6 @@ export default function OrgChartFlow() {
         },
       },
       style: { borderRadius: "4px" },
-    },
-    setNodes
-  );
-  const { onAdd: onAddJunction } = useAddNewNode(
-    {
-      id: crypto.randomUUID(),
-      type: "customJunction",
-      data: {},
-      position: {
-        x:
-          typeof window !== "undefined"
-            ? Math.random() * window.innerWidth - 100
-            : 0,
-        y:
-          typeof window !== "undefined"
-            ? Math.random() * window.innerHeight
-            : 0,
-      },
     },
     setNodes
   );
@@ -236,9 +216,6 @@ export default function OrgChartFlow() {
           </button>
           <button className="px-3" onClick={onAdd}>
             add node
-          </button>
-          <button className="px-3" onClick={onAddJunction}>
-            add junction
           </button>
         </Panel>
         <Background />

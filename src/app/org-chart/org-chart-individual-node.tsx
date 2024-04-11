@@ -57,78 +57,6 @@ export default function OrgChartIndividualNode({
     localStorage.setItem("org-chart", JSON.stringify(flow));
   }, [setNodes, id, toObject]);
 
-  const connectNodesWithJunction = useCallback(
-    (
-      { source, sourceHandle, target, targetHandle }: Connection,
-      { x, y }: XYPosition
-    ) => {
-      if (!source || !target) return;
-
-      const newNodeId = crypto.randomUUID();
-      // this is the new junction node
-      const newNode = {
-        id: newNodeId,
-        type: "customJunction",
-        data: {},
-        position: {
-          x,
-          y,
-        },
-      };
-
-      // edge between the source to the new node
-      const leftEdge = {
-        id: crypto.randomUUID(),
-        source,
-        target: newNodeId,
-        type: "straight",
-        sourceHandle,
-      };
-      // edge between the new node to the target
-      const rightEdge = {
-        id: crypto.randomUUID(),
-        source: newNodeId,
-        target,
-        type: "straight",
-        targetHandle,
-      };
-      setNodes((nodes) => nodes.concat(newNode));
-      setEdges((edges) => addEdge(leftEdge, addEdge(rightEdge, edges)));
-    },
-    [setNodes, setEdges]
-  );
-
-  const getNewJunctionPosition = useCallback(
-    (
-      sourceNode: Node<NodeData>,
-      targetNode: Node<NodeData>,
-      dragFrom: "leftHandler" | "rightHandler",
-      adjustYPosition: number = 0
-    ): XYPosition | undefined => {
-      // x position is the middle of the node
-      const {
-        position: { x: sourceNodeX, y: sourceNodeY },
-        width,
-      } = sourceNode;
-      const {
-        position: { x: targetNodeX, y: targetNodeY },
-      } = targetNode;
-      if (!width) return;
-
-      const widthBetweenSourceAndTargetNodes = Math.abs(
-        sourceNodeX + width - targetNodeX
-      );
-      const newX =
-        sourceNodeX + width / 2 + widthBetweenSourceAndTargetNodes / 2;
-      const newY =
-        dragFrom === "leftHandler"
-          ? targetNodeY + adjustYPosition
-          : sourceNodeY + adjustYPosition;
-      return { x: newX, y: newY };
-    },
-    []
-  );
-
   return (
     <div
       style={{ backgroundColor: genderColor[gender] }}
@@ -144,36 +72,7 @@ export default function OrgChartIndividualNode({
         type="target"
         id="left"
         position={Position.Left}
-        isConnectable={true}
-        onConnect={(params) => {
-          const { source, target } = params;
-          if (!source || !target) return;
-
-          const sourceNode = getNode(source);
-          const targetNode = getNode(target);
-          if (!sourceNode || !targetNode) return;
-
-          if (
-            params.sourceHandle === "right" &&
-            sourceNode.type !== "customJunction"
-          ) {
-            const newJunctionPosition = getNewJunctionPosition(
-              sourceNode,
-              targetNode,
-              "leftHandler",
-              50
-            );
-            if (!newJunctionPosition) return;
-            connectNodesWithJunction(params, newJunctionPosition);
-          } else if (params.sourceHandle === "right") {
-            const edge = {
-              ...params,
-              type: "straight",
-              sourceHandle: "right",
-            };
-            setEdges((edges) => addEdge(edge, edges));
-          }
-        }}
+        isConnectable={isConnectable}
       />
 
       <div className="mb-3 flex items-center justify-center">
@@ -219,36 +118,13 @@ export default function OrgChartIndividualNode({
         type="source"
         id="right"
         position={Position.Right}
-        isConnectable={true}
-        onConnect={(params) => {
-          const { source, target } = params;
-          if (!source || !target) return;
-
-          const sourceNode = getNode(source);
-          const targetNode = getNode(target);
-          if (!sourceNode || !targetNode) return;
-
-          if (
-            params.targetHandle === "left" &&
-            targetNode.type !== "customJunction"
-          ) {
-            const newJunctionPosition = getNewJunctionPosition(
-              sourceNode,
-              targetNode,
-              "rightHandler",
-              50
-            );
-            if (!newJunctionPosition) return;
-            connectNodesWithJunction(params, newJunctionPosition);
-          } else if (params.targetHandle === "left") {
-            const edge = {
-              ...params,
-              type: "straight",
-              targetHandle: "left",
-            };
-            setEdges((edges) => addEdge(edge, edges));
-          }
-        }}
+        isConnectable={isConnectable}
+      />
+      <Handle
+        type="source"
+        id="bottom"
+        position={Position.Bottom}
+        isConnectable={isConnectable}
       />
     </div>
   );
