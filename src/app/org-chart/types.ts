@@ -12,9 +12,8 @@ export type NodeData = {
   };
 };
 
-export type IndividualNode = Node<NodeData, "customNode" | "customJunction">;
+export type IndividualNode = Node<NodeData, "customNode">;
 
 export type NodeTypes = {
   customNode: React.ComponentType<NodeProps>;
-  customJunction: React.ComponentType<NodeProps>;
 };
