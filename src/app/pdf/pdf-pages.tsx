@@ -4,6 +4,7 @@ import { policyTreeColumns } from "../policy-tree/columns";
 import { DataTable } from "@/components/data-table";
 import { PersonTable } from "../family-garden/person-table";
 import FamilyTreePDF from "./family-tree-pdf";
+import OrgChartPDF from "./org-chart-pdf";
 
 export default async function PDFPages() {
   const supabase = createClient();
@@ -57,6 +58,7 @@ export default async function PDFPages() {
   return (
     <div className="space-y-10 print:space-y-0">
       <FamilyTreePDF />
+      <OrgChartPDF />
       <PDFPage>
         <h1>Decision Tree</h1>
         <ul>
