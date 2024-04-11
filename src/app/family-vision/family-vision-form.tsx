@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+
 import {
   Form,
   FormControl,
@@ -13,7 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { useFamilyVisionStore } from "./family-vision-store";
+import FormSubmitButton from "@/components/form-submit-button";
+import { addStatement } from "./actions";
 
 const familyStatementFormSchema = z.object({
   statement: z
@@ -28,17 +30,18 @@ const familyStatementFormSchema = z.object({
 type FamilyStatementFormSchema = z.infer<typeof familyStatementFormSchema>;
 
 export default function FamilyVisionForm() {
-  const addVisionStatement = useFamilyVisionStore((s) => s.addVisionStatement);
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<FamilyStatementFormSchema>({
     resolver: zodResolver(familyStatementFormSchema),
     defaultValues: {
       statement: "",
     },
   });
-  function onSubmit({ statement }: FamilyStatementFormSchema) {
-    addVisionStatement(statement);
+  async function onSubmit({ statement }: FamilyStatementFormSchema) {
+    setIsSubmitting(true);
+    await addStatement(statement);
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
@@ -62,14 +65,11 @@ export default function FamilyVisionForm() {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          data-test="add-button"
-        >
-          Add
-        </Button>
+        <FormSubmitButton
+          defaultText="Add Statement"
+          loadingText="Adding..."
+          disabled={isSubmitting}
+        />
       </form>
     </Form>
   );

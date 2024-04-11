@@ -1,10 +1,12 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { addGuideline } from "./actions";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Form,
   FormControl,
@@ -12,8 +14,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { usePhilanthropyStore } from "./philanthropy-store";
 import { Textarea } from "@/components/ui/textarea";
+import FormSubmitButton from "@/components/form-submit-button";
 
 const philanthropyGuidelineFormSchema = z.object({
   guideline: z
@@ -25,22 +27,21 @@ const philanthropyGuidelineFormSchema = z.object({
       message: "Guideline must be less than 250 characters.",
     }),
 });
-type PhilanthropyGuidelineFormSchema = z.infer<
-  typeof philanthropyGuidelineFormSchema
->;
+export type InsertGuideline = z.infer<typeof philanthropyGuidelineFormSchema>;
 
 export default function PhilanthropyGuidelineForm() {
-  const addGuideline = usePhilanthropyStore((s) => s.addGuideline);
-
-  const form = useForm<PhilanthropyGuidelineFormSchema>({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<InsertGuideline>({
     resolver: zodResolver(philanthropyGuidelineFormSchema),
     defaultValues: {
       guideline: "",
     },
   });
-  function onSubmit({ guideline }: PhilanthropyGuidelineFormSchema) {
-    addGuideline(guideline);
+  async function onSubmit(formData: InsertGuideline) {
+    setIsSubmitting(true);
+    await addGuideline(formData);
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
@@ -63,14 +64,11 @@ export default function PhilanthropyGuidelineForm() {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          data-test="add-button"
-        >
-          Add
-        </Button>
+        <FormSubmitButton
+          disabled={isSubmitting}
+          defaultText="Add Guideline"
+          loadingText="Adding..."
+        />
       </form>
     </Form>
   );

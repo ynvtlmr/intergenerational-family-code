@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { usePolicyTreeStore } from "./policy-tree-store";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,9 +12,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export default function DeleteRowButton({ id }: { id: string }) {
-  const deleteRow = usePolicyTreeStore((s) => s.deleteRow);
-
+export default function DeleteRowButton({
+  handleDeleteRow,
+}: {
+  handleDeleteRow: () => void;
+}) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -25,15 +26,15 @@ export default function DeleteRowButton({ id }: { id: string }) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently delete this and
+            remove it from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive/80"
-            onClick={() => deleteRow(id)}
+            onClick={handleDeleteRow}
           >
             Continue
           </AlertDialogAction>

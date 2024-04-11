@@ -1,10 +1,12 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-
-import * as z from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { addImpactStatement } from "./actions";
+
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
 import {
   Form,
   FormControl,
@@ -12,8 +14,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { usePhilanthropyStore } from "./philanthropy-store";
 import { Textarea } from "@/components/ui/textarea";
+import FormSubmitButton from "@/components/form-submit-button";
 
 const impactStatementFormSchema = z.object({
   statement: z
@@ -25,27 +27,21 @@ const impactStatementFormSchema = z.object({
       message: "The statement must be less than 250 characters.",
     }),
 });
-type ImpactStatementFormSchema = z.infer<typeof impactStatementFormSchema>;
+export type InsertImpactStatement = z.infer<typeof impactStatementFormSchema>;
 
 export default function ImpactStatementForm() {
-  const updateImpactStatement = usePhilanthropyStore(
-    (s) => s.updateImpactStatement
-  );
-  const impactStatement = usePhilanthropyStore((s) => s.impactStatement);
-  const setEditImpactStatement = usePhilanthropyStore(
-    (s) => s.setEditImpactStatement
-  );
-
-  const form = useForm<ImpactStatementFormSchema>({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<InsertImpactStatement>({
     resolver: zodResolver(impactStatementFormSchema),
     defaultValues: {
-      statement: impactStatement,
+      statement: "",
     },
   });
-  function onSubmit({ statement }: ImpactStatementFormSchema) {
-    updateImpactStatement(statement);
-    setEditImpactStatement(false);
+  async function onSubmit(formData: InsertImpactStatement) {
+    setIsSubmitting(true);
+    await addImpactStatement(formData);
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
@@ -71,14 +67,11 @@ through health sciences and education"
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          data-test="add-button"
-        >
-          Submit
-        </Button>
+        <FormSubmitButton
+          disabled={isSubmitting}
+          defaultText="Add Impact Statement"
+          loadingText="Adding..."
+        />
       </form>
     </Form>
   );

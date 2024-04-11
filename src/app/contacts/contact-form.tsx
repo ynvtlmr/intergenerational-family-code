@@ -1,10 +1,13 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { addContact } from "./actions";
+
 import {
   Form,
   FormControl,
@@ -14,7 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useContactStore } from "./contact-store";
+import FormSubmitButton from "@/components/form-submit-button";
+
 const formSchema = z.object({
   name: z
     .string()
@@ -39,12 +43,11 @@ const formSchema = z.object({
     .max(15),
 });
 
-type FormSchema = z.infer<typeof formSchema>;
+export type InsertContact = z.infer<typeof formSchema>;
 
 export function ContactForm() {
-  const addContact = useContactStore((s) => s.addContact);
-
-  const form = useForm<FormSchema>({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<InsertContact>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -54,9 +57,11 @@ export function ContactForm() {
     },
   });
 
-  function onSubmit(values: FormSchema) {
-    addContact(values);
+  async function onSubmit(values: InsertContact) {
+    setIsSubmitting(true);
+    await addContact(values);
     form.reset();
+    setIsSubmitting(false);
   }
 
   return (
@@ -122,7 +127,11 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <FormSubmitButton
+          defaultText="Add Contact"
+          loadingText="Adding..."
+          disabled={isSubmitting}
+        />
       </form>
     </Form>
   );

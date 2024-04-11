@@ -1,19 +1,31 @@
-"use client";
-import { useFamilyCodeStore } from "./family-code-store";
+import { createClient } from "@/lib/supabase/server";
+
+import { deleteStatement } from "./actions";
 import FormItem from "@/components/form-item";
 
-export default function Statements() {
-  const statements = useFamilyCodeStore((s) => s.statements);
-  const deleteStatement = useFamilyCodeStore((s) => s.deleteStatement);
+export default async function Statements() {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+  const { data: statements, error } = await supabase
+    .from("family_code")
+    .select("*")
+    .eq("user_id", data.user?.id);
 
-  const handleDelete = (s: string) => {
-    deleteStatement(s);
-  };
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <ul className="mb-10 mt-5 space-y-5">
-      {statements.map((s) => (
-        <FormItem key={s} title={s} handleDelete={() => handleDelete(s)} />
+      {statements.map((statement) => (
+        <FormItem
+          key={statement.id}
+          item={{
+            id: statement.id,
+            title: statement.statement,
+          }}
+          deleteItem={deleteStatement}
+        />
       ))}
     </ul>
   );

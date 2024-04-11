@@ -1,20 +1,36 @@
-"use client";
-
 import FormItem from "@/components/form-item";
-import { useDecisionTreeStore } from "./family-questions-store";
+import { createClient } from "@/lib/supabase/server";
+import { deleteQuestion } from "./actions";
 
-export default function Questions() {
-  const questions = useDecisionTreeStore((s) => s.questions);
-  const deleteQuestion = useDecisionTreeStore((s) => s.deleteQuestion);
-  const handleDelete = (q: string) => {
-    deleteQuestion(q);
-  };
+export default async function Questions() {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+
+  const { data: questions, error } = await supabase
+    .from("decision_tree")
+    .select("*")
+    .eq("user_id", data.user?.id);
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
 
   return (
     <ul className="mb-10 mt-5 space-y-5">
-      {questions.map((q) => (
-        <FormItem key={q} title={q} handleDelete={() => handleDelete(q)} />
-      ))}
+      {questions ? (
+        questions.map((question) => (
+          <FormItem
+            key={question.id}
+            item={{
+              id: question.id,
+              title: question.question,
+            }}
+            deleteItem={deleteQuestion}
+          />
+        ))
+      ) : (
+        <div>No questions added yet.</div>
+      )}
     </ul>
   );
 }
