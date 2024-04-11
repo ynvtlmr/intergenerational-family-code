@@ -178,7 +178,7 @@ export default function FamilyTreeIndividualNode({
 
       <div className="mb-3 flex items-center justify-center">
         <FontAwesomeIcon
-          icon={gender === "Male" ? faMars : faVenus}
+          icon={gender === "Male" ? "mars" : "venus"}
           className={`fa-lg cursor-pointer ${gender === "Male" ? "text-[#3daaee] hover:text-[#336889]" : "text-[#f26356] hover:text-[#aa483f]"}`}
           onClick={handleNodeGender}
         />
