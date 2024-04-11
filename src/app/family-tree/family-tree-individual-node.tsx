@@ -2,7 +2,6 @@ import { Handle, Position, addEdge, useReactFlow } from "reactflow";
 import type { Connection, Node, NodeProps, XYPosition } from "reactflow";
 import { useDebouncedCallback } from "use-debounce";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 
 import { useCallback } from "react";
 import type { NodeData } from "./types";
