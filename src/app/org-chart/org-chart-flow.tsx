@@ -218,7 +218,7 @@ export default function OrgChartFlow() {
         nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{ padding: 2 }}
-        defaultEdgeOptions={{ type: "smoothstep" }}
+        defaultEdgeOptions={{ type: "straight" }}
         nodeOrigin={[0.5, 0]}
       >
         <Panel
