@@ -7,6 +7,11 @@ import { useFamilyValueStore } from "../family-values/family-value-store";
 import { useFamilyVisionStore } from "../family-vision/family-vision-store";
 import { usePhilanthropyStore } from "../philanthropy/philanthropy-store";
 import { useContactStore } from "../contacts/contact-store";
+import { useFamilyGardenStore } from "../family-garden/family-garden-store";
+import { PersonTable } from "../family-garden/person-table";
+import { usePolicyTreeStore } from "../policy-tree/policy-tree-store";
+import { DataTable } from "@/components/data-table";
+import { policyTreeColumns } from "../policy-tree/columns";
 
 export default function PDFPage() {
   const questions = useDecisionTreeStore((s) => s.questions);
@@ -19,9 +24,12 @@ export default function PDFPage() {
   const values = Object.keys(familyValues);
 
   const contacts = useContactStore((s) => s.contacts);
-
   const guidelines = usePhilanthropyStore((s) => s.guidelines);
   const impactStatement = usePhilanthropyStore((s) => s.impactStatement);
+  const policies = usePolicyTreeStore((s) => s.data);
+
+  const growthRate = useFamilyGardenStore((s) => s.growthRate);
+  const people = useFamilyGardenStore((s) => s.people);
 
   const handleClick = () => {
     window.print();
@@ -96,6 +104,12 @@ export default function PDFPage() {
           </div>
         </Page>
         <Page>
+          <h1>Policy Tree</h1>
+          <div className="prose-table:my-0">
+            <DataTable columns={policyTreeColumns} data={policies} />
+          </div>
+        </Page>
+        <Page>
           <h1>Family Vision</h1>
           {
             <ul>
@@ -128,6 +142,13 @@ export default function PDFPage() {
             }
           </div>
         </Page>
+        {people.map((person) => (
+          <Page key={person.name}>
+            <h1>Family Garden</h1>
+            <h2 className="">{person.name}</h2>
+            <PersonTable person={person} />
+          </Page>
+        ))}
       </div>
     </main>
   );

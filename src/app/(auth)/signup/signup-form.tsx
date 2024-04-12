@@ -16,6 +16,8 @@ import FormSubmitButton from "@/components/form-submit-button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signupEmailPassword } from "@/lib/auth";
+import { useAuth } from "@/components/providers/auth-provider";
+import Loading from "@/components/loading";
 
 const signupFormSchema = z
   .object({
@@ -35,6 +37,7 @@ const signupFormSchema = z
 type SignupFormSchema = z.infer<typeof signupFormSchema>;
 
 export default function SignupForm() {
+  const { user, isAuthenticating } = useAuth();
   const { replace } = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -59,6 +62,15 @@ export default function SignupForm() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (isAuthenticating) {
+    return <Loading />;
+  }
+
+  if (user) {
+    replace("/");
+    return;
   }
   return (
     <Form {...form}>
