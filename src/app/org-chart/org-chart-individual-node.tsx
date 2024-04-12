@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useCallback } from "react";
 import type { NodeData } from "./types";
+import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 
 export default function OrgChartIndividualNode({
   id,
@@ -76,7 +77,7 @@ export default function OrgChartIndividualNode({
 
       <div className="mb-3 flex items-center justify-center">
         <FontAwesomeIcon
-          icon={gender === "Male" ? "mars" : "venus"}
+          icon={gender === "Male" ? (faMars as any) : (faVenus as any)}
           className={`fa-lg cursor-pointer ${gender === "Male" ? "text-[#3daaee] hover:text-[#336889]" : "text-[#f26356] hover:text-[#aa483f]"}`}
           onClick={handleNodeGender}
         />
