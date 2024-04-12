@@ -1,13 +1,10 @@
-"use client";
-
-import { ReactFlowProvider } from "reactflow";
-
-import OrgChartFlow from "./org-chart-flow";
+import AuthenticatedRoute from "../(auth)/authenticated-route";
+import OrgChartWrapper from "./org-chart-wrapper";
 
 export default function OrgChartPage() {
   return (
-    <ReactFlowProvider>
-      <OrgChartFlow />
-    </ReactFlowProvider>
+    <AuthenticatedRoute>
+      <OrgChartWrapper />
+    </AuthenticatedRoute>
   );
 }

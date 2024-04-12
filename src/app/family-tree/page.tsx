@@ -1,13 +1,10 @@
-"use client";
-
-import { ReactFlowProvider } from "reactflow";
-
-import FamilyTreeFlow from "./family-tree-flow";
+import AuthenticatedRoute from "../(auth)/authenticated-route";
+import FamilyTreeWrapper from "./family-tree-wrapper";
 
 export default function FamilyTreePage() {
   return (
-    <ReactFlowProvider>
-      <FamilyTreeFlow />
-    </ReactFlowProvider>
+    <AuthenticatedRoute>
+      <FamilyTreeWrapper />
+    </AuthenticatedRoute>
   );
 }
