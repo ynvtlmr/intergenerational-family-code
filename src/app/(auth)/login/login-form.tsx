@@ -17,7 +17,6 @@ import { useState } from "react";
 import FormSubmitButton from "@/components/form-submit-button";
 import Link from "next/link";
 import { login } from "../actions";
-import { useRouter } from "next/navigation";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),

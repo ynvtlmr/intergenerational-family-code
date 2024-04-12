@@ -1,11 +1,8 @@
 "use client";
-import Loading from "@/components/loading";
-import { useAuth } from "@/components/providers/auth-provider";
-import { usePathname, useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 type AuthenticatedRouteProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 export default function AuthenticatedRoute({

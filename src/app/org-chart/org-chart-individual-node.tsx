@@ -1,5 +1,5 @@
-import { Handle, Position, addEdge, useReactFlow } from "reactflow";
-import type { Connection, Node, NodeProps, XYPosition } from "reactflow";
+import { Handle, Position, useReactFlow } from "reactflow";
+import type { Node, NodeProps } from "reactflow";
 import { useDebouncedCallback } from "use-debounce";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -11,7 +11,7 @@ export default function OrgChartIndividualNode({
   data,
   isConnectable,
 }: NodeProps<NodeData>) {
-  const { getNode, setNodes, setEdges, toObject } = useReactFlow();
+  const { setNodes, toObject } = useReactFlow();
   const { name, surname, dateOfBirth, placeOfBirth, gender, genderColor } =
     data;
 
