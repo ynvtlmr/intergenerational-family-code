@@ -5,6 +5,7 @@ import { DataTable } from "@/components/data-table";
 import { PersonTable } from "../family-garden/person-table";
 import FamilyTreePDF from "./family-tree-pdf";
 import OrgChartPDF from "./org-chart-pdf";
+import Image from "next/image";
 
 export default async function PDFPages() {
   const supabase = createClient();
@@ -54,6 +55,12 @@ export default async function PDFPages() {
     .from("family_garden")
     .select("*")
     .eq("user_id", data.user?.id);
+
+  const { data: familyCrest } = await supabase
+    .from("family_crest")
+    .select("*")
+    .eq("user_id", data.user?.id)
+    .maybeSingle();
 
   return (
     <div className="space-y-10 print:space-y-0">
@@ -166,6 +173,31 @@ export default async function PDFPages() {
             <PersonTable person={person} />
           </PDFPage>
         ))}
+      {familyCrest && (
+        <PDFPage>
+          <h1>Family Crest</h1>
+          <div className="flex gap-10 p-10">
+            <div className="text-xl">
+              <p>{familyCrest.name}&apos;s Family Crest</p>
+              {familyCrest.motto && (
+                <blockquote>{familyCrest.motto}</blockquote>
+              )}
+              <div className="mt-20">
+                <p>Animal: {familyCrest.animal}</p>
+                <p>Symbol: {familyCrest.symbol}</p>
+                <p>Colours: {familyCrest.color}</p>
+              </div>
+            </div>
+            <div>
+              <img
+                src={familyCrest.image_url}
+                alt="Family Crest"
+                className="ml-6 w-[448px] rounded-lg"
+              />
+            </div>
+          </div>
+        </PDFPage>
+      )}
       <FamilyTreePDF />
       <OrgChartPDF />
     </div>
