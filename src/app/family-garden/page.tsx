@@ -8,7 +8,7 @@ import AuthenticatedRoute from "../(auth)/authenticated-route";
 export default function FamilyGarden() {
   return (
     <AuthenticatedRoute>
-      <main className="mt-6 p-10">
+      <main className="mt-0 p-10 md:mt-6">
         <h1 className="mb-2 text-3xl font-bold">Family Garden</h1>
         <GrowthRate />
         <PersonForm />

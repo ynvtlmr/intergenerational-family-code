@@ -8,7 +8,7 @@ import AuthenticatedRoute from "../(auth)/authenticated-route";
 export default function DecisionTreePage() {
   return (
     <AuthenticatedRoute>
-      <main className="mx-auto mt-20 max-w-xl px-2">
+      <main className="mx-auto mt-4 max-w-xl px-2 md:mt-20">
         <h1 className="mb-4 text-2xl font-bold">Philanthropy</h1>
         <h2 className="mb-2 text-lg font-semibold">Impact Statement</h2>
         <Suspense fallback={<Loading />}>
