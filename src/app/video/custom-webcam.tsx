@@ -170,8 +170,6 @@ export default function CustomWebcam({
   //   setRecordedChunks([]);
   // }, [recordedChunks]);
 
-  console.log("hello");
-
   return (
     <div>
       <div className=" flex h-full flex-col items-center justify-between">
