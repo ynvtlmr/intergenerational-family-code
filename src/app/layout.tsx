@@ -23,9 +23,16 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Providers>
           <MobileHeader />
-          <div className="flex">
-            <NavbarWrapper />
-            <div className="flex-1">{children}</div>
+          <div className="grid min-h-dvh w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+            <div className="hidden md:block">
+              <NavbarWrapper />
+            </div>
+            <div className="flex flex-col">
+              <header className="fixed pl-3 pt-3 md:p-0">
+                <p className="hidden">Nav Sheet</p>
+              </header>
+              <main className="max-h-dvh overflow-y-auto">{children}</main>
+            </div>
           </div>
         </Providers>
         <Toaster richColors />
