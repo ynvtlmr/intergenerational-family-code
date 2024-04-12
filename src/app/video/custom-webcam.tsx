@@ -118,58 +118,6 @@ export default function CustomWebcam({
     setRecordedChunks([]);
   }, [recordedChunks]);
 
-  // const handleDownload = useCallback(() => {
-  //   const storage = getStorage();
-  //   const videoRef = ref(
-  //     storage,
-  //     process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-  //   );
-
-  //   if (recordedChunks.length === 0) return;
-
-  //   const blob = new Blob(recordedChunks, {
-  //     type: "video/webm",
-  //   });
-
-  //   // Create the upload task
-  //   const uploadTask = uploadBytesResumable(videoRef, blob);
-
-  //   // Listen for state changes, errors, and completion of the upload.
-  //   uploadTask.on(
-  //     "state_changed",
-  //     (snapshot) => {
-  //       const progress =
-  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //       console.log(`Upload is ${progress}% done`);
-  //       // Update your UI with the progress (e.g., a progress bar)
-  //     },
-  //     (error) => {
-  //       // Handle unsuccessful uploads
-  //       console.error("Upload error:", error);
-  //       // Display an error message to the user
-  //     },
-  //     () => {
-  //       // Handle successful uploads on complete
-  //       console.log("Upload is complete");
-
-  //       // Get the download URL for the uploaded video
-  //       getDownloadURL(uploadTask.snapshot.ref)
-  //         .then((downloadURL) => {
-  //           console.log("Video download URL:", downloadURL);
-
-  //           // Store the download URL in your Firebase Realtime Database
-  //           // along with other video metadata (title, description, etc.)
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error getting download URL:", error);
-  //         });
-  //     }
-  //   );
-
-  //   // Reset the recordedChunks
-  //   setRecordedChunks([]);
-  // }, [recordedChunks]);
-
   return (
     <div>
       <div className=" flex h-full flex-col items-center justify-between">
