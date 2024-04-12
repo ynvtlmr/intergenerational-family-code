@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
-import MobileHeader from "@/components/mobile-header";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import NavBarSheetWrapper from "@/components/NavBarSheetWrapper";
 
