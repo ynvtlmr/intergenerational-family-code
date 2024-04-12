@@ -10,7 +10,7 @@ export default function Profile({ user }: { user: User | null }) {
   return (
     <>
       {user ? (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2 print:hidden">
           <span>{user.email}</span>
           <Button
             variant="secondary"
@@ -21,7 +21,7 @@ export default function Profile({ user }: { user: User | null }) {
           </Button>
         </div>
       ) : (
-        <div className="flex w-full flex-col gap-2">
+        <div className="flex w-full flex-col gap-2 print:hidden">
           <Link className="w-full cursor-pointer" href="/login">
             <Button variant="secondary" className="w-full">
               Login

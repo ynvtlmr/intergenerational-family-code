@@ -25,7 +25,7 @@ const links = [
 export default function NavBar() {
   const pathname = usePathname();
   return (
-    <nav className="grid items-start px-2 text-sm font-medium md:mt-5 lg:mt-1 lg:px-4">
+    <nav className="grid items-start px-2 text-sm font-medium md:mt-5 lg:mt-1 lg:px-4 print:hidden">
       {links.map((link) => (
         <Link
           key={link.label}

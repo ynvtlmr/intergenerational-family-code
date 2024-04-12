@@ -6,6 +6,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import MobileHeader from "@/components/mobile-header";
 import NavbarWrapper from "@/components/NavbarWrapper";
+import NavBarSheetWrapper from "@/components/NavBarSheetWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,14 +23,13 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <MobileHeader />
-          <div className="grid min-h-dvh w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-            <div className="hidden md:block">
+          <div className="grid min-h-dvh w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] print:block">
+            <div className="hidden md:block print:hidden">
               <NavbarWrapper />
             </div>
             <div className="flex flex-col">
-              <header className="fixed pl-3 pt-3 md:p-0">
-                <p className="hidden">Nav Sheet</p>
+              <header className="pl-3 pt-3 md:p-0 print:hidden">
+                <NavBarSheetWrapper />
               </header>
               <main className="max-h-dvh overflow-y-auto">{children}</main>
             </div>
