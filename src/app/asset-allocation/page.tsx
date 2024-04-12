@@ -34,9 +34,11 @@ export default async function AssetAllocation() {
           data={assetAllocations}
         />
       </div>
-      <div className="mx-auto mt-20 h-96 w-96">
-        <AssetPieChart assetAllocations={assetAllocations} />
-      </div>
+      {assetAllocations.length > 0 && (
+        <div className="mx-auto mt-20 h-96 w-96">
+          <AssetPieChart assetAllocations={assetAllocations} />
+        </div>
+      )}
     </main>
   );
 }
