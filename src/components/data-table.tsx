@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-end print:hidden">
+      {/* <div className="mb-4 flex items-center justify-end print:hidden">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+      </div> */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>

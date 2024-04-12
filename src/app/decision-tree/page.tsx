@@ -7,7 +7,7 @@ import AuthenticatedRoute from "../(auth)/authenticated-route";
 export default function DecisionTreePage() {
   return (
     <AuthenticatedRoute>
-      <main className="mx-auto mt-20 max-w-xl px-2">
+      <main className="mx-auto mt-4 max-w-xl px-2 md:mt-20">
         <FamilyQuestionForm />
         <Suspense fallback={<Loading />}>
           <Questions />

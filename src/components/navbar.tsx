@@ -2,11 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
 import { usePathname } from "next/navigation";
-
-import { User } from "@supabase/supabase-js";
-import { signout } from "@/app/(auth)/actions";
 
 const links = [
   { href: "/decision-tree", label: "Decision Tree" },
@@ -26,53 +22,24 @@ const links = [
   { href: "/video", label: "Videos" },
 ];
 
-export default function NavBar({ user }: { user: User | null }) {
+export default function NavBar() {
   const pathname = usePathname();
   return (
-    <header className="flex h-dvh flex-col items-center justify-center p-10 md:max-w-xs md:border-r print:hidden">
-      <h1 className="mb-8 min-w-0 text-4xl font-bold">IFC</h1>
-      {user ? (
-        <div className="flex flex-col items-center gap-2">
-          <span>{user.email}</span>
+    <nav className="grid items-start px-2 text-sm font-medium md:mt-5 lg:mt-1 lg:px-4 print:hidden">
+      {links.map((link) => (
+        <Link
+          key={link.label}
+          className="w-full cursor-pointer"
+          href={link.href}
+        >
           <Button
-            variant="secondary"
-            className="cursor-pointer"
-            onClick={async () => await signout()}
+            variant={pathname === link.href ? "default" : "ghost"}
+            className="w-full"
           >
-            Logout
+            {link.label}
           </Button>
-        </div>
-      ) : (
-        <div className="flex w-full flex-col gap-2">
-          <Link className="w-full cursor-pointer" href="/login">
-            <Button variant="secondary" className="w-full">
-              Login
-            </Button>
-          </Link>
-          <Link className="w-full cursor-pointer" href="/signup">
-            <Button variant="secondary" className="w-full">
-              Signup
-            </Button>
-          </Link>
-        </div>
-      )}
-      <Separator className="my-4" />
-      <nav className="flex-grow overflow-hidden overflow-y-auto">
-        {links.map((link) => (
-          <Link
-            key={link.label}
-            className="w-full cursor-pointer"
-            href={link.href}
-          >
-            <Button
-              variant={pathname === link.href ? "default" : "ghost"}
-              className="w-full"
-            >
-              {link.label}
-            </Button>
-          </Link>
-        ))}
-      </nav>
-    </header>
+        </Link>
+      ))}
+    </nav>
   );
 }

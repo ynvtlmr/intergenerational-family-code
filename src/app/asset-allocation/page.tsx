@@ -3,7 +3,6 @@ import AssetAllocationForm from "./asset-allocation-form";
 import { DataTable } from "@/components/data-table";
 import { assetAllocationColumnsWithDelete } from "./columns";
 import AssetPieChart from "./asset-pie-chart";
-import AuthenticatedRoute from "../(auth)/authenticated-route";
 import { redirect } from "next/navigation";
 
 export default async function AssetAllocation() {
@@ -35,9 +34,11 @@ export default async function AssetAllocation() {
           data={assetAllocations}
         />
       </div>
-      <div className="mx-auto mt-20 h-96 w-96">
-        <AssetPieChart assetAllocations={assetAllocations} />
-      </div>
+      {assetAllocations.length > 0 && (
+        <div className="mx-auto mt-20 h-96 w-96">
+          <AssetPieChart assetAllocations={assetAllocations} />
+        </div>
+      )}
     </main>
   );
 }
