@@ -1,41 +1,19 @@
-"use client";
-import Loading from "@/components/loading";
-import { useAuth } from "@/components/providers/auth-provider";
-import { usePathname, useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 type AuthenticatedRouteProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
-export default function AuthenticatedRoute({
+export default async function AuthenticatedRoute({
   children,
 }: AuthenticatedRouteProps) {
-  // const { isAuthenticating, user } = useAuth();
-  const pathname = usePathname();
-  // const { push } = useRouter();
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
 
-  if (
-    pathname === "/login" ||
-    pathname === "/signup" ||
-    pathname === "/verify-email"
-  ) {
-    return <>{children}</>;
+  if (!data?.user) {
+    redirect("/login");
   }
-
-  // if (isAuthenticating) {
-  //   return <Loading />;
-  // }
-
-  // if (!user) {
-  //   push("/login");
-  //   return;
-  // }
-
-  // if (user.emailVerified === false) {
-  //   push("/verify-email");
-  //   return;
-  // }
 
   return <>{children}</>;
 }

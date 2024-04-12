@@ -3,10 +3,15 @@ import AssetAllocationForm from "./asset-allocation-form";
 import { DataTable } from "@/components/data-table";
 import { assetAllocationColumnsWithDelete } from "./columns";
 import AssetPieChart from "./asset-pie-chart";
+import AuthenticatedRoute from "../(auth)/authenticated-route";
+import { redirect } from "next/navigation";
 
 export default async function AssetAllocation() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
+  if (!data?.user) {
+    redirect("/login");
+  }
   const { data: assetAllocations, error } = await supabase
     .from("asset_allocation")
     .select("*")

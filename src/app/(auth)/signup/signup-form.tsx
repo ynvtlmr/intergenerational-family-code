@@ -15,7 +15,6 @@ import { useState } from "react";
 import FormSubmitButton from "@/components/form-submit-button";
 import Link from "next/link";
 import { signup } from "../actions";
-import { useRouter } from "next/navigation";
 
 const signupFormSchema = z
   .object({

@@ -1,7 +1,6 @@
 "use client";
 
 import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
-// import { getDownloadURL } from "firebase/storage";
 
 import { Button } from "@/components/ui/button";
 import { useState, useCallback, useRef } from "react";
@@ -85,13 +84,13 @@ export default function CustomWebcam({
     // listen for state changes, errors, and completion of the upload.
     uploadTask.on(
       "state_changed",
-      (snapshot) => {
+      (snapshot: any) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100; //
 
         console.log("Upload is " + progress + "% done");
       },
-      (error) => {
+      (error: any) => {
         // Handle unsuccessful uploads
         console.error(error);
       },

@@ -3,7 +3,7 @@ import type { Connection, Node, Edge, OnConnectStartParams } from "reactflow";
 import { toast } from "sonner";
 
 import { Dispatch, SetStateAction, useCallback, useRef } from "react";
-import { IndividualNode, NodeData, NodeTypes } from "./types";
+import { IndividualNode, NodeData } from "./types";
 
 export function useAddNodeOnEdgeDrop(
   setEdges: Dispatch<SetStateAction<Edge<any>[]>>,
