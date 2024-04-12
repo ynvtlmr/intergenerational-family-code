@@ -12,8 +12,6 @@ type Family = {
   details?: string;
 };
 
-export const runtime = "edge";
-
 export async function POST(request: Request) {
   const family: Family = await request.json();
   let prompt =
