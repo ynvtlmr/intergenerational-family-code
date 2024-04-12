@@ -137,13 +137,13 @@ export default function CustomWebcam({
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(
       "state_changed",
-      (snapshot) => {
+      (snapshot: any) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
         // Update your UI with the progress (e.g., a progress bar)
       },
-      (error) => {
+      (error: any) => {
         // Handle unsuccessful uploads
         console.error("Upload error:", error);
         // Display an error message to the user
@@ -154,13 +154,13 @@ export default function CustomWebcam({
 
         // Get the download URL for the uploaded video
         getDownloadURL(uploadTask.snapshot.ref)
-          .then((downloadURL) => {
+          .then((downloadURL: any) => {
             console.log("Video download URL:", downloadURL);
 
             // Store the download URL in your Firebase Realtime Database
             // along with other video metadata (title, description, etc.)
           })
-          .catch((error) => {
+          .catch((error: any) => {
             console.error("Error getting download URL:", error);
           });
       }

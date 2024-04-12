@@ -2,7 +2,7 @@
 
 import Loading from "@/components/loading";
 import { useAuth } from "@/components/providers/auth-provider";
-import { resendEmailVerification } from "@/lib/auth";
+// import { resendEmailVerification } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -32,10 +32,7 @@ export default function VerifyEmailPage() {
         <p>Please verify your email address to continue.</p>
         <div className="mt-6 flex flex-col gap-2">
           <p className="font-semibold">Having trouble receiving your email? </p>
-          <p
-            className="cursor-pointer text-blue-500 hover:underline"
-            onClick={async () => await resendEmailVerification()}
-          >
+          <p className="cursor-pointer text-blue-500 hover:underline">
             Click here to resend the verification email
           </p>
         </div>
