@@ -72,6 +72,16 @@ export default async function PDFPages() {
   return (
     <div className="space-y-10 print:space-y-0">
       <PDFPage>
+        <div className="flex h-dvh items-center justify-center">
+          <div>
+            <h1 className="text-6xl">Intergenerational Family Code</h1>
+            <p className="text-right text-2xl font-bold">
+              Jeremy Reinbolt, President
+            </p>
+          </div>
+        </div>
+      </PDFPage>
+      <PDFPage>
         <h1>Decision Tree</h1>
         <ul>
           {questions && questions.length ? (
