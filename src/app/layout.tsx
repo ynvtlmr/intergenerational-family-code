@@ -30,7 +30,7 @@ export default async function RootLayout({
               <header className="pl-3 pt-3 md:p-0 print:hidden">
                 <NavBarSheetWrapper />
               </header>
-              <main className="h-[calc(100dvh-3.5rem)] max-h-dvh overflow-y-auto">
+              <main className="h-[calc(100dvh-3.5rem)] max-h-dvh overflow-y-auto print:h-full">
                 {children}
               </main>
             </div>
