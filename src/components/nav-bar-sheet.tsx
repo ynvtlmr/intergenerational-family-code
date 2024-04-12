@@ -19,7 +19,7 @@ export default function NavBarSheet({ user }: { user: User | null }) {
       </SheetTrigger>
       <SheetContent side="left" className="flex flex-col print:hidden">
         <div className="flex h-full max-h-dvh flex-col gap-2 pt-2">
-          <div className="my-8 flex h-28 flex-col justify-center gap-8">
+          <div className="my-8 flex h-28 flex-col justify-center gap-4">
             <h1 className="min-w-0 text-center text-4xl font-bold">IFC</h1>
             <Profile user={user} />
           </div>
