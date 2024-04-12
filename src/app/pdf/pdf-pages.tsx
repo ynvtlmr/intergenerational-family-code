@@ -7,6 +7,7 @@ import FamilyTreePDF from "./family-tree-pdf";
 import OrgChartPDF from "./org-chart-pdf";
 import { assetAllocationColumns } from "../asset-allocation/columns";
 import AssetPieChart from "../asset-allocation/asset-pie-chart";
+import { wealthItems } from "../wealth-forest/data";
 
 export default async function PDFPages() {
   const supabase = createClient();
@@ -179,6 +180,17 @@ export default async function PDFPages() {
             <PersonTable person={person} />
           </PDFPage>
         ))}
+      <PDFPage>
+        <h1>Building your Wealth Forest</h1>
+        <div className="grid grid-cols-2 gap-4">
+          {wealthItems.map((item, i) => (
+            <div key={i}>
+              <h2>{item.alt}</h2>
+              <p>{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </PDFPage>
       <PDFPage>
         <h1>Asset Allocation</h1>
         <div className="text-sm prose-table:my-0">
