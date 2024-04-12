@@ -1,23 +1,19 @@
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+
 type AuthenticatedRouteProps = {
   children: React.ReactNode;
 };
 
-export default function AuthenticatedRoute({
+export default async function AuthenticatedRoute({
   children,
 }: AuthenticatedRouteProps) {
-  // if (isAuthenticating) {
-  //   return <Loading />;
-  // }
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
 
-  // if (!user) {
-  //   push("/login");
-  //   return;
-  // }
-
-  // if (user.emailVerified === false) {
-  //   push("/verify-email");
-  //   return;
-  // }
+  if (!data?.user) {
+    redirect("/login");
+  }
 
   return <>{children}</>;
 }

@@ -3,12 +3,15 @@ import FamilyCrestForm from "./family-crest-form";
 import FamilyCrestPreview from "./family-crest-preview";
 import Loading from "@/components/loading";
 import { createClient } from "@/lib/supabase/server";
+import AuthenticatedRoute from "../(auth)/authenticated-route";
 
 export default function FamilyCrestPage() {
   return (
-    <Suspense fallback={<Loading />}>
-      <FamilyCrestWrapper />
-    </Suspense>
+    <AuthenticatedRoute>
+      <Suspense fallback={<Loading />}>
+        <FamilyCrestWrapper />
+      </Suspense>
+    </AuthenticatedRoute>
   );
 }
 
