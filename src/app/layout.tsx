@@ -23,7 +23,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Providers>
           <div className="grid min-h-dvh w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] print:block">
-            <div className="hidden md:block print:hidden">
+            <div className="hidden border-y-0 border-l-0 border-r md:block print:hidden">
               <NavbarWrapper />
             </div>
             <div className="flex flex-col">
