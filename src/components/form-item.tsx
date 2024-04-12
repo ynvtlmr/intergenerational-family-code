@@ -33,7 +33,7 @@ export default function FormItem({ item, deleteItem }: FormItemProps) {
       {item.description && (
         <p
           data-test="form-item-description"
-          className="text-gray-500 dark:text-gray-400"
+          className="text-gray-500 dark:text-gray-500"
         >
           {item.description}
         </p>

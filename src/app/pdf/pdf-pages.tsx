@@ -57,8 +57,6 @@ export default async function PDFPages() {
 
   return (
     <div className="space-y-10 print:space-y-0">
-      <FamilyTreePDF />
-      <OrgChartPDF />
       <PDFPage>
         <h1>Decision Tree</h1>
         <ul>
@@ -168,6 +166,8 @@ export default async function PDFPages() {
             <PersonTable person={person} />
           </PDFPage>
         ))}
+      <FamilyTreePDF />
+      <OrgChartPDF />
     </div>
   );
 }
